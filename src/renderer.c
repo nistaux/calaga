@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 SDL_Renderer *renderer;
 

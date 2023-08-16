@@ -5,27 +5,30 @@ project(calaga VERSION 0.1.0
 
 # SETUP VARIABLES:
 set(OUTPUT_DIR "${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE}")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_DIR}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_DIR}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE})
 
-# NOTE: Folders here contain both SDL2 and SDL2_image files.
-set(SDL2_LIB_DIR C:/SDL/lib)
-set(SDL2_INCLUDE_DIR C:/SDL/include)
-set(SDL2_LIBRARY C:/SDL/bin)
+#SDL2 Paths
+set(SDL2_PATH C:/SDL)
+set(SDL2_IMAGE_PATH C:/SDL)
+set(SDL2_MIXER_PATH C:/SDL)
+set(SDL2_TTF_PATH C:/SDL)
 
-# SETUP INCLUDE AND LINK DIRS:
-include_directories(
-    ${SDL2_INCLUDE_DIR}
-)
+#SDL2 Libs
+set(SDL2_LIBRARY C:/SDL/bin/SDL2.dll)
+set(SDL2_IMAGE_LIBRARY C:/SDL/bin/SDL2_image.dll)
+set(SDL2_MIXER_LIBRARY C:/SDL/bin/SDL2_mixer.dll)
+set(SDL2_TTF_LIBRARY C:/SDL/bin/SDL2_ttf.dll)
 
-link_directories(
-    ${SDL2_LIB_DIR}
-)
+# Add SDL2 CMake modules
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
+# Find SDL2
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-# INCLUDE FILES THAT SHOULD BE COMPILED:
-file(GLOB_RECURSE SRC src/*.c src/*.h)
+file(GLOB SRC src/*.c)
 
 message(STATUS "Add source files:")
 foreach(SRC_FILE IN LISTS SRC)
@@ -35,16 +38,13 @@ message(STATUS "")
 
 add_executable(${PROJECT_NAME} ${SRC})
 
-
-# LINK PROGRAM
-target_link_libraries(
-        ${PROJECT_NAME}
-        mingw32
-        SDL2main
-        SDL2_ttf
-        SDL2_image
-        SDL2_mixer
-        SDL2
+target_include_directories(${PROJECT_NAME} PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME}
+                    SDL2::Main
+                    SDL2::Image
+                    SDL2::Mixer
+                    SDL2::TTF
 )
 
 
@@ -55,8 +55,9 @@ file(
     DESTINATION ${OUTPUT_DIR}
 )
 
+set(SDL2_DEPS C:/SDL/bin)
 message(STATUS "Copying all dependencies to destination folder...")
-file(GLOB PROJECT_DEPENDENCIES ${SDL2_LIBRARY}/*.dll)
+file(GLOB PROJECT_DEPENDENCIES ${SDL2_DEPS}/*.dll)
 
 foreach(Dependency IN LISTS PROJECT_DEPENDENCIES)
     file(

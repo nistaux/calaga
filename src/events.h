@@ -1,4 +1,4 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 void check_events(SDL_Event);
