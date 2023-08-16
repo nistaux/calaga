@@ -25,7 +25,7 @@ link_directories(
 
 
 # INCLUDE FILES THAT SHOULD BE COMPILED:
-file(GLOB_RECURSE SRC "src/*.c" "src/*.h")
+file(GLOB_RECURSE SRC src/*.c src/*.h)
 
 message(STATUS "Add source files:")
 foreach(SRC_FILE IN LISTS SRC)
