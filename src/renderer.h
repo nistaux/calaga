@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 void init_renderer(SDL_Window *window);
 void update_renderer();
