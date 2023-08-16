@@ -65,3 +65,10 @@ foreach(Dependency IN LISTS PROJECT_DEPENDENCIES)
         DESTINATION ${OUTPUT_DIR}
     )
 endforeach()
+
+# Adds 'make run' that just runs calaga.exe
+add_custom_target(run 
+                COMMAND calaga
+                DEPENDS calaga
+                WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+)
