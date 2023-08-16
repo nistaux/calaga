@@ -1,6 +1,6 @@
 #include <stdbool.h>
-#include "game.h"
 #include "window.h"
+#include "game.h"
 
 int main(int argc, char **argv) {
     init_sdl();
@@ -12,4 +12,5 @@ int main(int argc, char **argv) {
 
     end_sdl();
     
+    return 0;
 }
