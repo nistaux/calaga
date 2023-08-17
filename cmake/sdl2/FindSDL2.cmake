@@ -377,7 +377,7 @@ if(SDL2_FOUND)
       if(MINGW)
         # MinGW needs an additional link flag '-mwindows' and link to mingw32
         set_property(TARGET SDL2::Main PROPERTY
-                     INTERFACE_LINK_LIBRARIES "mingw32" "-mwindows")
+                     INTERFACE_LINK_LIBRARIES "mingw32")# "-mwindows")
       endif()
 
       set_property(TARGET SDL2::Main APPEND PROPERTY
