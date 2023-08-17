@@ -14,6 +14,16 @@ typedef struct {
     State state;
 } Game;
 
+typedef struct {
+    unsigned int prevTime;
+    unsigned int currentTime;
+    float deltaTime;
+    float physicsTime;
+    float physicsIter;
+    float renderTime;
+    float renderIter;
+} Timer;
+
 Game *get_game();
 float get_timer_delta();
 void init_game();

@@ -6,29 +6,7 @@
 
 #include "window.h"
 #include "events.h"
-
-typedef enum {
-    TITLE,
-    GAME,
-    PAUSE,
-    END
-} State;
-
-typedef struct {
-    bool running;
-    bool debug;
-    State state;
-} Game;
-
-typedef struct {
-    unsigned int prevTime;
-    unsigned int currentTime;
-    float deltaTime;
-    float physicsTime;
-    float physicsIter;
-    float renderTime;
-    float renderIter;
-} Timer;
+#include "game.h"
 
 Game game;
 Timer timer;
