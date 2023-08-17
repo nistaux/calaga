@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
@@ -7,6 +9,7 @@
 SDL_Window *window;
 
 void init_sdl(){
+    printf("test3");
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow(GAME_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH, GAME_HEIGHT, SDL_WINDOW_OPENGL);
     init_renderer(window);
@@ -23,6 +26,7 @@ SDL_Window *get_window() {
 }
 
 void update_window() {
+    printf("test");
     update_renderer();
     present_renderer();
 }

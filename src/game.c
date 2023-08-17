@@ -1,6 +1,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 #include <SDL.h>
+
 #include "window.h"
 #include "events.h"
 
@@ -83,6 +86,7 @@ void tick(){
         check_events(event);
     }
     if (timer.renderIter <= timer.renderTime) {
+        printf("test2");
         timer.renderTime = 0.0;
 
         // render updates
