@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.1)
 project(calaga VERSION 0.1.0
                     DESCRIPTION "A game inspired by Galaga"
                     LANGUAGES C)
-
+set(CMAKE_BUILD_TYPE Debug)
 # SETUP VARIABLES:
 set(OUTPUT_DIR "${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE})
@@ -70,5 +70,5 @@ endforeach()
 add_custom_target(run 
                 COMMAND calaga
                 DEPENDS calaga
-                WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+                WORKING_DIRECTORY ${OUTPUT_DIR}
 )
