@@ -23,6 +23,6 @@ SDL_Window *get_window() {
 }
 
 void update_window() {
-    //update_renderer();
-    //present_renderer();
+    update_renderer();
+    present_renderer();
 }

@@ -7,7 +7,8 @@
 typedef enum {
     TITLE,
     GAME,
-    PAUSE
+    PAUSE,
+    END
 } State;
 
 typedef struct {

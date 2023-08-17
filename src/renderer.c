@@ -1,5 +1,9 @@
 #include <stdio.h>
+
 #include <SDL.h>
+
+#include "game.h"
+#include "draw.h"
 
 SDL_Renderer *renderer;
 
@@ -13,7 +17,13 @@ void init_renderer(SDL_Window *window){
 }
 
 void update_renderer(){
-
+    switch(get_game()->state) {
+        case TITLE:
+            draw_title(renderer);
+            break;
+        default:
+            break;
+    }
 }
 
 void present_renderer(){
