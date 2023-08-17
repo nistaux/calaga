@@ -12,9 +12,10 @@ typedef enum {
 
 typedef struct {
     SDL_Texture *texture;
+    SDL_Texture *selected_texture;
     int w;
     int h;
     bool selected;
 } Text;
 
-void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char *string, Text *text);
+void draw_title_font_selections(SDL_Renderer *renderer);

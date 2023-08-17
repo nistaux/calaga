@@ -16,3 +16,4 @@ typedef struct {
 void init_player(int x, int y);
 Player *get_player();
 void set_player_state(PlayerState state);
+void draw_player(SDL_Renderer *renderer);

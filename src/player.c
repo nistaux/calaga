@@ -1,3 +1,5 @@
+#include <SDL.h>
+
 #include "player.h"
 
 Player player;
@@ -17,4 +19,8 @@ Player *get_player() {
 
 void set_player_state(PlayerState state){
     player.state = state;
+}
+
+void draw_player(SDL_Renderer *renderer) {
+
 }
