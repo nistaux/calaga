@@ -1,4 +1,5 @@
 #include <stdbool.h>
+
 #include "window.h"
 #include "game.h"
 

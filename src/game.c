@@ -51,7 +51,6 @@ void set_game_running(bool running) {
 }
 
 void init_game() {
-
     // Setting Game Struct Init Settings
     game.running = true;
     game.state = TITLE;
@@ -64,10 +63,10 @@ void init_game() {
     timer.physicsTime = 0.0f;
     timer.renderTime = 0.0f;
 
-    // Processing tick rate (60 Ticks/Sec)
-    timer.physicsIter = (1.0/60.0);
-    // Render set FPS (120 Frames/Sec)
-    timer.renderIter = (1.0/100.0);
+    float physics_tick_rate_per_second = 60.0;
+    float render_frame_rate_per_second = 100.0;
+    timer.physicsIter = (1.0/physics_tick_rate_per_second);
+    timer.renderIter = (1.0/render_frame_rate_per_second);
 }
 
 void tick(){
@@ -86,9 +85,7 @@ void tick(){
         check_events(event);
     }
     if (timer.renderIter <= timer.renderTime) {
-        printf("test2");
         timer.renderTime = 0.0;
-
         // render updates
         update_window();
     }

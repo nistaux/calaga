@@ -2,7 +2,6 @@
 #include <stdbool.h>
 
 typedef enum {
-    INTRO,
     TITLE,
     GAME,
     PAUSE,
