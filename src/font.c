@@ -6,6 +6,7 @@
 
 #include "font.h"
 #include "defs.h"
+#include "game.h"
 
 #define TITLE_FONT_DIR "./res/fonts/Handjet-Light.ttf"
 #define THIN_FONT_DIR "./res/fonts/Handjet-Thin.ttf"
@@ -76,29 +77,29 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
         .selected_texture = selected_texture,
         .w = text_surface->w,
         .h = text_surface->h,
-        .selected = text->selected
+        .id = text->id
     };
 
     *text = temp_text;
 }
 
 Text startText = {
-    .selected = true
+    .id = 0
 };
 SDL_Rect startRect;
 
 Text optionsText = {
-    .selected = false
+    .id = 1
 };
 SDL_Rect optionsRect;
 
 Text scoreText = {
-    .selected = false
+    .id = 2
 };
 SDL_Rect scoreRect;
 
 Text quitText = {
-    .selected = false
+    .id = 3
 };
 SDL_Rect quitRect;
 
@@ -124,7 +125,7 @@ void draw_title_font_selections(SDL_Renderer *renderer){
     startRect.w = startText.w;
     startRect.h = startText.h;
 
-    if(startText.selected){
+    if(get_game()->title.selection == startText.id){
         return_code = SDL_RenderCopy(renderer, startText.selected_texture, NULL, &startRect);
     }else {
         return_code = SDL_RenderCopy(renderer, startText.texture, NULL, &startRect);
@@ -138,7 +139,7 @@ void draw_title_font_selections(SDL_Renderer *renderer){
     optionsRect.w = optionsText.w;
     optionsRect.h = optionsText.h;
 
-    if(optionsText.selected){
+    if(get_game()->title.selection == optionsText.id){
         return_code = SDL_RenderCopy(renderer, optionsText.selected_texture, NULL, &optionsRect);
     }else {
         return_code = SDL_RenderCopy(renderer, optionsText.texture, NULL, &optionsRect);
@@ -152,7 +153,7 @@ void draw_title_font_selections(SDL_Renderer *renderer){
     scoreRect.w = scoreText.w;
     scoreRect.h = scoreText.h;
 
-    if(scoreText.selected){
+    if(get_game()->title.selection == scoreText.id){
         return_code = SDL_RenderCopy(renderer, scoreText.selected_texture, NULL, &scoreRect);
     }else {
         return_code = SDL_RenderCopy(renderer, scoreText.texture, NULL, &scoreRect);
@@ -166,7 +167,7 @@ void draw_title_font_selections(SDL_Renderer *renderer){
     quitRect.w = quitText.w;
     quitRect.h = quitText.h;
 
-    if(quitText.selected){
+    if(get_game()->title.selection == quitText.id){
         return_code = SDL_RenderCopy(renderer, quitText.selected_texture, NULL, &quitRect);
     }else {
         return_code = SDL_RenderCopy(renderer, quitText.texture, NULL, &quitRect);

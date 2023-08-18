@@ -15,7 +15,7 @@ typedef struct {
     SDL_Texture *selected_texture;
     int w;
     int h;
-    bool selected;
+    int id;
 } Text;
 
 void draw_title_font_selections(SDL_Renderer *renderer);

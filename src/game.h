@@ -11,6 +11,13 @@ typedef struct {
     float renderIter;
 } Timer;
 
+typedef struct {
+    SDL_Texture *texture;
+    float b1_loc;
+    float b2_loc;
+    float vel;
+} Background;
+
 typedef enum {
     TITLE_STATE_MAIN,
     TITLE_STATE_OPTIONS,
@@ -48,10 +55,14 @@ typedef struct {
 } Game;
 
 Game *get_game();
+Background *get_background();
 float get_timer_delta();
 void init_game();
 GameState get_game_state();
 void set_game_state(GameState state);
 void set_game_running(bool running);
+void down_title_selection();
+void up_title_selection();
 
+void move_background();
 void tick();
