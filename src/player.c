@@ -21,7 +21,7 @@ void init_player(float x, float y){
         .x_vel = 0.0f,
         .y_vel = 0.0f,
         .hp = 3,
-        .state = IDLE
+        .state = TITLE
     };
 
     player = temp;

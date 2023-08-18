@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 typedef enum {
+    TITLE,
     IDLE,
     SHOOTING,
     RECHARGING,

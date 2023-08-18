@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "game.h"
+#include "audio.h"
 
 void handle_play_keypress(SDL_Event event) {
     int key = event.key.keysym.sym;
@@ -16,11 +17,14 @@ void handle_title_keypress(SDL_Event event) {
             break;
         case SDLK_w:
             up_title_selection();
+            play_sound(SELECT_SOUND);
             break;
         case SDLK_s:
+            play_sound(SELECT_SOUND);
             down_title_selection();
             break;
         case SDLK_SPACE:
+            play_sound(ENTER_SOUND);
             switch(get_game()->title.selection){
                 case 0:
                     set_game_state(GAME_STATE_PLAY);

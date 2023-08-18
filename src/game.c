@@ -9,6 +9,7 @@
 #include "game.h"
 #include "player.h"
 #include "defs.h"
+#include "audio.h"
 
 Game game;
 Timer timer;
@@ -85,6 +86,8 @@ void init_game() {
     float render_frame_rate_per_second = 100.0;
     timer.physicsIter = (1.0/physics_tick_rate_per_second);
     timer.renderIter = (1.0/render_frame_rate_per_second);
+
+    start_title_music();
 }
 
 void down_title_selection() {

@@ -21,7 +21,8 @@ typedef struct {
 typedef enum {
     TITLE_STATE_MAIN,
     TITLE_STATE_OPTIONS,
-    TITLE_STATE_SCORES
+    TITLE_STATE_SCORES,
+    TITLE_STATE_FADING
 } TitleState;
 
 typedef struct {

@@ -18,4 +18,4 @@ typedef struct {
     int id;
 } Text;
 
-void draw_title_font_selections(SDL_Renderer *renderer);
+void draw_title_main_selections(SDL_Renderer *renderer);

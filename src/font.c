@@ -15,7 +15,6 @@
 bool is_ttf_init = false;
 
 void init_ttf() {
-    printf("TTF Initialized\n");
     TTF_Init();
     is_ttf_init = true;
 }
@@ -104,7 +103,7 @@ Text quitText = {
 SDL_Rect quitRect;
 
 bool title_selections_loaded = false;
-void load_title_font_selections(SDL_Renderer *renderer){
+void load_title_main_selections(SDL_Renderer *renderer){
     create_text(renderer, TITLE_FONT, 95, "Start", &startText);
     create_text(renderer, TITLE_FONT, 95, "Options", &optionsText);
     create_text(renderer, TITLE_FONT, 95, "Scores", &scoreText);
@@ -112,9 +111,9 @@ void load_title_font_selections(SDL_Renderer *renderer){
     title_selections_loaded = true;
 }
 
-void draw_title_font_selections(SDL_Renderer *renderer){
+void draw_title_main_selections(SDL_Renderer *renderer){
     if(!title_selections_loaded){
-        load_title_font_selections(renderer);
+        load_title_main_selections(renderer);
     }
     int start_x = 255;
     int interval = 115;

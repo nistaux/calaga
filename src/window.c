@@ -2,6 +2,7 @@
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "defs.h"
 #include "renderer.h"
@@ -9,7 +10,7 @@
 SDL_Window *window;
 
 void init_sdl(){
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     window = SDL_CreateWindow(GAME_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH, GAME_HEIGHT, SDL_WINDOW_OPENGL);
     init_renderer(window);
 }

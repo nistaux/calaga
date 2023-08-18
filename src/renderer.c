@@ -16,11 +16,21 @@ void init_renderer(SDL_Window *window){
     }
 }
 
+void clear_renderer(){
+    int return_code;
+    return_code = SDL_RenderClear(renderer);
+    if(return_code != 0){
+        printf("SDL: Error Clearing Renderer - %s\n", SDL_GetError());
+    }
+}
+
 void update_renderer(){
     switch(get_game_state()) {
         case GAME_STATE_TITLE:
             draw_title_screen(renderer);
             break;
+        case GAME_STATE_PLAY:
+            draw_play_screen(renderer);
         default:
             break;
     }
