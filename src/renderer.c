@@ -17,8 +17,8 @@ void init_renderer(SDL_Window *window){
 }
 
 void update_renderer(){
-    switch(get_game()->state) {
-        case TITLE:
+    switch(get_game_state()) {
+        case GAME_STATE_TITLE:
             draw_title_screen(renderer);
             break;
         default:

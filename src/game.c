@@ -20,8 +20,23 @@ float get_timer_delta() {
     return timer.deltaTime;
 }
 
-void set_game_state(State state) {
+GameState get_game_state() {
+    return game.state;
+}
+void set_game_state(GameState state) {
     game.state = state;
+    switch(state){
+        case GAME_STATE_PLAY:
+            game.play.active = true;
+            game.title.active = false;
+            break;
+        case GAME_STATE_TITLE:
+            game.play.active = false;
+            game.play.active = false;
+            break;
+        default:
+            break;
+    }
 }
 
 void set_game_running(bool running) {
@@ -31,8 +46,7 @@ void set_game_running(bool running) {
 void init_game() {
     // Setting Game Struct Init Settings
     game.running = true;
-    game.state = TITLE;
-    game.debug = false;
+    game.title.active = true;
 
     // Setting Timer Struct Init Settings
     timer.prevTime = 0;
