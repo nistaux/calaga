@@ -50,6 +50,7 @@ typedef enum {
 
 typedef struct {
     bool running;
+    int score;
     GameState state;
     Title title;
     Play play;
@@ -62,8 +63,11 @@ void init_game();
 GameState get_game_state();
 void set_game_state(GameState state);
 void set_game_running(bool running);
-void down_title_selection();
-void up_title_selection();
+void go_to_main_menu();
+void title_main_selection_up();
+void title_main_selection_down();
+void play_paused_main_selection_up();
+void play_paused_main_selection_down();
 
 void move_background();
 void tick();

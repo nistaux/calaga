@@ -55,6 +55,15 @@ void set_game_running(bool running) {
     game.running = running;
 }
 
+void go_to_main_menu(){
+    set_player_default_location();
+    start_title_music();
+    game.state = GAME_STATE_TITLE;
+    game.title.state = TITLE_STATE_MAIN;
+    game.title.selection = 0;
+    game.play.state = PLAY_STATE_ALIVE;
+}
+
 void init_game() {
     // Setting Game Struct Init Settings
     Title titleTemp = {
@@ -71,7 +80,8 @@ void init_game() {
         .running = true,
         .state = GAME_STATE_TITLE,
         .title = titleTemp,
-        .play = playTemp
+        .play = playTemp,
+        .score = 0
     };
     game = gameTemp;
 
@@ -90,7 +100,7 @@ void init_game() {
     start_title_music();
 }
 
-void down_title_selection() {
+void title_main_selection_down() {
     int sel = game.title.selection;
     if (sel < 3){
         sel ++;
@@ -99,7 +109,7 @@ void down_title_selection() {
     }
     game.title.selection = sel;
 }
-void up_title_selection() {
+void title_main_selection_up() {
     int sel = game.title.selection;
     if (sel > 0){
         sel --;
@@ -107,6 +117,24 @@ void up_title_selection() {
         sel = 3;
     }
     game.title.selection = sel;
+}
+void play_paused_main_selection_down() {
+    int sel = game.play.paused_selection;
+    if (sel < 2){
+        sel ++;
+    }else {
+        sel = 0;
+    }
+    game.play.paused_selection = sel;
+}
+void play_paused_main_selection_up() {
+    int sel = game.play.paused_selection;
+    if (sel > 0){
+        sel --;
+    }else {
+        sel = 2;
+    }
+    game.play.paused_selection = sel;
 }
 
 void move_background(){
@@ -136,9 +164,10 @@ void tick(){
 
         // Check control input
         check_events(event);
-        move_background();
-        move_player();
-        
+        if(!get_game()->play.state == PLAY_STATE_PAUSED){
+            move_background();
+            move_player();
+        }
     }
     if (timer.renderIter <= timer.renderTime) {
         timer.renderTime = 0.0;

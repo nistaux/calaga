@@ -5,6 +5,7 @@
 #include "audio.h"
 
 #define TITLE_BACKGROUND_MUSIC_DIR "./res/audio/music/Final Quest - Adventurer's End Loop.mp3"
+#define PLAY_BACKGROUND_MUSIC_DIR "./res/audio/music/Final Quest - Battle.mp3"
 #define DEAD_SOUND_DIR "./res/audio/sfx/dead.wav"
 #define ENTER_SOUND_DIR "./res/audio/sfx/enter.wav"
 #define HIT_SOUND_DIR "./res/audio/sfx/hit.wav"
@@ -12,12 +13,15 @@
 #define WOOSH_SOUND_DIR "./res/audio/sfx/woosh.wav"
 
 Mix_Music *title_bgm;
+Mix_Music *play_bgm;
 Mix_Chunk *deadSound;
 Mix_Chunk *enterSound;
 Mix_Chunk *hitSound;
 Mix_Chunk *selectSound;
 Mix_Chunk *wooshSound;
 MixController mixController;
+int musicVolume = 25;
+int soundVolume = 35;
 
 void init_mixer() {
     if(Mix_OpenAudio(88200*2, MIX_DEFAULT_FORMAT, 5, 1024) == -1){
@@ -31,7 +35,12 @@ void init_mixer() {
         printf(".mp3 sound '%s' could not be loaded!\n"
                 "SDL_Error: %s\n", TITLE_BACKGROUND_MUSIC_DIR, SDL_GetError());
     }
-    Mix_VolumeMusic(25);
+    play_bgm = Mix_LoadMUS(PLAY_BACKGROUND_MUSIC_DIR);
+    if(!play_bgm){
+        printf(".mp3 sound '%s' could not be loaded!\n"
+                "SDL_Error: %s\n", PLAY_BACKGROUND_MUSIC_DIR, SDL_GetError());
+    }
+    Mix_VolumeMusic(musicVolume);
 
     selectSound = Mix_LoadWAV(SELECT_SOUND_DIR);
     if(!selectSound){
@@ -59,22 +68,34 @@ void init_mixer() {
                 "SDL_Error: %s\n", WOOSH_SOUND_DIR, SDL_GetError());
     }
 
-    Mix_Volume(-1, 25);
+    Mix_Volume(-1, soundVolume);
 }
 
 void start_title_music() {
-    if(Mix_PlayMusic(title_bgm, 300) == -1) {
+    Mix_VolumeMusic(musicVolume*2);
+    if(Mix_PlayMusic(title_bgm, -1) == -1) {
         printf(".OGG sound could not be played!\n"
                 "SDL_Error: %s\n", SDL_GetError());
     }
 }
 
 void start_play_music() {
-
+    Mix_VolumeMusic(musicVolume*0.7);
+    if(Mix_PlayMusic(play_bgm, -1) == -1) {
+        printf(".OGG sound could not be played!\n"
+                "SDL_Error: %s\n", SDL_GetError());
+    }
 }
 
 void pause_music() {
 
+}
+
+void set_music_volume_play(){
+    Mix_VolumeMusic(musicVolume);
+}
+void set_music_volume_paused(){
+    Mix_VolumeMusic(Mix_VolumeMusic(-1)/3);
 }
 
 void play_sound(Sound sound) {

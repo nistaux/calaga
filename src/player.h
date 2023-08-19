@@ -20,10 +20,7 @@ typedef struct {
 } Player;
 
 void init_player(float x, float y);
-Player *get_player();
-SDL_Texture *get_player_texture();
-SDL_Rect *get_player_rect();
+void set_player_default_location();
 void load_player(SDL_Renderer *renderer);
-void set_player_state(PlayerState state);
 void draw_player(SDL_Renderer *renderer);
 void move_player();

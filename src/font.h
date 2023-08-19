@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 
 typedef enum {
+    MENU_NAME_FONT,
     TITLE_FONT,
     THIN_FONT,
     REGULAR_FONT
@@ -19,3 +20,4 @@ typedef struct {
 } Text;
 
 void draw_title_main_selections(SDL_Renderer *renderer);
+void draw_play_paused_main_selections(SDL_Renderer *renderer);

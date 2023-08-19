@@ -7,12 +7,15 @@
 
 #include "player.h"
 #include "game.h"
+#include "defs.h"
 
 #define PLAYER_IMAGE_DIR "./res/images/player.png"
 
 Player player;
 SDL_Texture *player_texture;
 SDL_Rect playerRect;
+const float PLAYER_DEFAULT_X = 63.0f;
+const float PLAYER_DEFAULT_Y = 220.0f;
 
 void init_player(float x, float y){
     Player temp = {
@@ -26,19 +29,12 @@ void init_player(float x, float y){
 
     player = temp;
 }
-
-Player *get_player() {
-    return &player;
+void set_player_default_location(){
+    player.x = PLAYER_DEFAULT_X;
+    player.y = PLAYER_DEFAULT_Y;
 }
 
-SDL_Texture *get_player_texture() {
-    return player_texture;
-}
-
-SDL_Rect *get_player_rect() {
-    return &playerRect;
-}
-
+// -------------- DRAW PLAYER SECTION --------------
 bool player_loaded = false;
 void load_player(SDL_Renderer *renderer){
     if(!player_loaded){
@@ -46,11 +42,6 @@ void load_player(SDL_Renderer *renderer){
         player_loaded = true;
     }
 }
-
-void set_player_state(PlayerState state){
-    player.state = state;
-}
-
 void draw_player(SDL_Renderer *renderer) {
     int return_code;
     int x = round(player.x);
@@ -67,24 +58,71 @@ void draw_player(SDL_Renderer *renderer) {
     }
 }
 
+// -------------- MOVE TITLE SECTION --------------
 bool flip = false;
-void move_player(){
-    if(get_game_state() == GAME_STATE_TITLE){
-        player.y = player.y + player.y_vel;
+void move_player_title_main() {
+    player.y = player.y + player.y_vel;
         
-        float speed = 0.002f;
-        float flipNumber = 0.2f;
-        float oppNumber = flipNumber*-1.0;
+    float speed = 0.002f;
+    float flipNumber = 0.2f;
+    float oppNumber = flipNumber*-1.0;
 
-        if(player.y_vel >= oppNumber && flip){
-            player.y_vel = player.y_vel - speed;
-        }
-        if(player.y_vel <= flipNumber && !flip){
-            player.y_vel = player.y_vel + speed;
-        }
+    if(player.y_vel >= oppNumber && flip){
+        player.y_vel = player.y_vel - speed;
+    }
+    if(player.y_vel <= flipNumber && !flip){
+        player.y_vel = player.y_vel + speed;
+    }
 
-        if(player.y_vel >= flipNumber || player.y_vel <= oppNumber){
-            flip = !flip;
-        }
+    if(player.y_vel >= flipNumber || player.y_vel <= oppNumber){
+        flip = !flip;
+    }
+}
+bool target_set = false;
+float target_x;
+float target_y;
+float x_timing;
+float y_timing;
+void move_player_title_fading(){
+    if(!target_set){
+        target_x = ((GAME_WIDTH/2) - (playerRect.w/2));
+        target_y = (GAME_HEIGHT-playerRect.h)-55;
+        float x_diffy = target_x - player.x;
+        float y_diffy = target_y - player.y;
+
+        float ticksPerSecond = 60.0;
+        float secondsToTarget = 1.5;
+        x_timing = x_diffy/(ticksPerSecond*secondsToTarget);
+        y_timing = y_diffy/(ticksPerSecond*secondsToTarget);
+        target_set = true;
+    }
+    if(player.y <= target_y){
+        player.x += x_timing;
+        player.y += y_timing;
+    }else{
+        get_game()->title.state = TITLE_STATE_MAIN;
+        set_game_state(GAME_STATE_PLAY);
+    }
+    //printf("x(%f) + xtiming(%f)\n", player.x, x_timing);
+}
+void move_player_title(){
+    switch(get_game()->title.state){
+        case TITLE_STATE_FADING:
+            move_player_title_fading();
+            break;
+        default:
+            move_player_title_main();
+    }
+}
+
+// -------------- MOVE PLAY SECTION --------------
+
+
+void move_player(){
+    switch(get_game_state()){
+        case GAME_STATE_TITLE:
+            move_player_title();
+        default:
+            break;
     }
 }

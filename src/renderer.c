@@ -25,6 +25,7 @@ void clear_renderer(){
 }
 
 void update_renderer(){
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     switch(get_game_state()) {
         case GAME_STATE_TITLE:
             draw_title_screen(renderer);
