@@ -12,6 +12,7 @@ void handle_play_keypress_alive(SDL_Event event){
     switch(key) {
         case SDLK_ESCAPE:
             set_music_volume_paused();
+            get_game()->play.paused_selection = 0;
             get_game()->play.state = PLAY_STATE_PAUSED;
             break;
         default:
