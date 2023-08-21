@@ -9,11 +9,12 @@ SDL_Renderer *renderer;
 
 void init_renderer(SDL_Window *window){
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED);
-    if(renderer != NULL){
-        //init_ui(renderer);
-    }else {
+    if(renderer == NULL){
         printf("SDL: Error Creating Renderer - %s", SDL_GetError());
+        exit(0);
     }
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    
 }
 
 void clear_renderer(){
@@ -25,7 +26,6 @@ void clear_renderer(){
 }
 
 void update_renderer(){
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     switch(get_game_state()) {
         case GAME_STATE_TITLE:
             draw_title_screen(renderer);

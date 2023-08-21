@@ -8,6 +8,8 @@
 #include "player.h"
 #include "game.h"
 #include "defs.h"
+#include "projectile.h"
+#include "audio.h"
 
 #define PLAYER_IMAGE_DIR "./res/images/player.png"
 
@@ -16,6 +18,7 @@ SDL_Texture *player_texture;
 SDL_Rect playerRect;
 const float PLAYER_DEFAULT_X = 63.0f;
 const float PLAYER_DEFAULT_Y = 220.0f;
+bool toggle_shoot = false;
 
 void init_player(float x, float y){
     Player temp = {
@@ -24,14 +27,63 @@ void init_player(float x, float y){
         .x_vel = 0.0f,
         .y_vel = 0.0f,
         .hp = 3,
+        .shoot_reload_interval_seconds = 0.18,
+        .last_shot = 0.0,
+        .reloading = false,
         .state = TITLE
     };
 
     player = temp;
 }
+void shoot_player(){
+    if(!player.reloading && toggle_shoot){
+        SDL_Rect rect = {
+            .x = 0,
+            .y = 0,
+            .w = 17,
+            .h = 20
+        };
+        Projectile proj = {
+            .rect = rect,
+            .speed = 18.0,
+            .type = PROJ_PLAYER,
+            .x = (player.x + (((float)playerRect.w/2)-9)),
+            .y = (player.y-10),
+            .x_vel = 0.0,
+            .y_vel = -1.0,
+        };
+        create_projectile(proj);
+        play_sound(PLAYER_SHOOT_SOUND);
+        player.reloading = true;
+        player.last_shot = 0.0;
+    }
+    
+}
+void set_toggle_shoot_player(bool set){
+    toggle_shoot = set;
+    
+}
+
 void set_player_default_location(){
     player.x = PLAYER_DEFAULT_X;
     player.y = PLAYER_DEFAULT_Y;
+}
+void reset_player(){
+    Player temp = {
+        .x = 0.0f,
+        .y = 0.0f,
+        .x_vel = 0.0f,
+        .y_vel = 0.0f,
+        .hp = 3,
+        .shoot_reload_interval_seconds = 0.18,
+        .last_shot = 0.0,
+        .reloading = false,
+        .state = TITLE
+    };
+
+    player = temp;
+    toggle_shoot = false;
+    set_player_default_location();
 }
 void add_player_x_vel(float vel){
     player.x_vel = vel+player.x_vel;
@@ -106,7 +158,6 @@ void move_player_title_fading(){
         get_game()->title.state = TITLE_STATE_MAIN;
         set_game_state(GAME_STATE_PLAY);
     }
-    //printf("x(%f) + xtiming(%f)\n", player.x, x_timing);
 }
 void move_player_title(){
     switch(get_game()->title.state){
@@ -134,6 +185,7 @@ void move_player_play(){
     }
 }
 
+// -------------- SYSTEM PLAY SECTION --------------
 void move_player(){
     switch(get_game_state()){
         case GAME_STATE_TITLE:
@@ -143,4 +195,18 @@ void move_player(){
         default:
             break;
     }
+}
+void check_reloading(float deltaTime){
+    if(player.reloading){
+        float delta = get_tick_delta();
+        player.last_shot += delta;
+        if(player.last_shot >= player.shoot_reload_interval_seconds){
+            player.reloading = false;
+        }
+    }
+}
+void tick_player(float deltaTime){
+    move_player();
+    check_reloading(deltaTime);
+    shoot_player();
 }

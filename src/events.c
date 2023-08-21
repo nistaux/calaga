@@ -25,14 +25,20 @@ void handle_play_keydown_alive(int key){
             break;
         case SDLK_a:
             if(!a_pressed){ 
-                add_player_x_vel(-3.0);
+                add_player_x_vel(-4.0);
                 a_pressed = true;
             }
             break;
         case SDLK_d:
             if(!d_pressed){ 
-                add_player_x_vel(3.0);
+                add_player_x_vel(4.0);
                 d_pressed = true;
+            }
+            break;
+        case SDLK_SPACE:
+            if(!space_pressed){ 
+                set_toggle_shoot_player(true);
+                space_pressed = true;
             }
             break;
         default:
@@ -43,15 +49,21 @@ void handle_play_keyup_alive(int key){
     switch(key) {
         case SDLK_a:
             if(a_pressed){
-                add_player_x_vel(3.0);
+                add_player_x_vel(4.0);
                 a_pressed = false;
             }
             
             break;
         case SDLK_d:
             if(d_pressed){
-                add_player_x_vel(-3.0);
+                add_player_x_vel(-4.0);
                 d_pressed = false;
+            }
+            break;
+        case SDLK_SPACE:
+            if(space_pressed){ 
+                set_toggle_shoot_player(false);
+                space_pressed = false;
             }
             break;
         default:
@@ -148,16 +160,6 @@ void handle_title_keypress_main(SDL_Event event) {
                 case 0:
                     get_game()->title.state = TITLE_STATE_FADING;
                     get_game()->play.state = PLAY_STATE_ALIVE;
-                    Projectile p = {
-                        .x = 0.0,
-                        .y = 0.0,
-                        .x_vel = 0.0,
-                        .y_vel = 0.0,
-                        .speed = 0.0,
-                        .type = PROJ_TSHOT,
-                        .rect = {.x = 0, .y = 0 , .w = 1, .h = 1}
-                    };
-                    create_projectile(SDL_GetRenderer(get_window()), p);
                     start_play_music();
                     break;
                 case 1:

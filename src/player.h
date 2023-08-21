@@ -16,12 +16,16 @@ typedef struct {
     int hp;
     float x_vel;
     float y_vel;
+    float shoot_reload_interval_seconds;
+    float last_shot;
+    bool reloading;
     PlayerState state;
 } Player;
 
 void init_player(float x, float y);
-void set_player_default_location();
+void reset_player();
 void add_player_x_vel(float vel);
 void load_player(SDL_Renderer *renderer);
 void draw_player(SDL_Renderer *renderer);
-void move_player();
+void tick_player(float deltaTime);
+void set_toggle_shoot_player(bool set);

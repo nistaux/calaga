@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-#define possible_projectiles 10
+#define possible_projectiles 15
 
 typedef enum {
     PROJ_PLAYER,
@@ -19,10 +19,10 @@ typedef struct {
     float speed;
     ProjectileType type;
     SDL_Rect rect;
-    SDL_Texture *texture;
 } Projectile;
 
-void create_projectile(SDL_Renderer *renderer, Projectile temp);
+void init_projectile_textures(SDL_Renderer *renderer);
+void create_projectile(Projectile temp);
 void destroy_projectile(int index);
 void move_projectiles();
 void draw_projectiles(SDL_Renderer *renderer);

@@ -5,6 +5,7 @@ typedef struct {
     unsigned int prevTime;
     unsigned int currentTime;
     float deltaTime;
+    float deltaTick;
     float physicsTime;
     float physicsIter;
     float renderTime;
@@ -58,7 +59,7 @@ typedef struct {
 
 Game *get_game();
 Background *get_background();
-float get_timer_delta();
+float get_tick_delta();
 void init_game();
 GameState get_game_state();
 void set_game_state(GameState state);

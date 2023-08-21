@@ -11,6 +11,7 @@
 #define HIT_SOUND_DIR "./res/audio/sfx/hit.wav"
 #define SELECT_SOUND_DIR "./res/audio/sfx/select.wav"
 #define WOOSH_SOUND_DIR "./res/audio/sfx/woosh.wav"
+#define PLAYER_SHOOT_SOUND_DIR "./res/audio/sfx/blaster_06.wav"
 
 Mix_Music *title_bgm;
 Mix_Music *play_bgm;
@@ -19,6 +20,7 @@ Mix_Chunk *enterSound;
 Mix_Chunk *hitSound;
 Mix_Chunk *selectSound;
 Mix_Chunk *wooshSound;
+Mix_Chunk *playerShootSound;
 MixController mixController;
 int musicVolume = 25;
 int soundVolume = 35;
@@ -67,8 +69,18 @@ void init_mixer() {
         printf(".WAV sound '%s' could not be loaded!\n"
                 "SDL_Error: %s\n", WOOSH_SOUND_DIR, SDL_GetError());
     }
+    playerShootSound = Mix_LoadWAV(PLAYER_SHOOT_SOUND_DIR);
+    if(!wooshSound){
+        printf(".WAV sound '%s' could not be loaded!\n"
+                "SDL_Error: %s\n", PLAYER_SHOOT_SOUND_DIR, SDL_GetError());
+    }
 
-    Mix_Volume(-1, soundVolume);
+    // SELECT CHANNEL
+    Mix_Volume(1, soundVolume);
+    // ENTER CHANNEL
+    Mix_Volume(2, soundVolume);
+    // SHOOT CHANNEL
+    Mix_Volume(3, soundVolume-15);
 }
 
 void start_title_music() {
@@ -119,6 +131,13 @@ void play_sound(Sound sound) {
         case HIT_SOUND:
             break;
         case WOOSH_SOUND:
+            break;
+        case PLAYER_SHOOT_SOUND:
+            if(Mix_PlayChannel(3, playerShootSound, 0) == -1){
+                printf("Waves sound could not be played!\n"
+                       "SDL_Error: %s\n", SDL_GetError());
+                Mix_FreeChunk(playerShootSound);
+            }
             break;
         default:
             break;

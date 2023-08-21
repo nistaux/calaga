@@ -10,6 +10,7 @@
 #include "defs.h"
 #include "game.h"
 #include "renderer.h"
+#include "projectile.h"
 
 #define TITLE_PATH      "./res/images/title.png"
 #define BACKGROUND_PATH "./res/images/background.png"
@@ -131,6 +132,7 @@ void draw_play_screen_paused(SDL_Renderer *renderer) {
 void draw_play_screen(SDL_Renderer *renderer) {
     clear_renderer();
     draw_background(renderer);
+    draw_projectiles(renderer);
     draw_player(renderer);
     // everything else
 

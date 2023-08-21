@@ -10,7 +10,8 @@ typedef enum {
     ENTER_SOUND,
     SELECT_SOUND,
     HIT_SOUND,
-    WOOSH_SOUND
+    WOOSH_SOUND,
+    PLAYER_SHOOT_SOUND,
 } Sound;
 
 typedef struct {
