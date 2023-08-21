@@ -6,6 +6,8 @@
 #include "game.h"
 #include "audio.h"
 #include "player.h"
+#include "projectile.h"
+#include "window.h"
 
 bool w_pressed = false;
 bool a_pressed = false;
@@ -146,6 +148,16 @@ void handle_title_keypress_main(SDL_Event event) {
                 case 0:
                     get_game()->title.state = TITLE_STATE_FADING;
                     get_game()->play.state = PLAY_STATE_ALIVE;
+                    Projectile p = {
+                        .x = 0.0,
+                        .y = 0.0,
+                        .x_vel = 0.0,
+                        .y_vel = 0.0,
+                        .speed = 0.0,
+                        .type = PROJ_TSHOT,
+                        .rect = {.x = 0, .y = 0 , .w = 1, .h = 1}
+                    };
+                    create_projectile(SDL_GetRenderer(get_window()), p);
                     start_play_music();
                     break;
                 case 1:
