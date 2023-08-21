@@ -10,7 +10,6 @@ Projectile projectiles[possible_projectiles];
 
 int redistribute_projectile_array(){
     if(total_projectiles == 0){return 0;}
-    Projectile* ptr = projectiles;
     int arr_count = 0;
     for(int i = 0; i < possible_projectiles; i++){
         if(projectiles[i].created == true){
