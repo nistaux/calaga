@@ -21,6 +21,7 @@ typedef struct {
 
 void init_player(float x, float y);
 void set_player_default_location();
+void add_player_x_vel(float vel);
 void load_player(SDL_Renderer *renderer);
 void draw_player(SDL_Renderer *renderer);
 void move_player();

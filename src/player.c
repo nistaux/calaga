@@ -33,6 +33,9 @@ void set_player_default_location(){
     player.x = PLAYER_DEFAULT_X;
     player.y = PLAYER_DEFAULT_Y;
 }
+void add_player_x_vel(float vel){
+    player.x_vel = vel+player.x_vel;
+}
 
 // -------------- DRAW PLAYER SECTION --------------
 bool player_loaded = false;
@@ -112,16 +115,31 @@ void move_player_title(){
             break;
         default:
             move_player_title_main();
+            break;
     }
 }
 
 // -------------- MOVE PLAY SECTION --------------
-
+void move_player_play(){
+    bool player_outside_right_bounds = ((player.x+player.x_vel+70) >= GAME_WIDTH);
+    bool player_outside_left_bounds = ((player.x+player.x_vel) <= 0);
+    switch(get_game()->title.state){
+        case PLAY_STATE_ALIVE:
+            if(!player_outside_left_bounds && !player_outside_right_bounds){
+                player.x += player.x_vel;
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 void move_player(){
     switch(get_game_state()){
         case GAME_STATE_TITLE:
             move_player_title();
+        case GAME_STATE_PLAY:
+            move_player_play();
         default:
             break;
     }

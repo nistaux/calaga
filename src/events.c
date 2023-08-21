@@ -7,19 +7,73 @@
 #include "audio.h"
 #include "player.h"
 
-void handle_play_keypress_alive(SDL_Event event){
-    int key = event.key.keysym.sym;
+bool w_pressed = false;
+bool a_pressed = false;
+bool s_pressed = false;
+bool d_pressed = false;
+bool space_pressed = false;
+
+
+void handle_play_keydown_alive(int key){
     switch(key) {
         case SDLK_ESCAPE:
             set_music_volume_paused();
             get_game()->play.paused_selection = 0;
             get_game()->play.state = PLAY_STATE_PAUSED;
             break;
+        case SDLK_a:
+            if(!a_pressed){ 
+                add_player_x_vel(-3.0);
+                a_pressed = true;
+            }
+            break;
+        case SDLK_d:
+            if(!d_pressed){ 
+                add_player_x_vel(3.0);
+                d_pressed = true;
+            }
+            break;
         default:
             break;
     }
 }
+void handle_play_keyup_alive(int key){
+    switch(key) {
+        case SDLK_a:
+            if(a_pressed){
+                add_player_x_vel(3.0);
+                a_pressed = false;
+            }
+            
+            break;
+        case SDLK_d:
+            if(d_pressed){
+                add_player_x_vel(-3.0);
+                d_pressed = false;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void handle_play_keypress_alive(SDL_Event event){
+    int key = event.key.keysym.sym;
+    switch(event.type){
+        case SDL_KEYDOWN:
+            handle_play_keydown_alive(key);
+            break;
+        case SDL_KEYUP:
+            handle_play_keyup_alive(key);
+            break;
+        default:
+            break;
+    }
+
+    
+}
 void handle_play_keypress_paused(SDL_Event event){
+    if(event.type != SDL_KEYDOWN){return;}
     int key = event.key.keysym.sym;
     switch(key) {
         case SDLK_ESCAPE:
@@ -72,6 +126,7 @@ void handle_play_keypress(SDL_Event event) {
 }
 
 void handle_title_keypress_main(SDL_Event event) {
+    if(event.type != SDL_KEYDOWN){return;}
     int key = event.key.keysym.sym;
     switch(key) {
         case SDLK_ESCAPE:
@@ -147,7 +202,7 @@ void check_events(SDL_Event event) {
         if(event.type == SDL_QUIT) {
             set_game_running(false);
         }
-        if(event.type == SDL_KEYDOWN) {
+        if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
             handle_keypress(event);
         }
     }
