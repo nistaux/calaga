@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27.1)
-project(calaga VERSION 0.4.2
+project(calaga VERSION 0.4.4
                     DESCRIPTION "A game inspired by Galaga"
                     LANGUAGES C)
 set(CMAKE_BUILD_TYPE Debug)
