@@ -1,8 +1,8 @@
 #include <stdbool.h>
 
 #include "window.h"
-#include "game.h"
 #include "audio.h"
+#include "game.h"
 
 int main(int argc, char **argv) {
     init_sdl();
