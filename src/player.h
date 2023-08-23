@@ -3,11 +3,11 @@
 #include <SDL.h>
 
 typedef enum {
-    TITLE,
-    IDLE,
-    SHOOTING,
-    RECHARGING,
-    DEAD
+    PLAYER_STATE_TITLE,
+    PLAYER_STATE_IDLE,
+    PLAYER_STATE_SHOOTING,
+    PLAYER_STATE_RECHARGING,
+    PLAYER_STATE_DEAD
 } PlayerState;
 
 typedef struct {

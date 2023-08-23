@@ -30,7 +30,7 @@ void init_player(float x, float y){
         .shoot_reload_interval_seconds = 0.18,
         .last_shot = 0.0,
         .reloading = false,
-        .state = TITLE
+        .state = PLAYER_STATE_TITLE
     };
 
     player = temp;
@@ -78,7 +78,7 @@ void reset_player(){
         .shoot_reload_interval_seconds = 0.18,
         .last_shot = 0.0,
         .reloading = false,
-        .state = TITLE
+        .state = PLAYER_STATE_TITLE
     };
 
     player = temp;
