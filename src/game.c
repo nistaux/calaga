@@ -16,8 +16,8 @@
 Game game;
 Timer timer;
 SDL_Event event;
-double system_timer = 0.0f;
-double system_post_interval = 5.0f;
+double system_timer = 0.0;
+double system_post_interval = 5.0;
 int frame_count = 0;
 int physTicks_count = 0;
 Background background = {
@@ -94,14 +94,14 @@ void init_game() {
 
     // Setting Timer Struct Init Settings
     timer.prevTime = 0;
-    timer.currentTime = 0;
-    timer.deltaTime = 0.0f;
-    timer.deltaTick = 0.0f;
-    timer.physicsTime = 0.0f;
-    timer.renderTime = 0.0f;
+    timer.currentTime = SDL_GetTicks();;
+    timer.deltaTime = 0.0;
+    timer.deltaTick = 0.0;
+    timer.physicsTime = 0.0;
+    timer.renderTime = 0.0;
 
-    float physics_tick_rate_per_second = 60.0;
-    float render_frame_rate_per_second = 300.0;
+    double physics_tick_rate_per_second = 60.0;
+    double render_frame_rate_per_second = 400.0;
     timer.physicsIter = (1.0/physics_tick_rate_per_second);
     timer.renderIter = (1.0/render_frame_rate_per_second);
 
@@ -173,7 +173,6 @@ void tick(){
     
 
     if (timer.physicsIter <= timer.physicsTime) {
-        //printf("time since last physics tick: %.6f\n", timer.physicsTime);
         timer.physicsTime = 0.0;
         physTicks_count++;
 
@@ -187,7 +186,6 @@ void tick(){
         timer.deltaTick = 0.0f;
     }
     if (timer.renderIter <= timer.renderTime) {
-        //printf("time since last render tick: %.6f\n", timer.renderTime);
         timer.renderTime = 0.0;
 
 
@@ -198,10 +196,10 @@ void tick(){
     }
     if(system_timer >= system_post_interval){
         printf("----------\n");
-        printf("FPS_TARGET: %.1f\n", 1.0/timer.renderIter);
-        printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
-        printf("TPS_TARGET: %.1f\n", 1.0/timer.physicsIter);
-        printf("TPS_CURRENT: %.1f\n", physTicks_count/system_post_interval);
+        printf("FPS_TARGET: %.1lf\n", 1.0/timer.renderIter);
+        printf("FPS_CURRENT: %.1lf\n\n", frame_count/system_post_interval);
+        printf("TPS_TARGET: %.1lf\n", 1.0/timer.physicsIter);
+        printf("TPS_CURRENT: %.1lf\n", physTicks_count/system_post_interval);
         system_timer = 0.0;
         frame_count = 0;
         physTicks_count = 0;
