@@ -16,18 +16,18 @@
 Player player;
 SDL_Texture *player_texture;
 SDL_Rect playerRect;
-const float PLAYER_DEFAULT_X = 63.0f;
-const float PLAYER_DEFAULT_Y = 220.0f;
+const float PLAYER_DEFAULT_X = 63.0;
+const float PLAYER_DEFAULT_Y = 220.0;
 bool toggle_shoot = false;
 
 void init_player(float x, float y){
     Player temp = {
         .x = x,
         .y = y,
-        .x_vel = 0.0f,
-        .y_vel = 0.0f,
+        .x_vel = 0.0,
+        .y_vel = 0.0,
         .hp = 3,
-        .shoot_reload_interval_seconds = 0.18,
+        .shoot_reload_interval_seconds = 0.333,
         .last_shot = 0.0,
         .reloading = false,
         .state = PLAYER_STATE_TITLE
