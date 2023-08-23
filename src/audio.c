@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #include <SDL_mixer.h>
 
@@ -80,7 +81,7 @@ void init_mixer() {
     // ENTER CHANNEL
     Mix_Volume(2, soundVolume);
     // SHOOT CHANNEL
-    Mix_Volume(3, soundVolume-27);
+    Mix_Volume(3, round(soundVolume*0.25f));
 }
 
 void start_title_music() {
