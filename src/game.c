@@ -98,7 +98,7 @@ void init_game() {
 
     // Setting Timer Struct Init Settings
     timer.prevTime = 0;
-    timer.currentTime = SDL_GetTicks();;
+    timer.currentTime = SDL_GetTicks64();;
     timer.deltaTime = 0.0;
     timer.deltaTick = 0.0;
     timer.physicsTime = 0.0;
@@ -168,7 +168,7 @@ void tick(){
     // and using that to set FPS and Processing rate
     double miliseconds_in_second = 1000.0;
     timer.prevTime = timer.currentTime;
-    timer.currentTime = SDL_GetTicks();
+    timer.currentTime = SDL_GetTicks64();
     timer.deltaTime = (timer.currentTime-timer.prevTime)/miliseconds_in_second;
     timer.physicsTime += timer.deltaTime;
     timer.renderTime += timer.deltaTime;
