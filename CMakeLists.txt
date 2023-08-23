@@ -54,6 +54,10 @@ file(
     COPY res
     DESTINATION ${OUTPUT_DIR}
 )
+file(
+    COPY LICENSE
+    DESTINATION ${OUTPUT_DIR}
+)
 
 set(SDL2_DEPS C:/SDL/bin)
 message(STATUS "Copying all dependencies to destination folder...")
