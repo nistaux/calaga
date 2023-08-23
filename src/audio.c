@@ -80,7 +80,7 @@ void init_mixer() {
     // ENTER CHANNEL
     Mix_Volume(2, soundVolume);
     // SHOOT CHANNEL
-    Mix_Volume(3, soundVolume-15);
+    Mix_Volume(3, soundVolume-27);
 }
 
 void start_title_music() {
