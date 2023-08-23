@@ -16,8 +16,8 @@
 Game game;
 Timer timer;
 SDL_Event event;
-float system_timer = 0.0f;
-float system_post_interval = 5.0f;
+double system_timer = 0.0f;
+double system_post_interval = 5.0f;
 int frame_count = 0;
 int physTicks_count = 0;
 Background background = {
@@ -161,9 +161,10 @@ void move_background(){
 void tick(){
     // Getting information on current processing speed
     // and using that to set FPS and Processing rate
+    double miliseconds_in_second = 1000.0;
     timer.prevTime = timer.currentTime;
     timer.currentTime = SDL_GetTicks();
-    timer.deltaTime = (timer.currentTime-timer.prevTime)/1000.0f;
+    timer.deltaTime = (timer.currentTime-timer.prevTime)/miliseconds_in_second;
     timer.physicsTime += timer.deltaTime;
     timer.renderTime += timer.deltaTime;
     timer.deltaTick += timer.deltaTime;
