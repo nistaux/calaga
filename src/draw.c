@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 
 #include "player.h"
+#include "enemies.h"
 #include "font.h"
 #include "defs.h"
 #include "game.h"
@@ -133,6 +134,7 @@ void draw_play_screen(SDL_Renderer *renderer) {
     clear_renderer();
     draw_background(renderer);
     draw_projectiles(renderer);
+    draw_enemies(renderer);
     draw_player(renderer);
     // everything else
 

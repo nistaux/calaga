@@ -1,6 +1,4 @@
 #pragma once
 
 
-void tick_generator(){
-
-}
+void tick_generator();
