@@ -20,10 +20,10 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-float render_frame_rate_per_second = 200.0;
+double render_frame_rate_per_second = 199.0;
 
-float system_timer = 0.0;
-float system_post_interval = 5.0;
+double system_timer = 0.0;
+double system_post_interval = 5.0;
 int frame_count = 0;
 int physTicks_count = 0;
 Background background = {
@@ -40,7 +40,7 @@ Background *get_background() {
     return &background;
 }
 
-float get_tick_delta() {
+double get_tick_delta() {
     return timer.deltaTick;
 }
 
@@ -169,7 +169,7 @@ void move_background(){
 void tick(){
     // Getting information on current processing speed
     // and using that to set FPS and Processing rate
-    float miliseconds_in_second = 1000.0;
+    double miliseconds_in_second = 1000.0;
     timer.prevTime = timer.currentTime;
     timer.currentTime = SDL_GetTicks64();
     timer.deltaTime = (timer.currentTime-timer.prevTime)/miliseconds_in_second;
@@ -181,7 +181,7 @@ void tick(){
     
 
     if (timer.physicsTime >= timer.physicsIter) {
-        timer.physicsTime = 0.0;
+        timer.physicsTime = timer.physicsTime - timer.physicsIter;
         physTicks_count++;
 
         // Check control input
@@ -193,12 +193,10 @@ void tick(){
 
             tick_generator();
         }
-        timer.deltaTick = 0.0f;
+        timer.deltaTick = 0.0;
     }
     if (timer.renderIter <= timer.renderTime) {
-        timer.renderTime = 0.0;
-
-
+        timer.renderTime = timer.renderTime - timer.renderIter;
         frame_count++;
 
         // render updates
