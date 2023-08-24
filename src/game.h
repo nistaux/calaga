@@ -4,12 +4,12 @@
 typedef struct {
     unsigned int prevTime;
     unsigned int currentTime;
-    double deltaTime;
-    double deltaTick;
-    double physicsTime;
-    double physicsIter;
-    double renderTime;
-    double renderIter;
+    float deltaTime;
+    float deltaTick;
+    float physicsTime;
+    float physicsIter;
+    float renderTime;
+    float renderIter;
 } Timer;
 
 typedef struct {

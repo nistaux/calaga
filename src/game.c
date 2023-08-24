@@ -20,10 +20,10 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-double render_frame_rate_per_second = 200.0;
+float render_frame_rate_per_second = 200.0;
 
-double system_timer = 0.0;
-double system_post_interval = 5.0;
+float system_timer = 0.0;
+float system_post_interval = 5.0;
 int frame_count = 0;
 int physTicks_count = 0;
 Background background = {
@@ -108,7 +108,7 @@ void init_game() {
     timer.renderTime = 0.0;
 
     // variable for setting game tick rate
-    double physics_tick_rate_per_second = 250.0;
+    float physics_tick_rate_per_second = 250.0;
     
     timer.physicsIter = (1.0/physics_tick_rate_per_second);
     timer.renderIter = (1.0/render_frame_rate_per_second);
@@ -169,7 +169,7 @@ void move_background(){
 void tick(){
     // Getting information on current processing speed
     // and using that to set FPS and Processing rate
-    double miliseconds_in_second = 1000.0;
+    float miliseconds_in_second = 1000.0;
     timer.prevTime = timer.currentTime;
     timer.currentTime = SDL_GetTicks64();
     timer.deltaTime = (timer.currentTime-timer.prevTime)/miliseconds_in_second;
@@ -206,11 +206,11 @@ void tick(){
     }
     if(system_timer >= system_post_interval){
         printf("----------\n");
-        printf("FPS_TARGET: %.1lf\n", 1.0/timer.renderIter);
-        printf("FPS_CURRENT: %.1lf\n\n", frame_count/system_post_interval);
-        printf("TPS_TARGET: %.1lf\n", 1.0/timer.physicsIter);
-        printf("TPS_CURRENT: %.1lf\n", physTicks_count/system_post_interval);
-        system_timer = 0.0;
+        printf("FPS_TARGET: %.1f\n", 1.0f/timer.renderIter);
+        printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
+        printf("TPS_TARGET: %.1f\n", 1.0f/timer.physicsIter);
+        printf("TPS_CURRENT: %.1f\n", physTicks_count/system_post_interval);
+        system_timer = 0.0f;
         frame_count = 0;
         physTicks_count = 0;
     }
