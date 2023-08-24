@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #include <SDL.h>
 
@@ -77,6 +78,7 @@ void go_to_main_menu(){
 }
 
 void init_game() {
+    srand(time(NULL));
     // Setting Game Struct Init Settings
     Title titleTemp = {
         .active = true,
@@ -106,7 +108,7 @@ void init_game() {
     timer.renderTime = 0.0;
 
     // variable for setting game tick rate
-    double physics_tick_rate_per_second = 60.0;
+    double physics_tick_rate_per_second = 250.0;
     
     timer.physicsIter = (1.0/physics_tick_rate_per_second);
     timer.renderIter = (1.0/render_frame_rate_per_second);

@@ -15,6 +15,11 @@ typedef enum {
 } EnemyType;
 
 typedef enum {
+    MOVE_TYPE_LEFTRIGHT,
+    MOVE_TYPE_CIRCLE
+} MoveType;
+
+typedef enum {
     ENEMY_STATE_SHOOTING,
     ENEMY_STATE_RECHARGING,
     ENEMY_STATE_DEAD
@@ -23,6 +28,7 @@ typedef enum {
 typedef struct {
     EnemyType type;
     EnemyState state;
+    MoveType moveType;
     SDL_Rect spriteRect;
     bool created;
     float x;

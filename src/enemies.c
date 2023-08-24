@@ -72,8 +72,29 @@ void create_enemy(EnemyType type){
     }
 }
 
-void move_enemies(){
+void move_type_circle(Enemy enemy){
 
+}
+
+void move_type_leftright(Enemy enemy){
+
+}
+
+void move_enemies(){
+    for(int i = 0; i < POSSIBLE_ENEMIES; i++){
+        if(enemies[i].created == true){
+            switch(enemies[i].moveType){
+            case MOVE_TYPE_CIRCLE:
+                move_type_circle(enemies[i]);
+                break;
+            case MOVE_TYPE_LEFTRIGHT:
+                move_type_leftright(enemies[i]);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 }
 
 void tick_enemies(){
