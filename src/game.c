@@ -20,7 +20,7 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-double render_frame_rate_per_second = 250.0;
+double render_frame_rate_per_second = 200.0;
 
 double system_timer = 0.0;
 double system_post_interval = 5.0;
@@ -29,7 +29,7 @@ int physTicks_count = 0;
 Background background = {
     .b1_loc = 0.0f,
     .b2_loc = -800.0f,
-    .vel = 3.0f
+    .vel = 0.72f
 };
 
 Game *get_game() {
@@ -180,7 +180,7 @@ void tick(){
     system_timer += timer.deltaTime;
     
 
-    if (timer.physicsIter <= timer.physicsTime) {
+    if (timer.physicsTime >= timer.physicsIter) {
         timer.physicsTime = 0.0;
         physTicks_count++;
 

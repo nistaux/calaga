@@ -40,13 +40,6 @@ int redistribute_projectile_array(){
     return arr_count;
 }
 void create_projectile(Projectile temp){
-    switch(temp.type){
-        case PROJ_PLAYER:
-            // load in projectile texture
-            break;
-        default:
-            break;
-    }
     Projectile projectile = {
         .created = true,
         .x = temp.x,

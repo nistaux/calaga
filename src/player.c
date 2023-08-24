@@ -50,7 +50,7 @@ void shoot_player(){
             .x = (player.x + (((float)playerRect.w/2)-9)),
             .y = (player.y-10),
             .x_vel = 0.0,
-            .y_vel = -1.0,
+            .y_vel = -0.24,
         };
         create_projectile(proj);
         play_sound(PLAYER_SHOOT_SOUND);
@@ -118,8 +118,8 @@ bool flip = false;
 void move_player_title_main() {
     player.y = player.y + player.y_vel;
         
-    float speed = 0.002f;
-    float flipNumber = 0.2f;
+    float speed = 0.0002f;
+    float flipNumber = 0.06f;
     float oppNumber = flipNumber*-1.0;
 
     if(player.y_vel >= oppNumber && flip){
@@ -145,8 +145,8 @@ void move_player_title_fading(){
         float x_diffy = target_x - player.x;
         float y_diffy = target_y - player.y;
 
-        float ticksPerSecond = 60.0;
-        float secondsToTarget = 1.5;
+        float ticksPerSecond = 250.0;
+        float secondsToTarget = 1.25;
         x_timing = x_diffy/(ticksPerSecond*secondsToTarget);
         y_timing = y_diffy/(ticksPerSecond*secondsToTarget);
         target_set = true;

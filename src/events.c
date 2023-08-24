@@ -25,13 +25,13 @@ void handle_play_keydown_alive(int key){
             break;
         case SDLK_a:
             if(!a_pressed){ 
-                add_player_x_vel(-4.0);
+                add_player_x_vel(-0.96);
                 a_pressed = true;
             }
             break;
         case SDLK_d:
             if(!d_pressed){ 
-                add_player_x_vel(4.0);
+                add_player_x_vel(0.96);
                 d_pressed = true;
             }
             break;
@@ -49,14 +49,14 @@ void handle_play_keyup_alive(int key){
     switch(key) {
         case SDLK_a:
             if(a_pressed){
-                add_player_x_vel(4.0);
+                add_player_x_vel(0.96);
                 a_pressed = false;
             }
             
             break;
         case SDLK_d:
             if(d_pressed){
-                add_player_x_vel(-4.0);
+                add_player_x_vel(-0.96);
                 d_pressed = false;
             }
             break;
