@@ -10,6 +10,7 @@ int total_enemies = 0;
 Enemy enemies[POSSIBLE_ENEMIES];
 
 void init_enemies(SDL_Renderer *renderer){
+    // create sprite sheet
     enemiesTexture = IMG_LoadTexture(renderer, ENEMY_SPRITE_DIR);
 }
 

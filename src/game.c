@@ -12,6 +12,7 @@
 #include "defs.h"
 #include "audio.h"
 #include "projectile.h"
+#include "generator.h"
 
 Game game;
 Timer timer;
@@ -187,6 +188,8 @@ void tick(){
             move_background();
             tick_player(timer.deltaTime);
             move_projectiles();
+
+            tick_generator();
         }
         timer.deltaTick = 0.0f;
     }
