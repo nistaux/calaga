@@ -83,6 +83,7 @@ void create_beader(MoveType moveType){
 
     int next_element = redistribute_enemy_array();
     enemies[next_element] = enemy;
+    total_enemies++;
 }
 void create_enemy(EnemyType type, MoveType moveType){
     switch (type){
@@ -129,7 +130,7 @@ void draw_enemies(SDL_Renderer *renderer){
         if(enemies[i].created == true){
             int x = round(enemies[i].x);
             int y = round(enemies[i].y);
-            SDL_Rect temp = {
+            SDL_Rect renderRect = {
                 .x = x,
                 .y = y,
                 .w = 70,
@@ -137,7 +138,7 @@ void draw_enemies(SDL_Renderer *renderer){
             };
             switch(enemies[i].type){
             case ENEMY_TYPE_BEADER:
-                if(SDL_RenderCopy(renderer, enemiesTexture, &enemies[i].spriteRect, &temp) != 0){
+                if(SDL_RenderCopy(renderer, enemiesTexture, &enemies[i].spriteRect, &renderRect) != 0){
                     printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
                 }
                 break;
