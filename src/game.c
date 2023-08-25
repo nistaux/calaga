@@ -20,7 +20,7 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-double render_frame_rate_per_second = 199.0;
+double render_frame_rate_per_second = 100.0;
 
 double system_timer = 0.0;
 double system_post_interval = 5.0;
@@ -208,7 +208,7 @@ void tick(){
         printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
         printf("TPS_TARGET: %.1f\n", 1.0f/timer.physicsIter);
         printf("TPS_CURRENT: %.1f\n", physTicks_count/system_post_interval);
-        system_timer = 0.0f;
+        system_timer = system_timer - system_post_interval;
         frame_count = 0;
         physTicks_count = 0;
     }

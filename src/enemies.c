@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 
 #include "enemies.h"
+#include "field.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -37,13 +38,33 @@ int redistribute_enemy_array(){
     return arr_count;
 }
 
-void create_beader(){
+void create_beader(MoveType moveType){
+    int loc = find_field_space(moveType);
+    take_field_space(loc, moveType);
     SDL_Rect rect = {
         .x = 0,
         .y = 0,
         .w = 70,
         .h = 70
     };
+    int top_buffer = 50;
+    int field_border = 15;
+    int x = 0;
+    int y = 0;
+    if(loc < 6){
+        x = (100*loc)+field_border;
+        y = (top_buffer+field_border);
+    }else if(6 <= loc && loc < 12){
+        x = (100*(loc-6)+field_border);
+        y = (top_buffer+field_border+100);
+    }else if(12 <= loc && loc < 18){
+        x = (100*(loc-12)+field_border);
+        y = (top_buffer+field_border+200);
+    }else {
+        x = (100*(loc-18)+field_border);
+        y = (top_buffer+field_border+300);
+    }
+
     Enemy enemy = {
         .created = true,
         .hp = 1,
@@ -53,19 +74,20 @@ void create_beader(){
         .spriteRect = rect,
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_BEADER,
-        .x = 0.0f,
+        .moveType = moveType,
+        .x = (float)x,
         .x_vel = 0.0f,
-        .y = 0.0f,
+        .y = (float)y,
         .y_vel = 0.0f
     };
 
     int next_element = redistribute_enemy_array();
     enemies[next_element] = enemy;
 }
-void create_enemy(EnemyType type){
+void create_enemy(EnemyType type, MoveType moveType){
     switch (type){
         case ENEMY_TYPE_BEADER:
-            create_beader();
+            create_beader(moveType);
             break;
         default:
             break;
