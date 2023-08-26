@@ -38,7 +38,7 @@ message(STATUS "")
 
 add_executable(${PROJECT_NAME} ${SRC})
 
-target_include_directories(${PROJECT_NAME} PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME}
                     SDL2::Main
