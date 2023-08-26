@@ -12,6 +12,7 @@ SDL_Texture *enemiesTexture;
 int total_enemies = 0;
 Enemy enemies[POSSIBLE_ENEMIES];
 bool enemyTexturesLoaded = false;
+
 void init_enemies(SDL_Renderer *renderer){
     // create sprite sheet
     enemiesTexture = IMG_LoadTexture(renderer, ENEMY_SPRITE_DIR);
@@ -38,40 +39,37 @@ int redistribute_enemy_array(){
     return arr_count;
 }
 
-void create_beader(MoveType moveType){
-    int loc = find_field_space(moveType);
-    take_field_space(loc, moveType);
-    SDL_Rect rect = {
-        .x = 0,
-        .y = 0,
-        .w = 70,
-        .h = 70
-    };
+void create_beader(MoveType moveType, int startLocation){
+    int fieldLoc = find_field_space(moveType);
+    take_field_space(fieldLoc, moveType);
+    
     int top_buffer = 50;
     int field_border = 15;
     int x = 0;
     int y = 0;
-    if(loc < 6){
-        x = (100*loc)+field_border;
+
+    if(fieldLoc < 6){
+        x = (100*fieldLoc)+field_border;
         y = (top_buffer+field_border);
-    }else if(6 <= loc && loc < 12){
-        x = (100*(loc-6)+field_border);
+    }else if(6 <= fieldLoc && fieldLoc < 12){
+        x = (100*(fieldLoc-6)+field_border);
         y = (top_buffer+field_border+100);
-    }else if(12 <= loc && loc < 18){
-        x = (100*(loc-12)+field_border);
+    }else if(12 <= fieldLoc && fieldLoc < 18){
+        x = (100*(fieldLoc-12)+field_border);
         y = (top_buffer+field_border+200);
     }else {
-        x = (100*(loc-18)+field_border);
+        x = (100*(fieldLoc-18)+field_border);
         y = (top_buffer+field_border+300);
     }
 
+    SDL_Rect spriteRect = { .x = 0, .y = 0, .w = 70, .h = 70};
     Enemy enemy = {
         .created = true,
         .hp = 1,
         .last_shot = 0.0f,
         .reloading = false,
         .shoot_reload_interval_seconds = 3.0,
-        .spriteRect = rect,
+        .spriteRect = spriteRect,
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_BEADER,
         .moveType = moveType,
@@ -85,10 +83,10 @@ void create_beader(MoveType moveType){
     enemies[next_element] = enemy;
     total_enemies++;
 }
-void create_enemy(EnemyType type, MoveType moveType){
+void create_enemy(EnemyType type, MoveType moveType, int startLocation){
     switch (type){
         case ENEMY_TYPE_BEADER:
-            create_beader(moveType);
+            create_beader(moveType, startLocation);
             break;
         default:
             break;

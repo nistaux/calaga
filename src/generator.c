@@ -13,8 +13,21 @@ void tick_generator(){
     }else{
         moveType = MOVE_TYPE_LEFTRIGHT;
     }
+
+    int startLoc;
+    switch(moveType){
+    case MOVE_TYPE_CIRCLE:
+        startLoc = rand() % 4;
+        break;
+    case MOVE_TYPE_LEFTRIGHT:
+        startLoc = rand() % 2;
+        break;
+    default:
+        break;
+    }
+
     if(!test_created){
-        create_enemy(ENEMY_TYPE_BEADER,  moveType);
+        create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
         counter++;
     }
     if(counter >= 4){
