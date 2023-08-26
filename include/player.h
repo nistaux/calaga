@@ -2,6 +2,8 @@
 
 #include <SDL.h>
 
+#define PLAYER_IMAGE_DIR "./assets/images/player.png"
+
 typedef enum {
     PLAYER_STATE_TITLE,
     PLAYER_STATE_IDLE,

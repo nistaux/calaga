@@ -8,8 +8,6 @@
 #include "projectile.h"
 #include "defs.h"
 
-#define PLAYER_PROJECTILE_DIR "./assets/images/player_projectile.png"
-
 int total_projectiles = 0;
 Projectile projectiles[possible_projectiles];
 SDL_Texture *playerProjectile;

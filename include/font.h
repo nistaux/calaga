@@ -4,6 +4,10 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#define TITLE_FONT_DIR "./assets/fonts/Handjet-Light.ttf"
+#define THIN_FONT_DIR "./assets/fonts/Handjet-Thin.ttf"
+#define REGULAR_FONT_DIR "./assets/fonts/Handjet-Thin.ttf"
+
 typedef enum {
     MENU_NAME_FONT,
     TITLE_FONT,

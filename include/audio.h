@@ -1,5 +1,14 @@
 #pragma once
 
+#define TITLE_BACKGROUND_MUSIC_DIR "./assets/audio/music/Final Quest - Adventurer's End Loop.mp3"
+#define PLAY_BACKGROUND_MUSIC_DIR "./assets/audio/music/Final Quest - Battle.mp3"
+#define DEAD_SOUND_DIR "./assets/audio/sfx/dead.wav"
+#define ENTER_SOUND_DIR "./assets/audio/sfx/enter.wav"
+#define HIT_SOUND_DIR "./assets/audio/sfx/hit.wav"
+#define SELECT_SOUND_DIR "./assets/audio/sfx/select.wav"
+#define WOOSH_SOUND_DIR "./assets/audio/sfx/woosh.wav"
+#define PLAYER_SHOOT_SOUND_DIR "./assets/audio/sfx/blaster_06.wav"
+
 typedef enum {
     TITLE_BGM,
     PLAY_BGM

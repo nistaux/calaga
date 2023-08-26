@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #define possible_projectiles 15
+#define PLAYER_PROJECTILE_DIR "./assets/images/player_projectile.png"
 
 typedef enum {
     PROJ_PLAYER,
