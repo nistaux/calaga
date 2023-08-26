@@ -13,8 +13,8 @@
 #include "renderer.h"
 #include "projectile.h"
 
-#define TITLE_PATH      "./res/images/title.png"
-#define BACKGROUND_PATH "./res/images/background.png"
+#define TITLE_PATH      "./assets/images/title.png"
+#define BACKGROUND_PATH "./assets/images/background.png"
 
 bool title_loaded = false;
 SDL_Texture *title_img;

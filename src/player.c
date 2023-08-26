@@ -11,7 +11,7 @@
 #include "projectile.h"
 #include "audio.h"
 
-#define PLAYER_IMAGE_DIR "./res/images/player.png"
+#define PLAYER_IMAGE_DIR "./assets/images/player.png"
 
 Player player;
 SDL_Texture *player_texture;

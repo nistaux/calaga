@@ -8,9 +8,9 @@
 #include "defs.h"
 #include "game.h"
 
-#define TITLE_FONT_DIR "./res/fonts/Handjet-Light.ttf"
-#define THIN_FONT_DIR "./res/fonts/Handjet-Thin.ttf"
-#define REGULAR_FONT_DIR "./res/fonts/Handjet-Thin.ttf"
+#define TITLE_FONT_DIR "./assets/fonts/Handjet-Light.ttf"
+#define THIN_FONT_DIR "./assets/fonts/Handjet-Thin.ttf"
+#define REGULAR_FONT_DIR "./assets/fonts/Handjet-Thin.ttf"
 
 bool is_ttf_init = false;
 SDL_Color SELECTED_COLOR = { 180,75,255 };

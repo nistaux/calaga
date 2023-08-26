@@ -4,7 +4,7 @@
 
 #include <SDL.h>
 
-#define ENEMY_SPRITE_DIR "./res/images/enemies.png"
+#define ENEMY_SPRITE_DIR "./assets/images/enemies.png"
 #define POSSIBLE_ENEMIES 10
 
 typedef enum {

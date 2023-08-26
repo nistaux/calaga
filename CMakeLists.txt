@@ -51,7 +51,7 @@ target_link_libraries(${PROJECT_NAME}
 # COPY OVER STATIC FILES
 message(STATUS "Copying all assets to destination folder...")
 file(
-    COPY res
+    COPY assets
     DESTINATION ${OUTPUT_DIR}
 )
 file(
