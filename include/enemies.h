@@ -31,11 +31,15 @@ typedef struct {
     MoveType moveType;
     SDL_Rect spriteRect;
     bool created;
+    int fieldLocation;
+    float x_loc;
     float x;
+    float y_loc;
     float y;
     int hp;
     float x_vel;
     float y_vel;
+    float speed;
     float shoot_reload_interval_seconds;
     float last_shot;
     bool reloading;

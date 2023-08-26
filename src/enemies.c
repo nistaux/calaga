@@ -61,7 +61,7 @@ void create_beader(MoveType moveType, int startLocation){
         x = (100*(fieldLoc-18)+field_border);
         y = (top_buffer+field_border+300);
     }
-
+    
     SDL_Rect spriteRect = { .x = 0, .y = 0, .w = 70, .h = 70};
     Enemy enemy = {
         .created = true,
@@ -73,11 +73,38 @@ void create_beader(MoveType moveType, int startLocation){
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_BEADER,
         .moveType = moveType,
+        .fieldLocation = startLocation,
+        .x_loc = (float)x,
+        .y_loc = (float)y,
         .x = (float)x,
         .x_vel = 0.0f,
         .y = (float)y,
-        .y_vel = 0.0f
+        .y_vel = 0.0f,
+        .speed = 0.20f
     };
+
+    switch(enemy.fieldLocation){
+    case 1:
+        enemy.x += + 100.0f;
+        if(enemy.moveType == MOVE_TYPE_LEFTRIGHT){
+            enemy.x_vel = -1.0f;
+        }else{
+            enemy.y_vel = 1.0f;
+        }
+        break;
+    case 2:
+        enemy.y += 100.0f;
+        enemy.y_vel = -1.0f;
+        break;
+    case 3:
+        enemy.x += 100.0f;
+        enemy.y += 100.0f;
+        enemy.x_vel = -1.0f;
+        break;
+    default:
+        enemy.x_vel = 1.0f;
+        break;
+    }
 
     int next_element = redistribute_enemy_array();
     enemies[next_element] = enemy;
@@ -85,31 +112,60 @@ void create_beader(MoveType moveType, int startLocation){
 }
 void create_enemy(EnemyType type, MoveType moveType, int startLocation){
     switch (type){
-        case ENEMY_TYPE_BEADER:
-            create_beader(moveType, startLocation);
-            break;
-        default:
-            break;
+    case ENEMY_TYPE_BEADER:
+        create_beader(moveType, startLocation);
+        break;
+    default:
+        break;
     }
 }
 
-void move_type_circle(Enemy enemy){
-
+void move_type_circle(int enemyIndex){
+    if(enemies[enemyIndex].x == enemies[enemyIndex].x_loc && enemies[enemyIndex].y < enemies[enemyIndex].y_loc){
+        enemies[enemyIndex].y = enemies[enemyIndex].y_loc;
+        enemies[enemyIndex].y_vel = 0.0f;
+        enemies[enemyIndex].x_vel = 1.0f;
+    }
+    if(enemies[enemyIndex].x == enemies[enemyIndex].x_loc+100.0f && enemies[enemyIndex].y > enemies[enemyIndex].y_loc+100.0f){
+        enemies[enemyIndex].y = enemies[enemyIndex].y_loc+100.0f;
+        enemies[enemyIndex].y_vel = 0.0f;
+        enemies[enemyIndex].x_vel = -1.0f;
+    }
+    if(enemies[enemyIndex].y == enemies[enemyIndex].y_loc && enemies[enemyIndex].x > enemies[enemyIndex].x_loc+100.0f){
+        enemies[enemyIndex].x = enemies[enemyIndex].x_loc+100.0f;
+        enemies[enemyIndex].y_vel = 1.0f;
+        enemies[enemyIndex].x_vel = 0.0f;
+    }
+    if(enemies[enemyIndex].y == enemies[enemyIndex].y_loc+100.0f && enemies[enemyIndex].x < enemies[enemyIndex].x_loc){
+        enemies[enemyIndex].x = enemies[enemyIndex].x_loc;
+        enemies[enemyIndex].y_vel = -1.0f;
+        enemies[enemyIndex].x_vel = 0.0f;
+    }
+    enemies[enemyIndex].x += enemies[enemyIndex].x_vel*enemies[enemyIndex].speed;
+    enemies[enemyIndex].y += enemies[enemyIndex].y_vel*enemies[enemyIndex].speed;
 }
 
-void move_type_leftright(Enemy enemy){
-
+void move_type_leftright(int enemyIndex){
+    if(enemies[enemyIndex].x < enemies[enemyIndex].x_loc){
+        enemies[enemyIndex].x = enemies[enemyIndex].x_loc;
+        enemies[enemyIndex].x_vel = 1.0f;
+    }
+    if(enemies[enemyIndex].x > enemies[enemyIndex].x_loc+100.0f){
+        enemies[enemyIndex].x = enemies[enemyIndex].x_loc+100.0f;
+        enemies[enemyIndex].x_vel = -1.0f;
+    }
+    enemies[enemyIndex].x += enemies[enemyIndex].x_vel*enemies[enemyIndex].speed;
 }
 
 void move_enemies(){
-    for(int i = 0; i < POSSIBLE_ENEMIES; i++){
-        if(enemies[i].created == true){
-            switch(enemies[i].moveType){
+    for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
+        if(enemies[enemy].created == true){
+            switch(enemies[enemy].moveType){
             case MOVE_TYPE_CIRCLE:
-                move_type_circle(enemies[i]);
+                move_type_circle(enemy);
                 break;
             case MOVE_TYPE_LEFTRIGHT:
-                move_type_leftright(enemies[i]);
+                move_type_leftright(enemy);
                 break;
             default:
                 break;
@@ -126,8 +182,8 @@ void draw_enemies(SDL_Renderer *renderer){
     if(!enemyTexturesLoaded){init_enemies(renderer);}
     for(int i = 0; i < POSSIBLE_ENEMIES; i++){
         if(enemies[i].created == true){
-            int x = round(enemies[i].x);
-            int y = round(enemies[i].y);
+            int x = (int)round(enemies[i].x);
+            int y = (int)round(enemies[i].y);
             SDL_Rect renderRect = {
                 .x = x,
                 .y = y,
