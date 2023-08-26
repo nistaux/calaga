@@ -7,6 +7,7 @@
 
 #include "enemies.h"
 #include "field.h"
+#include "player.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -157,6 +158,14 @@ void move_type_leftright(int enemyIndex){
     enemies[enemyIndex].x += enemies[enemyIndex].x_vel*enemies[enemyIndex].speed;
 }
 
+void turn_enemy(int enemyIndex){
+    float slope_x = (get_player_x()+35.0f) - (enemies[enemyIndex].x+35.0f);
+    float slope_y = (675.0f+35.0f) - (enemies[enemyIndex].y+35.0f);
+    double angle = atan(slope_x/slope_y)*-50.0;
+
+    enemies[enemyIndex].target_dir = angle;
+}
+
 void move_enemies(){
     for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
         if(enemies[enemy].created == true){
@@ -170,6 +179,7 @@ void move_enemies(){
             default:
                 break;
             }
+            turn_enemy(enemy);
         }
     }
 }
@@ -180,21 +190,24 @@ void tick_enemies(){
 
 void draw_enemies(SDL_Renderer *renderer){
     if(!enemyTexturesLoaded){init_enemies(renderer);}
-    for(int i = 0; i < POSSIBLE_ENEMIES; i++){
-        if(enemies[i].created == true){
-            int x = (int)round(enemies[i].x);
-            int y = (int)round(enemies[i].y);
+    for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
+        if(enemies[enemy].created == true){
+            int x = (int)round(enemies[enemy].x);
+            int y = (int)round(enemies[enemy].y);
             SDL_Rect renderRect = {
                 .x = x,
                 .y = y,
                 .w = 70,
                 .h = 70
             };
-            switch(enemies[i].type){
+            switch(enemies[enemy].type){
             case ENEMY_TYPE_BEADER:
-                if(SDL_RenderCopy(renderer, enemiesTexture, &enemies[i].spriteRect, &renderRect) != 0){
+                if(SDL_RenderCopyEx(renderer, enemiesTexture, &enemies[enemy].spriteRect, &renderRect, enemies[enemy].target_dir, NULL, SDL_FLIP_NONE) != 0){
                     printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
                 }
+                // if(SDL_RenderCopy(renderer, enemiesTexture, &enemies[i].spriteRect, &renderRect) != 0){
+                //     printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+                // }
                 break;
             default:
                 break;

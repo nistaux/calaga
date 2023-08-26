@@ -33,6 +33,9 @@ void init_player(float x, float y){
 
     player = temp;
 }
+float get_player_x(){
+    return player.x;
+}
 void shoot_player(){
     if(!player.reloading && toggle_shoot){
         SDL_Rect rect = {

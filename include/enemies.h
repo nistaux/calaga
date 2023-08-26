@@ -36,6 +36,7 @@ typedef struct {
     float x;
     float y_loc;
     float y;
+    double target_dir;
     int hp;
     float x_vel;
     float y_vel;
