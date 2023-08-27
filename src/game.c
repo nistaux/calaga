@@ -15,6 +15,7 @@
 #include "projectile.h"
 #include "generator.h"
 #include "enemies.h"
+#include "ui.h"
 
 Game game;
 Timer timer;
@@ -190,11 +191,12 @@ void tick(){
         if(game.play.state != PLAY_STATE_PAUSED){
             move_background();
             tick_player(timer.deltaTime);
-            tick_enemies();
-            move_projectiles();
         }
         if(game.state != GAME_STATE_TITLE && game.play.state != PLAY_STATE_PAUSED){
             tick_generator();
+            tick_enemies();
+            move_projectiles();
+            tick_ui();
         }
         timer.deltaTick = 0.0;
     }

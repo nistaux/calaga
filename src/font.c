@@ -12,6 +12,7 @@ bool is_ttf_init = false;
 SDL_Color SELECTED_COLOR = { 180,75,255 };
 SDL_Color NOT_SELECTED_COLOR = { 180,255,75 };
 SDL_Color MENU_TITLE_COLOR = { 255,100,100 };
+SDL_Color SCORE_TEXT_COLOR = {255, 255, 0};
 
 void init_ttf() {
     TTF_Init();
@@ -24,14 +25,20 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
     }
     SDL_Color selected_color;
     SDL_Color not_selected_color;
-    if(fontType != MENU_NAME_FONT){
-        selected_color = SELECTED_COLOR;
-        not_selected_color = NOT_SELECTED_COLOR;
-    }else {
+    switch(fontType){
+    case MENU_NAME_FONT:
         selected_color = MENU_TITLE_COLOR;
         not_selected_color = MENU_TITLE_COLOR;
+        break;
+    case REGULAR_FONT:
+        selected_color = SCORE_TEXT_COLOR;
+        not_selected_color = SCORE_TEXT_COLOR;
+        break;
+    default:
+        selected_color = SELECTED_COLOR;
+        not_selected_color = NOT_SELECTED_COLOR;
+        break;
     }
-    
 
     TTF_Font *font;
     switch (fontType)
@@ -46,7 +53,7 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
         font = TTF_OpenFont(THIN_FONT_DIR, size);
         break;
     case REGULAR_FONT:
-        font = TTF_OpenFont(REGULAR_FONT_DIR, size);
+        font = TTF_OpenFont(TITLE_FONT_DIR, size);
         break;
     default:
         font = NULL;
@@ -90,6 +97,9 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
     };
 
     *text = temp_text;
+    SDL_FreeSurface(selected_surface);
+    SDL_FreeSurface(text_surface);
+    TTF_CloseFont(font);
 }
 
 // -------------- TITLE SECTION --------------

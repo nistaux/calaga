@@ -9,6 +9,7 @@
 #include "field.h"
 #include "player.h"
 #include "projectile.h"
+#include "ui.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -239,6 +240,21 @@ void shoot_enemies(int enemyIndex){
     enemies[enemyIndex].reloading = true;
     create_projectile(temp);
 }
+
+void kill_enemy(int enemyIndex, int projectileIndex){
+    ScoreText temp = {
+        .x = enemies[enemyIndex].x+15.0f,
+        .y = enemies[enemyIndex].y+5.0f
+    };
+    switch(enemies[enemyIndex].type){
+    default:
+        increase_score(100, temp);
+        break;
+    }
+    destroy_projectile(projectileIndex);
+    destroy_enemy(enemyIndex); 
+}
+
 void check_enemies(int enemyIndex){
     Enemy enemy = enemies[enemyIndex];
     Projectile proj;
@@ -252,15 +268,13 @@ void check_enemies(int enemyIndex){
         proj.x > enemy.x &&
         proj.y > enemy.y
         ){
-            destroy_projectile(i);
-            destroy_enemy(enemyIndex);      
+            kill_enemy(enemyIndex, i);
         }else if(proj.x+proj.srcRect.w > enemy.x && 
         proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
         proj.x < enemy.x+enemy.spriteRect.w &&
         proj.y > enemy.y
         ){
-            destroy_projectile(i);
-            destroy_enemy(enemyIndex);      
+            kill_enemy(enemyIndex, i);
         }
     }
 }

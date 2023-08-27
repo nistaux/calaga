@@ -23,5 +23,6 @@ typedef struct {
     int id;
 } Text;
 
+void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char *string, Text *text);
 void draw_title_main_selections(SDL_Renderer *renderer);
 void draw_play_paused_main_selections(SDL_Renderer *renderer);

@@ -12,6 +12,7 @@
 #include "game.h"
 #include "renderer.h"
 #include "projectile.h"
+#include "ui.h"
 
 #define TITLE_PATH      "./assets/images/title.png"
 #define BACKGROUND_PATH "./assets/images/background.png"
@@ -136,6 +137,7 @@ void draw_play_screen(SDL_Renderer *renderer) {
     draw_projectiles(renderer);
     draw_enemies(renderer);
     draw_player(renderer);
+    draw_ui(renderer);
     // everything else
 
     // last draw pause if game is paused
