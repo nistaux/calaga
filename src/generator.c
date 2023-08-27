@@ -31,12 +31,4 @@ void tick_generator(){
         break;
     }
     create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
-    // if(!test_created){
-    //     create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
-    //     printf("Field Slots Available: %d\n", get_field_available());
-    //     counter++;
-    // }
-    // if(counter == 12){
-    //     test_created = true;
-    // }
 }
