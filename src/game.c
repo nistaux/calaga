@@ -51,16 +51,16 @@ GameState get_game_state() {
 void set_game_state(GameState state) {
     game.state = state;
     switch(state){
-        case GAME_STATE_PLAY:
-            game.play.active = true;
-            game.title.active = false;
-            break;
-        case GAME_STATE_TITLE:
-            game.play.active = false;
-            game.play.active = false;
-            break;
-        default:
-            break;
+    case GAME_STATE_PLAY:
+        game.play.active = true;
+        game.title.active = false;
+        break;
+    case GAME_STATE_TITLE:
+        game.play.active = false;
+        game.play.active = false;
+        break;
+    default:
+        break;
     }
 }
 
