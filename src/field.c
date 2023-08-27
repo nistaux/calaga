@@ -56,11 +56,11 @@ void take_field_space(int startLoc, MoveType moveType){
     default:
         break;
     }
-    printf("Taking Field Space...\n");
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[0], field[1], field[2], field[3], field[4], field[5]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[6], field[7], field[8], field[9], field[10], field[11]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[12], field[13], field[14], field[15], field[16], field[17]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[18], field[19], field[20], field[21], field[22], field[23]);
+    // printf("Taking Field Space...\n");
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[0], field[1], field[2], field[3], field[4], field[5]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[6], field[7], field[8], field[9], field[10], field[11]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[12], field[13], field[14], field[15], field[16], field[17]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[18], field[19], field[20], field[21], field[22], field[23]);
 }
 
 void free_field_space(int startLoc, MoveType moveType){
@@ -80,9 +80,9 @@ void free_field_space(int startLoc, MoveType moveType){
     default:
         break;
     }
-    printf("Freeing Field Space...\n");
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[0], field[1], field[2], field[3], field[4], field[5]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[6], field[7], field[8], field[9], field[10], field[11]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[12], field[13], field[14], field[15], field[16], field[17]);
-    printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[18], field[19], field[20], field[21], field[22], field[23]);
+    // printf("Freeing Field Space...\n");
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[0], field[1], field[2], field[3], field[4], field[5]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[6], field[7], field[8], field[9], field[10], field[11]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[12], field[13], field[14], field[15], field[16], field[17]);
+    // printf("[%d] [%d] [%d] [%d] [%d] [%d]\n", field[18], field[19], field[20], field[21], field[22], field[23]);
 }
