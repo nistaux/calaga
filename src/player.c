@@ -36,6 +36,9 @@ void init_player(float x, float y){
 float get_player_x(){
     return player.x;
 }
+SDL_Texture *get_player_texture(){
+    return player_texture;
+}
 void shoot_player(){
     if(!player.reloading && toggle_shoot){
         SDL_Rect srcRect = {
