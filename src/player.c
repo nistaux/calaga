@@ -169,12 +169,12 @@ void move_player_title_fading(){
 }
 void move_player_title(){
     switch(get_game()->title.state){
-        case TITLE_STATE_FADING:
-            move_player_title_fading();
-            break;
-        default:
-            move_player_title_main();
-            break;
+    case TITLE_STATE_FADING:
+        move_player_title_fading();
+        break;
+    default:
+        move_player_title_main();
+        break;
     }
 }
 
@@ -183,25 +183,25 @@ void move_player_play(){
     bool player_outside_right_bounds = ((player.x+player.x_vel+70) >= GAME_WIDTH);
     bool player_outside_left_bounds = ((player.x+player.x_vel) <= 0);
     switch(get_game()->title.state){
-        case PLAY_STATE_ALIVE:
-            if(!player_outside_left_bounds && !player_outside_right_bounds){
-                player.x += player.x_vel;
-            }
-            break;
-        default:
-            break;
+    case PLAY_STATE_ALIVE:
+        if(!player_outside_left_bounds && !player_outside_right_bounds){
+            player.x += player.x_vel;
+        }
+        break;
+    default:
+        break;
     }
 }
 
 // -------------- SYSTEM PLAY SECTION --------------
 void move_player(){
     switch(get_game_state()){
-        case GAME_STATE_TITLE:
-            move_player_title();
-        case GAME_STATE_PLAY:
-            move_player_play();
-        default:
-            break;
+    case GAME_STATE_TITLE:
+        move_player_title();
+    case GAME_STATE_PLAY:
+        move_player_play();
+    default:
+        break;
     }
 }
 void check_reloading(float deltaTime){

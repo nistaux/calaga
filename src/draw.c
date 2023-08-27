@@ -97,21 +97,21 @@ void draw_title_screen(SDL_Renderer *renderer){
     clear_renderer();
     draw_background(renderer);
     switch(get_game()->title.state){
-        case TITLE_STATE_MAIN:
-            draw_title_image(renderer);
-            draw_title_main_selections(renderer);
-            break;
-        case TITLE_STATE_OPTIONS:
-            draw_title_image(renderer);
-            draw_title_options(renderer);
-            break;
-        case TITLE_STATE_SCORES:
-            draw_title_image(renderer);
-            draw_title_scores(renderer);
-        case TITLE_STATE_FADING:
-            draw_title_fade(renderer);
-        default:
-            break;
+    case TITLE_STATE_MAIN:
+        draw_title_image(renderer);
+        draw_title_main_selections(renderer);
+        break;
+    case TITLE_STATE_OPTIONS:
+        draw_title_image(renderer);
+        draw_title_options(renderer);
+        break;
+    case TITLE_STATE_SCORES:
+        draw_title_image(renderer);
+        draw_title_scores(renderer);
+    case TITLE_STATE_FADING:
+        draw_title_fade(renderer);
+    default:
+        break;
     }
     draw_player(renderer);
 }
