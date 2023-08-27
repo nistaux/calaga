@@ -87,7 +87,7 @@ void create_beader(MoveType moveType, int startLocation){
         .speed = 0.20f
     };
     enemy.reloading = true;
-    enemy.last_shot = ((float)SDL_GetTicks64()/1000.0f)+(enemy.shoot_reload_interval_seconds*0.5);
+    enemy.last_shot = ((float)SDL_GetTicks64()/1000.0f)-(enemy.shoot_reload_interval_seconds*0.75);
 
     switch(enemy.fieldLocation){
     case 1:
