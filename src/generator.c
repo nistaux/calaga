@@ -6,9 +6,12 @@
 #include "field.h"
 
 bool test_created = false;
-int counter = 0;
+int last_gen_time = 0;
+int enemy_creation_cd = 1234;
 void tick_generator(){
     if(get_field_available() == 0){return;}
+    if(SDL_GetTicks64()-last_gen_time < enemy_creation_cd && last_gen_time != 0){return;}
+    last_gen_time = SDL_GetTicks64();
     MoveType moveType;
     if(get_field_available() >= 12){
         moveType = (rand() % 2);
@@ -27,13 +30,13 @@ void tick_generator(){
     default:
         break;
     }
-
-    if(!test_created){
-        create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
-        printf("Field Slots Available: %d\n", get_field_available());
-        counter++;
-    }
-    if(counter == 12){
-        test_created = true;
-    }
+    create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
+    // if(!test_created){
+    //     create_enemy(ENEMY_TYPE_BEADER,  moveType, startLoc);
+    //     printf("Field Slots Available: %d\n", get_field_available());
+    //     counter++;
+    // }
+    // if(counter == 12){
+    //     test_created = true;
+    // }
 }

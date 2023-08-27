@@ -18,6 +18,12 @@ void init_projectile_textures(SDL_Renderer *renderer){
     projectile_textures_loaded = true;
 }
 
+Projectile *get_projectiles(){
+    Projectile *p;
+    p = projectiles;
+    return p;
+}
+
 int redistribute_projectile_array(){
     if(total_projectiles == 0){return 0;}
     int arr_count = 0;

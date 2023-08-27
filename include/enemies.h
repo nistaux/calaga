@@ -31,6 +31,7 @@ typedef struct {
     MoveType moveType;
     SDL_Rect spriteRect;
     bool created;
+    int fieldReservation;
     int fieldLocation;
     float x_loc;
     float x;

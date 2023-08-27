@@ -75,6 +75,7 @@ void create_beader(MoveType moveType, int startLocation){
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_BEADER,
         .moveType = moveType,
+        .fieldReservation = fieldLoc,
         .fieldLocation = startLocation,
         .x_loc = (float)x,
         .y_loc = (float)y,
@@ -122,6 +123,17 @@ void create_enemy(EnemyType type, MoveType moveType, int startLocation){
     default:
         break;
     }
+}
+
+void destroy_enemy(int index){
+    Enemy zero = {
+        .created = false,
+    };
+    int fieldSpace = enemies[index].fieldReservation;
+    MoveType type = enemies[index].moveType;
+    enemies[index] = zero;
+    total_enemies--;
+    free_field_space(fieldSpace, type);
 }
 
 void move_type_circle(int enemyIndex){
@@ -188,7 +200,6 @@ void shoot_enemies(int enemyIndex){
     if(lastShotDiff >= enemies[enemyIndex].shoot_reload_interval_seconds){enemies[enemyIndex].reloading = false;}
     if(enemies[enemyIndex].reloading){return;}
 
-    printf("shooting...\n");
     SDL_Rect dstRect = {
         .x = 0,
         .y = 0,
@@ -228,11 +239,37 @@ void shoot_enemies(int enemyIndex){
     enemies[enemyIndex].reloading = true;
     create_projectile(temp);
 }
+void check_enemies(int enemyIndex){
+    Enemy enemy = enemies[enemyIndex];
+    Projectile proj;
+    Projectile *p = get_projectiles();
+    for(int i = 0; i < possible_projectiles; i++){
+        proj = *(p + i);
+        if(proj.created == false || proj.type != PROJ_PLAYER){continue;}
+
+        if(proj.x < (enemy.x+enemy.spriteRect.w) && 
+        proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
+        proj.x > enemy.x &&
+        proj.y > enemy.y
+        ){
+            destroy_projectile(i);
+            destroy_enemy(enemyIndex);      
+        }else if(proj.x+proj.srcRect.w > enemy.x && 
+        proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
+        proj.x < enemy.x+enemy.spriteRect.w &&
+        proj.y > enemy.y
+        ){
+            destroy_projectile(i);
+            destroy_enemy(enemyIndex);      
+        }
+    }
+}
 
 void tick_enemies(){
     for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
         if(enemies[enemy].created == true){
             move_enemies(enemy);
+            check_enemies(enemy);
             shoot_enemies(enemy);
         }
     }
