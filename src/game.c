@@ -206,7 +206,7 @@ void tick(){
         update_window();
     }
     if(system_timer >= system_post_interval){
-        printf("----------\n");
+        printf("\n----------\n");
         printf("FPS_TARGET: %.1f\n", 1.0f/timer.renderIter);
         printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
         printf("TPS_TARGET: %.1f\n", 1.0f/timer.physicsIter);
