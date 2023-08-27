@@ -8,6 +8,7 @@
 #include "enemies.h"
 #include "field.h"
 #include "player.h"
+#include "projectile.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -83,6 +84,8 @@ void create_beader(MoveType moveType, int startLocation){
         .y_vel = 0.0f,
         .speed = 0.20f
     };
+    enemy.reloading = true;
+    enemy.last_shot = ((float)SDL_GetTicks64()/1000.0f)+(enemy.shoot_reload_interval_seconds*0.5);
 
     switch(enemy.fieldLocation){
     case 1:
@@ -159,33 +162,80 @@ void move_type_leftright(int enemyIndex){
 }
 
 void turn_enemy(int enemyIndex){
-    float slope_x = (get_player_x()+35.0f) - (enemies[enemyIndex].x+35.0f);
-    float slope_y = (675.0f+35.0f) - (enemies[enemyIndex].y+35.0f);
-    double angle = atan(slope_x/slope_y)*-50.0;
+    enemies[enemyIndex].target_slope_x = (get_player_x()+35.0f) - (enemies[enemyIndex].x+35.0f);
+    enemies[enemyIndex].target_slope_y = (675.0f+35.0f) - (enemies[enemyIndex].y+35.0f);
+    double angle = atan(enemies[enemyIndex].target_slope_x/enemies[enemyIndex].target_slope_y)*-50.0;
 
     enemies[enemyIndex].target_dir = angle;
 }
 
-void move_enemies(){
-    for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
-        if(enemies[enemy].created == true){
-            switch(enemies[enemy].moveType){
-            case MOVE_TYPE_CIRCLE:
-                move_type_circle(enemy);
-                break;
-            case MOVE_TYPE_LEFTRIGHT:
-                move_type_leftright(enemy);
-                break;
-            default:
-                break;
-            }
-            turn_enemy(enemy);
-        }
+void move_enemies(int enemyIndex){
+    switch(enemies[enemyIndex].moveType){
+    case MOVE_TYPE_CIRCLE:
+        move_type_circle(enemyIndex);
+        break;
+    case MOVE_TYPE_LEFTRIGHT:
+        move_type_leftright(enemyIndex);
+        break;
+    default:
+        break;
     }
+    turn_enemy(enemyIndex);
+}
+
+void shoot_enemies(int enemyIndex){
+    float lastShotDiff = ((float)SDL_GetTicks64()/1000.0f) - enemies[enemyIndex].last_shot;
+    if(lastShotDiff >= enemies[enemyIndex].shoot_reload_interval_seconds){enemies[enemyIndex].reloading = false;}
+    if(enemies[enemyIndex].reloading){return;}
+
+    printf("shooting...\n");
+    SDL_Rect dstRect = {
+        .x = 0,
+        .y = 0,
+        .w = 17,
+        .h = 20
+    };
+    SDL_Rect srcRect;
+    switch(enemies[enemyIndex].type){
+    case ENEMY_TYPE_BEADER:
+        srcRect.x = 17;
+        srcRect.y = 0;
+        srcRect.w = 17;
+        srcRect.h = 20;
+        break;
+    case ENEMY_TYPE_TSHOT:
+        break;
+    default:
+        break;
+    }
+    
+    Projectile temp = {
+        .speed = 1.1f,
+        .dstRect = dstRect,
+        .srcRect = srcRect,
+        .type = PROJ_BEADER,
+        .angle = enemies[enemyIndex].target_dir,
+        .x = enemies[enemyIndex].x+35.0f,
+        .y = enemies[enemyIndex].y+35.0f,
+        .x_vel = 0.0f,
+        .y_vel = 0.0f,
+    };
+    temp.x_vel = temp.speed * (enemies[enemyIndex].target_slope_x/enemies[enemyIndex].target_slope_y);
+    temp.y_vel = temp.speed;
+    temp.x += (enemies[enemyIndex].target_slope_x/enemies[enemyIndex].target_slope_y)*20.0f;
+    temp.y += 20.0f;
+    enemies[enemyIndex].last_shot = (float)SDL_GetTicks64()/1000.0f;
+    enemies[enemyIndex].reloading = true;
+    create_projectile(temp);
 }
 
 void tick_enemies(){
-    move_enemies();
+    for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
+        if(enemies[enemy].created == true){
+            move_enemies(enemy);
+            shoot_enemies(enemy);
+        }
+    }
 }
 
 void draw_enemies(SDL_Renderer *renderer){
@@ -205,9 +255,6 @@ void draw_enemies(SDL_Renderer *renderer){
                 if(SDL_RenderCopyEx(renderer, enemiesTexture, &enemies[enemy].spriteRect, &renderRect, enemies[enemy].target_dir, NULL, SDL_FLIP_NONE) != 0){
                     printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
                 }
-                // if(SDL_RenderCopy(renderer, enemiesTexture, &enemies[i].spriteRect, &renderRect) != 0){
-                //     printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
-                // }
                 break;
             default:
                 break;

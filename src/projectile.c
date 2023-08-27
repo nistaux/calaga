@@ -10,11 +10,11 @@
 
 int total_projectiles = 0;
 Projectile projectiles[possible_projectiles];
-SDL_Texture *playerProjectile;
+SDL_Texture *projectileMap;
 
 bool projectile_textures_loaded = false;
 void init_projectile_textures(SDL_Renderer *renderer){
-    playerProjectile = IMG_LoadTexture(renderer, PLAYER_PROJECTILE_DIR);
+    projectileMap = IMG_LoadTexture(renderer, PROJECTILE_MAP_DIR);
     projectile_textures_loaded = true;
 }
 
@@ -38,19 +38,10 @@ int redistribute_projectile_array(){
     return arr_count;
 }
 void create_projectile(Projectile temp){
-    Projectile projectile = {
-        .created = true,
-        .x = temp.x,
-        .y = temp.y,
-        .x_vel = temp.x_vel,
-        .y_vel = temp.y_vel,
-        .speed = temp.speed,
-        .type = temp.type,
-        .rect = temp.rect,
-    };
+    temp.created = true;
 
     int next_element = redistribute_projectile_array();
-    projectiles[next_element] = projectile;
+    projectiles[next_element] = temp;
     total_projectiles++;
 }
 void destroy_projectile(int index){
@@ -61,11 +52,11 @@ void destroy_projectile(int index){
     total_projectiles--;
 }
 void check_projectile_out_of_bounds(Projectile proj, int index){
-    if((proj.x+proj.rect.w) < 0 || proj.x > GAME_WIDTH){
+    if((proj.x+proj.dstRect.w) < 0 || proj.x > GAME_WIDTH){
         destroy_projectile(index);
         //printf("set proj out of width bounds\n");
     }
-    if(proj.y > GAME_HEIGHT || (proj.y+proj.rect.h) < 0){
+    if(proj.y > GAME_HEIGHT || (proj.y+proj.dstRect.h) < 0){
         destroy_projectile(index);
         //printf("set proj out of height bounds\n");
     }
@@ -76,8 +67,8 @@ void move_projectiles(){
             projectiles[i].x += projectiles[i].x_vel * projectiles[i].speed;
             projectiles[i].y += projectiles[i].y_vel * projectiles[i].speed;
 
-            projectiles[i].rect.x = round(projectiles[i].x);
-            projectiles[i].rect.y = round(projectiles[i].y);
+            projectiles[i].dstRect.x = round(projectiles[i].x);
+            projectiles[i].dstRect.y = round(projectiles[i].y);
             check_projectile_out_of_bounds(projectiles[i], i);
         }
     }
@@ -87,11 +78,15 @@ void draw_projectiles(SDL_Renderer *renderer){
     for(int i = 0; i < possible_projectiles; i++){
         if(projectiles[i].created == true){
             switch(projectiles[i].type){
-                case PROJ_PLAYER:
-                    SDL_RenderCopy(renderer, playerProjectile, NULL, &projectiles[i].rect);
-                    break;
-                default:
-                    break;
+            case PROJ_PLAYER:
+                SDL_RenderCopy(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect);
+                break;
+            case PROJ_BEADER:
+                if(SDL_RenderCopyEx(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect, projectiles[i].angle, NULL, SDL_FLIP_VERTICAL) != 0){
+                    printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+                }
+            default:
+                break;
             }
         }
     }

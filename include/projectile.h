@@ -2,8 +2,8 @@
 
 #include <SDL.h>
 
-#define possible_projectiles 15
-#define PLAYER_PROJECTILE_DIR "./assets/images/player_projectile.png"
+#define possible_projectiles 30
+#define PROJECTILE_MAP_DIR "./assets/images/projectiles_map.png"
 
 typedef enum {
     PROJ_PLAYER,
@@ -18,8 +18,10 @@ typedef struct {
     float x_vel;
     float y_vel;
     float speed;
+    double angle;
     ProjectileType type;
-    SDL_Rect rect;
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
 } Projectile;
 
 void init_projectile_textures(SDL_Renderer *renderer);

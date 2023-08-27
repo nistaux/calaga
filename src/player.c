@@ -38,14 +38,21 @@ float get_player_x(){
 }
 void shoot_player(){
     if(!player.reloading && toggle_shoot){
-        SDL_Rect rect = {
+        SDL_Rect srcRect = {
+            .x = 0,
+            .y = 0,
+            .w = 17,
+            .h = 20
+        };
+        SDL_Rect dstRect = {
             .x = 0,
             .y = 0,
             .w = 17,
             .h = 20
         };
         Projectile proj = {
-            .rect = rect,
+            .srcRect = srcRect,
+            .dstRect = dstRect,
             .speed = 18.0,
             .type = PROJ_PLAYER,
             .x = (player.x + (((float)playerRect.w/2)-9)),
