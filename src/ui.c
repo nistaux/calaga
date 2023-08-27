@@ -8,6 +8,8 @@
 #include "ui.h"
 #include "window.h"
 #include "font.h"
+#include "player.h"
+#include "defs.h"
 
 ScoreText scoreTexts[POSSIBLE_SCORE_TEXTS];
 int total_scoreTexts = 0;
@@ -90,7 +92,25 @@ void tick_ui(){
     
 }
 
+void draw_player_hp(SDL_Renderer *renderer){
+    int player_hp_size = 35;
+    int side_border = 15;
+    SDL_Rect dstRect = {
+        .y = GAME_HEIGHT-player_hp_size-side_border,
+        .h = player_hp_size,
+        .w = player_hp_size
+    };
+    for(int i = 0; i < get_player_hp(); i++){
+        dstRect.x = side_border + (player_hp_size*i);
+        if(i != 0){dstRect.x+=2;}
+        if(SDL_RenderCopy(renderer, get_player_texture(), NULL, &dstRect) != 0){
+            printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+        }
+    }
+}
+
 void draw_ui(SDL_Renderer *renderer){
+    draw_player_hp(renderer);
     for(int scoreText = 0; scoreText < POSSIBLE_SCORE_TEXTS; scoreText++){
         if(scoreTexts[scoreText].created == true){
             SDL_Rect dstRect = {

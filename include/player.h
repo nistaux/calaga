@@ -26,6 +26,7 @@ typedef struct {
 
 void init_player(float x, float y);
 float get_player_x();
+int get_player_hp();
 SDL_Texture *get_player_texture();
 void reset_player();
 void add_player_x_vel(float vel);

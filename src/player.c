@@ -36,6 +36,9 @@ void init_player(float x, float y){
 float get_player_x(){
     return player.x;
 }
+int get_player_hp(){
+    return player.hp;
+}
 SDL_Texture *get_player_texture(){
     return player_texture;
 }
