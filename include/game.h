@@ -43,6 +43,7 @@ typedef struct {
     bool active;
     PlayState state;
     int paused_selection;
+    int over_selection;
 } Play;
 
 typedef enum {
@@ -70,6 +71,8 @@ void title_main_selection_up();
 void title_main_selection_down();
 void play_paused_main_selection_up();
 void play_paused_main_selection_down();
+void play_over_main_selection_up();
+void play_over_main_selection_down();
 
 void move_background();
 void tick();

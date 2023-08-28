@@ -146,7 +146,7 @@ void draw_play_screen(SDL_Renderer *renderer) {
     // everything else
 
     if(get_game()->play.state == PLAY_STATE_OVER){
-        //draw_play_screen_over();
+        draw_play_screen_over(renderer);
     }else if(get_game()->play.state == PLAY_STATE_PAUSED){
         draw_play_screen_paused(renderer);
     }

@@ -81,6 +81,7 @@ void go_to_main_menu(){
 
 void init_game() {
     srand(time(NULL));
+    init_player(0.0f,0.0f);
     // Setting Game Struct Init Settings
     Title titleTemp = {
         .active = true,
@@ -90,7 +91,8 @@ void init_game() {
     Play playTemp = {
         .active = false,
         .state = PLAY_STATE_ALIVE,
-        .paused_selection = 0
+        .paused_selection = 0,
+        .over_selection = 0,
     };
     Game gameTemp = {
         .running = true,
@@ -154,6 +156,24 @@ void play_paused_main_selection_up() {
     }
     game.play.paused_selection = sel;
 }
+void play_over_main_selection_down() {
+    int sel = game.play.over_selection;
+    if (sel < 1){
+        sel ++;
+    }else {
+        sel = 0;
+    }
+    game.play.over_selection = sel;
+}
+void play_over_main_selection_up() {
+    int sel = game.play.over_selection;
+    if (sel > 0){
+        sel --;
+    }else {
+        sel = 1;
+    }
+    game.play.over_selection = sel;
+}
 
 void move_background(){
     if(background.b1_loc + background.vel >= GAME_HEIGHT){
@@ -178,6 +198,7 @@ void tick(){
     timer.physicsTime += timer.deltaTime;
     timer.renderTime += timer.deltaTime;
     timer.deltaTick += timer.deltaTime;
+    //printf("%d\n", game.play.state);
 
     system_timer += timer.deltaTime;
     
@@ -188,13 +209,16 @@ void tick(){
 
         // Check control input
         check_events(event);
-        if(game.play.state != PLAY_STATE_PAUSED){
+        bool paused = false;
+        if(game.play.state == PLAY_STATE_PAUSED){paused = true;}
+        if(game.play.state == PLAY_STATE_OVER){paused = true;}
+        if(!paused){
             move_background();
             tick_player(timer.deltaTime);
+            tick_enemies();
         }
         if(game.state == GAME_STATE_PLAY && game.play.state == PLAY_STATE_ALIVE){
             tick_generator();
-            tick_enemies();
             move_projectiles();
             tick_ui();
         }

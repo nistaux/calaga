@@ -100,6 +100,8 @@ void reset_player(){
     player = temp;
     toggle_shoot = false;
     set_player_default_location();
+    clear_enemies();
+    clear_projectiles();
 }
 void add_player_x_vel(float vel){
     player.x_vel = vel+player.x_vel;
@@ -243,6 +245,7 @@ void move_player(){
 }
 
 void check_player(){
+    if(player.hp == 0){get_game()->play.state = PLAY_STATE_OVER;}
 
     Projectile proj;
     Projectile *p = get_projectiles();
@@ -297,7 +300,7 @@ void check_player(){
             top_right_proj_in_player_hit_box
         );
 
-        if(player_hit_by_projectile && player.hp > 0){
+        if(player_hit_by_projectile && player.hp > 1){
             player.dead_time = SDL_GetTicks64();
             player.t_time = SDL_GetTicks64();
             player.reloading = false;
@@ -307,12 +310,10 @@ void check_player(){
             clear_projectiles();
             clear_enemies();
             clear_fading_data();
-        }else if(player_hit_by_projectile && player.hp == 0){
+        }else if(player_hit_by_projectile && player.hp == 1){
+            player.hp -= 1;
             set_toggle_shoot_player(false);
-            get_game()->state = PLAY_STATE_OVER;
-            // clear_projectiles();
-            // clear_enemies();
-            // clear_score();
+            start_over_music();
         }
     }
 }

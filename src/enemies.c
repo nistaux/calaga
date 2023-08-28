@@ -132,6 +132,7 @@ void clear_enemies(){
         };
         enemies[i] = enemy;
     }
+    clear_field();
 }
 
 void destroy_enemy(int index){

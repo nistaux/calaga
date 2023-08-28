@@ -7,6 +7,7 @@
 
 Mix_Music *title_bgm;
 Mix_Music *play_bgm;
+Mix_Music *over_bgm;
 Mix_Chunk *deadSound;
 Mix_Chunk *enterSound;
 Mix_Chunk *hitSound;
@@ -31,6 +32,11 @@ void init_mixer() {
     }
     play_bgm = Mix_LoadMUS(PLAY_BACKGROUND_MUSIC_DIR);
     if(!play_bgm){
+        printf(".mp3 sound '%s' could not be loaded!\n"
+                "SDL_Error: %s\n", PLAY_BACKGROUND_MUSIC_DIR, SDL_GetError());
+    }
+    over_bgm = Mix_LoadMUS(OVER_BACKGROUND_MUSIC_DIR);
+    if(!over_bgm){
         printf(".mp3 sound '%s' could not be loaded!\n"
                 "SDL_Error: %s\n", PLAY_BACKGROUND_MUSIC_DIR, SDL_GetError());
     }
@@ -86,6 +92,14 @@ void start_title_music() {
 void start_play_music() {
     Mix_VolumeMusic(musicVolume*0.7);
     if(Mix_PlayMusic(play_bgm, -1) == -1) {
+        printf(".OGG sound could not be played!\n"
+                "SDL_Error: %s\n", SDL_GetError());
+    }
+}
+
+void start_over_music() {
+    Mix_VolumeMusic(musicVolume*0.7);
+    if(Mix_PlayMusic(over_bgm, -1) == -1) {
         printf(".OGG sound could not be played!\n"
                 "SDL_Error: %s\n", SDL_GetError());
     }

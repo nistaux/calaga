@@ -183,6 +183,42 @@ void handle_play_keypress_paused(SDL_Event event){
             break;
     }
 }
+
+void handle_play_keypress_over(SDL_Event event){
+    if(event.type != SDL_KEYDOWN){return;}
+    int key = event.key.keysym.sym;
+    switch(key) {
+        case SDLK_ESCAPE:
+            set_music_volume_play();
+            get_game()->play.state = PLAY_STATE_ALIVE;
+            break;
+        case SDLK_w:
+            play_over_main_selection_up();
+            play_sound(SELECT_SOUND);
+            break;
+        case SDLK_s:
+            play_over_main_selection_down();
+            play_sound(SELECT_SOUND);
+            break;
+        case SDLK_SPACE:
+            play_sound(ENTER_SOUND);
+            switch(get_game()->play.paused_selection){
+                case 0:
+                    // set_music_volume_play();
+                    // get_game()->play.state = PLAY_STATE_ALIVE;
+                    break;
+                case 1:
+                    break;
+                default:
+                    printf("this shouldn't happen");
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 void handle_play_keypress(SDL_Event event) {
     switch(get_game()->play.state){
         case PLAY_STATE_ALIVE:
@@ -194,6 +230,8 @@ void handle_play_keypress(SDL_Event event) {
         case PLAY_STATE_PAUSED:
             handle_play_keypress_paused(event);
             break;
+        case PLAY_STATE_OVER:
+            handle_play_keypress_over(event);
         default:
             break;
     }
