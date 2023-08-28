@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 #include <SDL.h>
 
@@ -9,7 +10,6 @@ typedef enum {
     PLAYER_STATE_IDLE,
     PLAYER_STATE_SHOOTING,
     PLAYER_STATE_RECHARGING,
-    PLAYER_STATE_DEAD
 } PlayerState;
 
 typedef struct {
@@ -20,6 +20,9 @@ typedef struct {
     float y_vel;
     float shoot_reload_interval_seconds;
     float last_shot;
+    float dead_time;
+    float t_time;
+    bool transparent;
     bool reloading;
     PlayerState state;
 } Player;

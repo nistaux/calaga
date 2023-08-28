@@ -28,6 +28,7 @@ void init_player(float x, float y){
         .hp = 3,
         .shoot_reload_interval_seconds = 0.333,
         .last_shot = 0.0,
+        .transparent = false,
         .reloading = false,
         .state = PLAYER_STATE_TITLE
     };
@@ -148,27 +149,36 @@ void move_player_title_main() {
         flip = !flip;
     }
 }
-bool target_set = false;
-float target_x;
-float target_y;
-float x_timing;
-float y_timing;
+
+bool fading_target_set = false;
+float fading_target_x;
+float fading_target_y;
+float fading_x_timing;
+float fading_y_timing;
+void clear_fading_data(){
+    fading_target_set = false;
+    fading_target_x = 0.0f;
+    fading_target_y = 0.0f;
+    fading_x_timing = 0.0f;
+    fading_y_timing = 0.0f;
+}
+
 void move_player_title_fading(){
-    if(!target_set){
-        target_x = ((GAME_WIDTH/2) - (playerRect.w/2));
-        target_y = (GAME_HEIGHT-playerRect.h)-55;
-        float x_diffy = target_x - player.x;
-        float y_diffy = target_y - player.y;
+    if(!fading_target_set){
+        fading_target_x = ((GAME_WIDTH/2) - (playerRect.w/2));
+        fading_target_y = (GAME_HEIGHT-playerRect.h)-55;
+        float x_diffy = fading_target_x - player.x;
+        float y_diffy = fading_target_y - player.y;
 
         float ticksPerSecond = 250.0;
         float secondsToTarget = 1.25;
-        x_timing = x_diffy/(ticksPerSecond*secondsToTarget);
-        y_timing = y_diffy/(ticksPerSecond*secondsToTarget);
-        target_set = true;
+        fading_x_timing = x_diffy/(ticksPerSecond*secondsToTarget);
+        fading_y_timing = y_diffy/(ticksPerSecond*secondsToTarget);
+        fading_target_set = true;
     }
-    if(player.y <= target_y){
-        player.x += x_timing;
-        player.y += y_timing;
+    if(player.y <= fading_target_y || player.x <= fading_target_x){
+        player.x += fading_x_timing;
+        player.y += fading_y_timing;
     }else{
         get_game()->title.state = TITLE_STATE_MAIN;
         set_game_state(GAME_STATE_PLAY);
@@ -189,12 +199,32 @@ void move_player_title(){
 void move_player_play(){
     bool player_outside_right_bounds = ((player.x+player.x_vel+70) >= GAME_WIDTH);
     bool player_outside_left_bounds = ((player.x+player.x_vel) <= 0);
-    switch(get_game()->title.state){
+    switch(get_game()->play.state){
     case PLAY_STATE_ALIVE:
         if(!player_outside_left_bounds && !player_outside_right_bounds){
             player.x += player.x_vel;
         }
         break;
+    case PLAY_STATE_DEAD:
+        //printf("just testing huh\n");
+        player.x = ((GAME_WIDTH/2) - (playerRect.w/2));
+        player.y = (GAME_HEIGHT-playerRect.h)-55;
+        if(SDL_GetTicks64() - player.t_time >= 400){
+            player.transparent = !player.transparent;
+            player.t_time = SDL_GetTicks64();
+        }
+        if(player.transparent){
+            //printf("player is tp\n");
+            SDL_SetTextureAlphaMod(player_texture, 0);
+        }else{{
+            SDL_SetTextureAlphaMod(player_texture, 255);
+            //printf("player is NOT tp\n");
+        }}
+        if(SDL_GetTicks64() - player.dead_time >= 2000){
+            SDL_SetTextureAlphaMod(player_texture, 255);
+            get_game()->play.state = PLAY_STATE_ALIVE;
+        }
+            
     default:
         break;
     }
@@ -213,7 +243,7 @@ void move_player(){
 }
 
 void check_player(){
-    
+
     Projectile proj;
     Projectile *p = get_projectiles();
 
@@ -267,11 +297,22 @@ void check_player(){
             top_right_proj_in_player_hit_box
         );
 
-        if(player_hit_by_projectile){
+        if(player_hit_by_projectile && player.hp > 0){
+            player.dead_time = SDL_GetTicks64();
+            player.t_time = SDL_GetTicks64();
+            player.reloading = false;
+            set_toggle_shoot_player(false);
             get_game()->play.state = PLAY_STATE_DEAD;
             player.hp -= 1;
             clear_projectiles();
             clear_enemies();
+            clear_fading_data();
+        }else if(player_hit_by_projectile && player.hp == 0){
+            set_toggle_shoot_player(false);
+            get_game()->state = PLAY_STATE_OVER;
+            // clear_projectiles();
+            // clear_enemies();
+            // clear_score();
         }
     }
 }

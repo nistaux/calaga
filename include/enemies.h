@@ -51,5 +51,6 @@ typedef struct {
 
 void init_enemies(SDL_Renderer *renderer);
 void create_enemy(EnemyType type, MoveType moveType, int startLocation);
+void clear_enemies();
 void tick_enemies();
 void draw_enemies(SDL_Renderer *renderer);

@@ -27,6 +27,7 @@ typedef struct {
 void init_projectile_textures(SDL_Renderer *renderer);
 Projectile *get_projectiles();
 void create_projectile(Projectile temp);
+void clear_projectiles();
 void destroy_projectile(int index);
 void move_projectiles();
 void draw_projectiles(SDL_Renderer *renderer);

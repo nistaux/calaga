@@ -125,6 +125,14 @@ void create_enemy(EnemyType type, MoveType moveType, int startLocation){
         break;
     }
 }
+void clear_enemies(){
+    for(int i = 0; i < (POSSIBLE_ENEMIES); i++) {
+        Enemy enemy = {
+            .created = false,
+        };
+        enemies[i] = enemy;
+    }
+}
 
 void destroy_enemy(int index){
     Enemy zero = {

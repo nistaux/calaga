@@ -118,16 +118,21 @@ void draw_title_screen(SDL_Renderer *renderer){
 }
 
 // -------------- PLAY SECTION --------------
-bool play_screen_pause_loaded = false;
-SDL_Rect pauseRect = {
+SDL_Rect screenRect = {
     .x = 0,
     .y = 0,
     .w = GAME_WIDTH,
     .h = GAME_HEIGHT
 };
+void draw_play_screen_over(SDL_Renderer *renderer){
+    SDL_SetRenderDrawColor(renderer, 15, 15, 15, 185);
+    SDL_RenderFillRect(renderer, &screenRect);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    draw_play_over_main_selections(renderer);
+}
 void draw_play_screen_paused(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 15, 15, 15, 185);
-    SDL_RenderFillRect(renderer, &pauseRect);
+    SDL_RenderFillRect(renderer, &screenRect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     draw_play_paused_main_selections(renderer);
 }
@@ -140,8 +145,9 @@ void draw_play_screen(SDL_Renderer *renderer) {
     draw_ui(renderer);
     // everything else
 
-    // last draw pause if game is paused
-    if(get_game()->play.state == PLAY_STATE_PAUSED){
+    if(get_game()->play.state == PLAY_STATE_OVER){
+        //draw_play_screen_over();
+    }else if(get_game()->play.state == PLAY_STATE_PAUSED){
         draw_play_screen_paused(renderer);
     }
 }

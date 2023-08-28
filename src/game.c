@@ -192,7 +192,7 @@ void tick(){
             move_background();
             tick_player(timer.deltaTime);
         }
-        if(game.state != GAME_STATE_TITLE && game.play.state != PLAY_STATE_PAUSED){
+        if(game.state == GAME_STATE_PLAY && game.play.state == PLAY_STATE_ALIVE){
             tick_generator();
             tick_enemies();
             move_projectiles();

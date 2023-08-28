@@ -50,6 +50,14 @@ void create_projectile(Projectile temp){
     projectiles[next_element] = temp;
     total_projectiles++;
 }
+void clear_projectiles(){
+    for(int i = 0; i < (possible_projectiles); i++) {
+        Projectile proj = {
+            .created = false,
+        };
+        projectiles[i] = proj;
+    }
+}
 void destroy_projectile(int index){
     Projectile zero = {
         .created = false,

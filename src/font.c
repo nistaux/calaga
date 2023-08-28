@@ -284,3 +284,90 @@ void draw_play_paused_main_selections(SDL_Renderer *renderer) {
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 }
+
+Text gameoverPlayText = {
+    .id = -1
+};
+SDL_Rect gameoverPlayRect;
+Text goagainPlayText = {
+    .id = 0
+};
+SDL_Rect goagainPlayRect;
+Text mainMenuPlayText = {
+    .id = 1
+};
+SDL_Rect mainMenuPlayRect;
+bool play_paused_selections_loaded = false;
+void load_play_paused_main_selections(SDL_Renderer *renderer) {
+    create_text(renderer, MENU_NAME_FONT, 175, "Paused", &pausedPlayText);
+    create_text(renderer, TITLE_FONT, 95, "Resume", &resumePlayText);
+    create_text(renderer, TITLE_FONT, 95, "Options", &optionsPlayText);
+    create_text(renderer, TITLE_FONT, 95, "Main Menu", &mainMenuPlayText);
+    play_paused_selections_loaded = true;
+}
+void draw_play_paused_main_selections(SDL_Renderer *renderer) {
+    if(!play_paused_selections_loaded){
+        load_play_paused_main_selections(renderer);
+    }
+
+    int return_code;
+
+    pausedPlayRect.x = (GAME_WIDTH-pausedPlayText.w)/2;
+    pausedPlayRect.y = 80;
+    pausedPlayRect.w = pausedPlayText.w;
+    pausedPlayRect.h = pausedPlayText.h;
+
+    if(get_game()->play.paused_selection == pausedPlayText.id){
+        return_code = SDL_RenderCopy(renderer, pausedPlayText.selected_texture, NULL, &pausedPlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, pausedPlayText.texture, NULL, &pausedPlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+
+    int start_x = 325;
+    int interval = 115;
+
+    resumePlayRect.x = (GAME_WIDTH-resumePlayText.w)/2;
+    resumePlayRect.y = start_x;
+    resumePlayRect.w = resumePlayText.w;
+    resumePlayRect.h = resumePlayText.h;
+
+    if(get_game()->play.paused_selection == resumePlayText.id){
+        return_code = SDL_RenderCopy(renderer, resumePlayText.selected_texture, NULL, &resumePlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, resumePlayText.texture, NULL, &resumePlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+
+    optionsPlayRect.x = (GAME_WIDTH-optionsPlayText.w)/2;
+    optionsPlayRect.y = start_x + interval;
+    optionsPlayRect.w = optionsPlayText.w;
+    optionsPlayRect.h = optionsPlayText.h;
+
+    if(get_game()->play.paused_selection == optionsPlayText.id){
+        return_code = SDL_RenderCopy(renderer, optionsPlayText.selected_texture, NULL, &optionsPlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, optionsPlayText.texture, NULL, &optionsPlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+
+    mainMenuPlayRect.x = (GAME_WIDTH-mainMenuPlayText.w)/2;
+    mainMenuPlayRect.y = start_x + (interval*2);
+    mainMenuPlayRect.w = mainMenuPlayText.w;
+    mainMenuPlayRect.h = mainMenuPlayText.h;
+
+    if(get_game()->play.paused_selection == mainMenuPlayText.id){
+        return_code = SDL_RenderCopy(renderer, mainMenuPlayText.selected_texture, NULL, &mainMenuPlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, mainMenuPlayText.texture, NULL, &mainMenuPlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+}

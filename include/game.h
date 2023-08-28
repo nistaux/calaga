@@ -35,7 +35,8 @@ typedef struct {
 typedef enum {
     PLAY_STATE_ALIVE,
     PLAY_STATE_PAUSED,
-    PLAY_STATE_DEAD
+    PLAY_STATE_DEAD,
+    PLAY_STATE_OVER,
 } PlayState;
 
 typedef struct {

@@ -86,6 +86,66 @@ void handle_play_keypress_alive(SDL_Event event){
 
     
 }
+
+void handle_play_keydown_dead(int key){
+    switch(key) {
+        case SDLK_ESCAPE:
+            set_music_volume_paused();
+            get_game()->play.paused_selection = 0;
+            get_game()->play.state = PLAY_STATE_PAUSED;
+            break;
+        case SDLK_a:
+            if(!a_pressed){ 
+                add_player_x_vel(-0.96);
+                a_pressed = true;
+            }
+            break;
+        case SDLK_d:
+            if(!d_pressed){ 
+                add_player_x_vel(0.96);
+                d_pressed = true;
+            }
+            break;
+        default:
+            break;
+    }
+}
+void handle_play_keyup_dead(int key){
+    switch(key) {
+        case SDLK_a:
+            if(a_pressed){
+                add_player_x_vel(0.96);
+                a_pressed = false;
+            }
+            
+            break;
+        case SDLK_d:
+            if(d_pressed){
+                add_player_x_vel(-0.96);
+                d_pressed = false;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void handle_play_keypress_dead(SDL_Event event){
+    int key = event.key.keysym.sym;
+    switch(event.type){
+        case SDL_KEYDOWN:
+            handle_play_keydown_dead(key);
+            break;
+        case SDL_KEYUP:
+            handle_play_keyup_dead(key);
+            break;
+        default:
+            break;
+    }
+
+    
+}
+
 void handle_play_keypress_paused(SDL_Event event){
     if(event.type != SDL_KEYDOWN){return;}
     int key = event.key.keysym.sym;
@@ -129,7 +189,7 @@ void handle_play_keypress(SDL_Event event) {
             handle_play_keypress_alive(event);
             break;
         case PLAY_STATE_DEAD:
-            //asd
+            handle_play_keypress_dead(event);
             break;
         case PLAY_STATE_PAUSED:
             handle_play_keypress_paused(event);
