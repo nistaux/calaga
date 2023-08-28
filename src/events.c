@@ -189,8 +189,8 @@ void handle_play_keypress_over(SDL_Event event){
     int key = event.key.keysym.sym;
     switch(key) {
         case SDLK_ESCAPE:
-            set_music_volume_play();
-            get_game()->play.state = PLAY_STATE_ALIVE;
+            // set_music_volume_play();
+            // get_game()->play.state = PLAY_STATE_ALIVE;
             break;
         case SDLK_w:
             play_over_main_selection_up();
