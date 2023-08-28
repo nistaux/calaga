@@ -216,11 +216,11 @@ void tick(){
             move_background();
             tick_player(timer.deltaTime);
             tick_enemies();
+            tick_ui();
         }
         if(game.state == GAME_STATE_PLAY && game.play.state == PLAY_STATE_ALIVE){
             tick_generator();
             move_projectiles();
-            tick_ui();
         }
         timer.deltaTick = 0.0;
     }
