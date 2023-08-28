@@ -17,6 +17,7 @@ void clear_field(){
     for(int i = 0; i < 24; i++){
         field[i] = false;
     }
+    field_available = 24;
 }
 int find_field_space(MoveType moveType){
     int rand_int = rand() % 23;
