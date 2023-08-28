@@ -10,6 +10,7 @@
 #include "defs.h"
 #include "projectile.h"
 #include "audio.h"
+#include "enemies.h"
 
 Player player;
 SDL_Texture *player_texture;
@@ -212,11 +213,15 @@ void move_player(){
 }
 
 void check_player(){
+    
     Projectile proj;
     Projectile *p = get_projectiles();
+
     for(int i = 0; i < possible_projectiles; i++){
+
         proj = *(p + i);
         if(proj.created == false || proj.type == PROJ_PLAYER){continue;}
+
         float player_buffer = 15.0f;
         float bottom_of_proj = proj.y+proj.srcRect.h;
         float bottom_of_player = player.y+70.0f-player_buffer;
@@ -236,21 +241,18 @@ void check_player(){
             left_of_proj < right_of_player &&
             left_of_proj > left_of_player
         );
-
         bool bottom_right_proj_in_player_hit_box = (
             bottom_of_proj > top_of_player &&
             bottom_of_proj < bottom_of_player &&
             right_of_proj > left_of_player &&
             right_of_proj < right_of_player
         );
-
         bool top_left_proj_in_player_hit_box = (
             top_of_proj > top_of_player &&
             top_of_proj < bottom_of_player &&
             left_of_proj < right_of_player &&
             left_of_proj > left_of_player
         );
-
         bool top_right_proj_in_player_hit_box = (
             top_of_proj > top_of_player &&
             top_of_proj < bottom_of_player &&
@@ -258,11 +260,18 @@ void check_player(){
             right_of_proj < right_of_player
         );
 
-        if(bottom_left_proj_in_player_hit_box || bottom_right_proj_in_player_hit_box ||
-           top_left_proj_in_player_hit_box || top_right_proj_in_player_hit_box
-        ){
+        bool player_hit_by_projectile = (
+            bottom_left_proj_in_player_hit_box ||
+            bottom_right_proj_in_player_hit_box ||
+            top_left_proj_in_player_hit_box ||
+            top_right_proj_in_player_hit_box
+        );
+
+        if(player_hit_by_projectile){
             get_game()->play.state = PLAY_STATE_DEAD;
             player.hp -= 1;
+            clear_projectiles();
+            clear_enemies();
         }
     }
 }
