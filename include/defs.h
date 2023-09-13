@@ -8,4 +8,4 @@ version is vX.X.X.Julian Date since 2021 Jan 25
                                    -> (short hash for git commit) 
                                              -> (Build Version)
 */
-#define GAME_NAME "Calaga v0.6.1.0961 (776cca4) (Alpha x64)"
+#define GAME_NAME "Calaga v0.7.4.0961 (776cca4) (Alpha x64)"
