@@ -20,6 +20,7 @@ typedef struct {
     Text text;
 } ScoreText;
 
+const char* get_p_score_string();
 void create_score_text(SDL_Renderer *renderer, ScoreText temp);
 void increase_score(int amount, ScoreText temp);
 void tick_ui();

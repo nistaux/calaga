@@ -15,6 +15,7 @@ ScoreText scoreTexts[POSSIBLE_SCORE_TEXTS];
 int total_scoreTexts = 0;
 unsigned int score = 0;
 char scoreStr[POSSIBLE_SCORE_LENGTH];
+const char *pScoreStr = scoreStr;
 
 int redistribute_score_text_array(){
     if(total_scoreTexts == 0){return 0;}
@@ -36,6 +37,10 @@ int redistribute_score_text_array(){
     return arr_count;
 }
 
+const char* get_p_score_string(){
+    return pScoreStr;
+}
+
 void create_score_text(SDL_Renderer *renderer, ScoreText temp){
     temp.created = true;
     temp.timeCreated = SDL_GetTicks64();
@@ -48,8 +53,7 @@ void create_score_text(SDL_Renderer *renderer, ScoreText temp){
         temp.x_vel = ((float)(rand() % 20))*-0.18f;
     }
     temp.y_vel = -7.0*0.5;
-    const char *p = scoreStr;
-    create_text(renderer, REGULAR_FONT, 25, p, &temp.text);
+    create_text(renderer, REGULAR_FONT, 25, pScoreStr, &temp.text);
 
     int next_element = redistribute_score_text_array();
     scoreTexts[next_element] = temp;

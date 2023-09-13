@@ -125,15 +125,21 @@ SDL_Rect screenRect = {
     .h = GAME_HEIGHT
 };
 void draw_play_screen_over(SDL_Renderer *renderer){
+    // Start Drawing Dark Shade
     SDL_SetRenderDrawColor(renderer, 15, 15, 15, 185);
     SDL_RenderFillRect(renderer, &screenRect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // Done Drawing Dark Shade
+
     draw_play_over_main_selections(renderer);
 }
 void draw_play_screen_paused(SDL_Renderer *renderer) {
+    // Start Drawing Dark Shade
     SDL_SetRenderDrawColor(renderer, 15, 15, 15, 185);
     SDL_RenderFillRect(renderer, &screenRect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // Done Drawing Dark Shade
+    
     draw_play_paused_main_selections(renderer);
 }
 void draw_play_screen(SDL_Renderer *renderer) {

@@ -7,6 +7,7 @@
 #include "font.h"
 #include "defs.h"
 #include "game.h"
+#include "ui.h"
 
 bool is_ttf_init = false;
 SDL_Color SELECTED_COLOR = { 180,75,255 };
@@ -289,6 +290,14 @@ Text gameoverPlayText = {
     .id = -1
 };
 SDL_Rect gameoverPlayRect;
+Text scoreTextOverPlayText = {
+    .id = -1
+};
+SDL_Rect scoreTextOverPlayRect;
+Text scoreOverPlayText = {
+    .id = -1
+};
+SDL_Rect scoreOverPlayRect;
 Text goagainPlayText = {
     .id = 0
 };
@@ -300,6 +309,8 @@ SDL_Rect mainMenuOverPlayRect;
 bool play_over_selections_loaded = false;
 void load_play_over_main_selections(SDL_Renderer *renderer) {
     create_text(renderer, MENU_NAME_FONT, 160, "Game Over", &gameoverPlayText);
+    create_text(renderer, REGULAR_FONT, 70, "Score:", &scoreTextOverPlayText);
+    create_text(renderer, REGULAR_FONT, 105, get_p_score_string(), &scoreOverPlayText);
     create_text(renderer, TITLE_FONT, 95, "Go Again", &goagainPlayText);
     create_text(renderer, TITLE_FONT, 95, "Main Menu", &mainMenuOverPlayText);
     play_over_selections_loaded = true;
@@ -320,6 +331,36 @@ void draw_play_over_main_selections(SDL_Renderer *renderer) {
         return_code = SDL_RenderCopy(renderer, gameoverPlayText.selected_texture, NULL, &gameoverPlayRect);
     }else {
         return_code = SDL_RenderCopy(renderer, gameoverPlayText.texture, NULL, &gameoverPlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+    
+    int scoreTextX = 275;
+    int scoreActualX = scoreTextX+80;
+    scoreTextOverPlayRect.x = (GAME_WIDTH-scoreTextOverPlayText.w)/2;
+    scoreTextOverPlayRect.y = scoreTextX;
+    scoreTextOverPlayRect.w = scoreTextOverPlayText.w;
+    scoreTextOverPlayRect.h = scoreTextOverPlayText.h;
+
+    if(get_game()->play.over_selection == scoreTextOverPlayText.id){
+        return_code = SDL_RenderCopy(renderer, scoreTextOverPlayText.selected_texture, NULL, &scoreTextOverPlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, scoreTextOverPlayText.texture, NULL, &scoreTextOverPlayRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+
+    scoreOverPlayRect.x = (GAME_WIDTH-scoreOverPlayText.w)/2;
+    scoreOverPlayRect.y = scoreActualX;
+    scoreOverPlayRect.w = scoreOverPlayText.w;
+    scoreOverPlayRect.h = scoreOverPlayText.h;
+
+    if(get_game()->play.over_selection == scoreOverPlayText.id){
+        return_code = SDL_RenderCopy(renderer, scoreOverPlayText.selected_texture, NULL, &scoreOverPlayRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, scoreOverPlayText.texture, NULL, &scoreOverPlayRect);
     }
     if(return_code != 0){
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
