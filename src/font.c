@@ -310,14 +310,26 @@ bool play_over_selections_loaded = false;
 void load_play_over_main_selections(SDL_Renderer *renderer) {
     create_text(renderer, MENU_NAME_FONT, 160, "Game Over", &gameoverPlayText);
     create_text(renderer, REGULAR_FONT, 70, "Score:", &scoreTextOverPlayText);
-    create_text(renderer, REGULAR_FONT, 105, get_p_score_string(), &scoreOverPlayText);
     create_text(renderer, TITLE_FONT, 95, "Go Again", &goagainPlayText);
     create_text(renderer, TITLE_FONT, 95, "Main Menu", &mainMenuOverPlayText);
     play_over_selections_loaded = true;
 }
+bool play_over_score_loaded = false;
+void load_play_over_score(SDL_Renderer *renderer){
+    create_text(renderer, REGULAR_FONT, 105, get_p_score_string(), &scoreOverPlayText);
+    play_over_score_loaded = true;
+}
+void destroy_game_over_score(){
+    SDL_DestroyTexture(scoreOverPlayText.texture);
+    SDL_DestroyTexture(scoreOverPlayText.selected_texture);
+    play_over_score_loaded = false;
+}
 void draw_play_over_main_selections(SDL_Renderer *renderer) {
     if(!play_over_selections_loaded){
         load_play_over_main_selections(renderer);
+    }
+    if(!play_over_score_loaded){
+        load_play_over_score(renderer);
     }
 
     int return_code;
@@ -335,7 +347,7 @@ void draw_play_over_main_selections(SDL_Renderer *renderer) {
     if(return_code != 0){
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
-    
+
     int scoreTextX = 275;
     int scoreActualX = scoreTextX+80;
     scoreTextOverPlayRect.x = (GAME_WIDTH-scoreTextOverPlayText.w)/2;

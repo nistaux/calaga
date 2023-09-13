@@ -77,6 +77,7 @@ void go_to_main_menu(){
     game.title.selection = 0;
     game.play.state = PLAY_STATE_ALIVE;
     game.play.paused_selection = 0;
+    game.play.over_selection = 0;
 }
 
 void init_game() {

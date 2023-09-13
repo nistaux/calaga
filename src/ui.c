@@ -14,7 +14,7 @@
 ScoreText scoreTexts[POSSIBLE_SCORE_TEXTS];
 int total_scoreTexts = 0;
 unsigned int score = 0;
-char scoreStr[POSSIBLE_SCORE_LENGTH];
+char scoreStr[POSSIBLE_SCORE_LENGTH] = "0";
 const char *pScoreStr = scoreStr;
 
 int redistribute_score_text_array(){
@@ -39,6 +39,10 @@ int redistribute_score_text_array(){
 
 const char* get_p_score_string(){
     return pScoreStr;
+}
+
+void reset_score(){
+    score = 0;
 }
 
 void create_score_text(SDL_Renderer *renderer, ScoreText temp){

@@ -28,6 +28,7 @@ typedef struct {
 } Player;
 
 void init_player(float x, float y);
+void set_player_loc(float x, float y);
 float get_player_x();
 int get_player_hp();
 SDL_Texture *get_player_texture();

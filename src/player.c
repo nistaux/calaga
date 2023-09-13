@@ -26,7 +26,7 @@ void init_player(float x, float y){
         .x_vel = 0.0,
         .y_vel = 0.0,
         .hp = 3,
-        .shoot_reload_interval_seconds = 0.333,
+        .shoot_reload_interval_seconds = 0.333f,
         .last_shot = 0.0,
         .transparent = false,
         .reloading = false,
@@ -34,6 +34,10 @@ void init_player(float x, float y){
     };
 
     player = temp;
+}
+void set_player_loc(float x, float y){
+    player.x = x;
+    player.y = y;
 }
 float get_player_x(){
     return player.x;
@@ -85,19 +89,14 @@ void set_player_default_location(){
     player.y = PLAYER_DEFAULT_Y;
 }
 void reset_player(){
-    Player temp = {
-        .x = 0.0f,
-        .y = 0.0f,
-        .x_vel = 0.0f,
-        .y_vel = 0.0f,
-        .hp = 3,
-        .shoot_reload_interval_seconds = 0.18,
-        .last_shot = 0.0,
-        .reloading = false,
-        .state = PLAYER_STATE_TITLE
-    };
-
-    player = temp;
+    player.x = 0.0f;
+    player.y = 0.0f;
+    player.x_vel = 0.0f;
+    player.y_vel = 0.0f;
+    player.hp = 3;
+    player.last_shot = 0.0;
+    player.reloading = false;
+    player.state = PLAYER_STATE_TITLE;
     toggle_shoot = false;
     set_player_default_location();
     clear_enemies();

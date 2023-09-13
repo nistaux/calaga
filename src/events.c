@@ -8,6 +8,9 @@
 #include "player.h"
 #include "projectile.h"
 #include "window.h"
+#include "defs.h"
+#include "font.h"
+#include "ui.h"
 
 bool w_pressed = false;
 bool a_pressed = false;
@@ -172,6 +175,8 @@ void handle_play_keypress_paused(SDL_Event event){
                 case 1:
                     break;
                 case 2:
+                    destroy_game_over_score();
+                    reset_score();
                     go_to_main_menu();
                     break;
                 default:
@@ -202,12 +207,21 @@ void handle_play_keypress_over(SDL_Event event){
             break;
         case SDLK_SPACE:
             play_sound(ENTER_SOUND);
-            switch(get_game()->play.paused_selection){
+            switch(get_game()->play.over_selection){
                 case 0:
-                    // set_music_volume_play();
-                    // get_game()->play.state = PLAY_STATE_ALIVE;
+                    destroy_game_over_score();
+                    reset_score();
+                    reset_player();
+                    float x = ((GAME_WIDTH/2) - (35));
+                    float y = (GAME_HEIGHT-70)-55;
+                    set_player_loc(x, y);
+                    start_play_music();
+                    get_game()->play.state = PLAY_STATE_ALIVE;
                     break;
                 case 1:
+                    destroy_game_over_score();
+                    reset_score();
+                    go_to_main_menu();
                     break;
                 default:
                     printf("this shouldn't happen");
