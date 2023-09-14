@@ -308,8 +308,6 @@ void check_player(){
             player.dead_time = SDL_GetTicks64();
             player.t_time = SDL_GetTicks64();
             player.reloading = false;
-            reset_player_vel();
-            reset_keyboard_events();
             set_toggle_shoot_player(false);
             get_game()->play.state = PLAY_STATE_DEAD;
             player.hp -= 1;
