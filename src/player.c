@@ -11,6 +11,7 @@
 #include "projectile.h"
 #include "audio.h"
 #include "enemies.h"
+#include "events.h"
 
 Player player;
 SDL_Texture *player_texture;
@@ -38,6 +39,10 @@ void init_player(float x, float y){
 void set_player_loc(float x, float y){
     player.x = x;
     player.y = y;
+}
+void reset_player_vel(){
+    player.x_vel = 0.0f;
+    player.y_vel = 0.0f;
 }
 float get_player_x(){
     return player.x;
@@ -303,6 +308,8 @@ void check_player(){
             player.dead_time = SDL_GetTicks64();
             player.t_time = SDL_GetTicks64();
             player.reloading = false;
+            reset_player_vel();
+            reset_keyboard_events();
             set_toggle_shoot_player(false);
             get_game()->play.state = PLAY_STATE_DEAD;
             player.hp -= 1;

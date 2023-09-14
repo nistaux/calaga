@@ -18,11 +18,21 @@ bool s_pressed = false;
 bool d_pressed = false;
 bool space_pressed = false;
 
+void reset_keyboard_events(){
+    w_pressed = false;
+    a_pressed = false;
+    s_pressed = false;
+    d_pressed = false;
+    space_pressed = false;
+}
+
 
 void handle_play_keydown_alive(int key){
     switch(key) {
         case SDLK_ESCAPE:
             set_music_volume_paused();
+            reset_keyboard_events();
+            reset_player_vel();
             get_game()->play.paused_selection = 0;
             get_game()->play.state = PLAY_STATE_PAUSED;
             break;
@@ -145,8 +155,6 @@ void handle_play_keypress_dead(SDL_Event event){
         default:
             break;
     }
-
-    
 }
 
 void handle_play_keypress_paused(SDL_Event event){
@@ -211,11 +219,12 @@ void handle_play_keypress_over(SDL_Event event){
                 case 0:
                     destroy_game_over_score();
                     reset_score();
+                    start_play_music();
                     reset_player();
+                    reset_keyboard_events();
                     float x = ((GAME_WIDTH/2) - (35));
                     float y = (GAME_HEIGHT-70)-55;
                     set_player_loc(x, y);
-                    start_play_music();
                     get_game()->play.state = PLAY_STATE_ALIVE;
                     break;
                 case 1:
