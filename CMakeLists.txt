@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.27.1)
-project(calaga VERSION 0.6.1
+project(calaga VERSION 0.7.4.0961
                     DESCRIPTION "A game inspired by Galaga"
                     LANGUAGES C)
-set(CMAKE_BUILD_TYPE Calaga-Alpha)
+set(CMAKE_BUILD_TYPE Calaga-Alpha-${CMAKE_PROJECT_VERSION})
 # SETUP VARIABLES:
 set(OUTPUT_DIR "${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/bin/${CMAKE_BUILD_TYPE})
