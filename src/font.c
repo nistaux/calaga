@@ -104,6 +104,10 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
 }
 
 // -------------- TITLE SECTION --------------
+Text versionText = {
+    .id = -1
+};
+SDL_Rect versionRect;
 Text startText = {
     .id = 0
 };
@@ -122,6 +126,7 @@ Text quitText = {
 SDL_Rect quitRect;
 bool title_selections_loaded = false;
 void load_title_main_selections(SDL_Renderer *renderer){
+    create_text(renderer, REGULAR_FONT, 15, GAME_VERSION, &versionText);
     create_text(renderer, TITLE_FONT, 95, "Start", &startText);
     create_text(renderer, TITLE_FONT, 95, "Options", &optionsText);
     create_text(renderer, TITLE_FONT, 95, "Scores", &scoreText);
@@ -133,10 +138,26 @@ void draw_title_main_selections(SDL_Renderer *renderer){
     if(!title_selections_loaded){
         load_title_main_selections(renderer);
     }
+
+    int return_code;
+    //x107 y140
+    versionRect.x = GAME_WIDTH-(versionText.w+7);
+    versionRect.y = GAME_HEIGHT-(versionText.h+7);
+    versionRect.w = versionText.w;
+    versionRect.h = versionText.h;
+
+    if(get_game()->title.selection == startText.id){
+        return_code = SDL_RenderCopy(renderer, versionText.selected_texture, NULL, &versionRect);
+    }else {
+        return_code = SDL_RenderCopy(renderer, versionText.texture, NULL, &versionRect);
+    }
+    if(return_code != 0){
+        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
+    }
+
     int start_x = 255;
     int interval = 115;
-    int return_code;
-
+    
     startRect.x = (GAME_WIDTH-startText.w)/2;
     startRect.y = start_x;
     startRect.w = startText.w;
