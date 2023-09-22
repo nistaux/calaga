@@ -70,7 +70,7 @@ void shoot_player(){
         Projectile proj = {
             .srcRect = srcRect,
             .dstRect = dstRect,
-            .speed = 18.0,
+            .speed = 18.0f,
             .type = PROJ_PLAYER,
             .x = (player.x + (((float)playerRect.w/2)-9)),
             .y = (player.y-10),
@@ -254,6 +254,8 @@ void check_player(){
     Projectile proj;
     Projectile *p = get_projectiles();
 
+    bool player_hit_by_projectile;
+
     for(int i = 0; i < possible_projectiles; i++){
 
         proj = *(p + i);
@@ -297,28 +299,89 @@ void check_player(){
             right_of_proj < right_of_player
         );
 
-        bool player_hit_by_projectile = (
+        player_hit_by_projectile = (
             bottom_left_proj_in_player_hit_box ||
             bottom_right_proj_in_player_hit_box ||
             top_left_proj_in_player_hit_box ||
             top_right_proj_in_player_hit_box
         );
 
-        if(player_hit_by_projectile && player.hp > 1){
-            player.dead_time = SDL_GetTicks64();
-            player.t_time = SDL_GetTicks64();
-            player.reloading = false;
-            set_toggle_shoot_player(false);
-            get_game()->play.state = PLAY_STATE_DEAD;
-            player.hp -= 1;
-            clear_projectiles();
-            clear_enemies();
-            clear_fading_data();
-        }else if(player_hit_by_projectile && player.hp == 1){
-            player.hp -= 1;
-            set_toggle_shoot_player(false);
-            start_over_music();
-        }
+        if(player_hit_by_projectile){break;}
+    }
+
+    Enemy enemy;
+    Enemy *pEnemy = get_enemies();
+
+    bool player_hit_by_enemy;
+
+    for(int i = 0; i < POSSIBLE_ENEMIES; i++){
+
+        enemy = *(pEnemy + i);
+        // if enemy isnt created or the enemy isnt a dagger skip to next enemy
+        if(enemy.created == false || enemy.type != ENEMY_TYPE_DAGGER){continue;}
+
+        float player_buffer = 15.0f;
+        float bottom_of_enemy = enemy.y+enemy.spriteRect.h;
+        float bottom_of_player = player.y+70.0f-player_buffer;
+
+        float top_of_enemy = enemy.y;
+        float top_of_player = player.y+player_buffer;
+        
+        float left_of_enemy = enemy.x+12;
+        float left_of_player = player.x+player_buffer;
+        
+        float right_of_enemy = enemy.x+enemy.spriteRect.w-12;
+        float right_of_player = player.x+70.0f-player_buffer;
+        
+        bool bottom_left_enemy_in_player_hit_box = (
+            bottom_of_enemy > top_of_player &&
+            bottom_of_enemy < bottom_of_player &&
+            left_of_enemy < right_of_player &&
+            left_of_enemy > left_of_player
+        );
+        bool bottom_right_enemy_in_player_hit_box = (
+            bottom_of_enemy > top_of_player &&
+            bottom_of_enemy < bottom_of_player &&
+            right_of_enemy > left_of_player &&
+            right_of_enemy < right_of_player
+        );
+        bool top_left_enemy_in_player_hit_box = (
+            top_of_enemy > top_of_player &&
+            top_of_enemy < bottom_of_player &&
+            left_of_enemy < right_of_player &&
+            left_of_enemy > left_of_player
+        );
+        bool top_right_enemy_in_player_hit_box = (
+            top_of_enemy > top_of_player &&
+            top_of_enemy < bottom_of_player &&
+            right_of_enemy > left_of_player &&
+            right_of_enemy < right_of_player
+        );
+
+        player_hit_by_enemy = (
+            bottom_left_enemy_in_player_hit_box ||
+            bottom_right_enemy_in_player_hit_box ||
+            top_left_enemy_in_player_hit_box ||
+            top_right_enemy_in_player_hit_box
+        );
+
+        if(player_hit_by_enemy){break;}
+    }
+
+    if((player_hit_by_projectile || player_hit_by_enemy) && player.hp > 1){
+        player.dead_time = SDL_GetTicks64();
+        player.t_time = SDL_GetTicks64();
+        player.reloading = false;
+        set_toggle_shoot_player(false);
+        get_game()->play.state = PLAY_STATE_DEAD;
+        player.hp -= 1;
+        clear_projectiles();
+        clear_enemies();
+        clear_fading_data();
+    }else if((player_hit_by_projectile || player_hit_by_enemy) && player.hp == 1){
+        player.hp -= 1;
+        set_toggle_shoot_player(false);
+        start_over_music();
     }
 }
 
