@@ -377,9 +377,12 @@ void check_player(){
         player.hp -= 1;
         clear_projectiles();
         clear_enemies();
+        stop_all_sounds();
+        play_sound(PLAYERDEAD_SOUND);
         clear_fading_data();
     }else if((player_hit_by_projectile || player_hit_by_enemy) && player.hp == 1){
         player.hp -= 1;
+        stop_all_sounds();
         set_toggle_shoot_player(false);
         start_over_music();
     }

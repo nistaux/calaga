@@ -11,6 +11,7 @@
 #include "projectile.h"
 #include "ui.h"
 #include "defs.h"
+#include "audio.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -456,6 +457,7 @@ void shoot_beader_and_tshot(int enemyIndex){
     temp.y += 20.0f;
     enemies[enemyIndex].last_shot = (float)SDL_GetTicks64()/1000.0f;
     enemies[enemyIndex].reloading = true;
+    play_sound(ENEMY_SHOOT_SOUND);
     create_projectile(temp);
 }
 
@@ -475,6 +477,7 @@ void shoot_dagger(int enemyIndex){
         enemies[enemyIndex].last_shot = (float)SDL_GetTicks64()/1000.0f;
         enemies[enemyIndex].reloading = true;
         enemies[enemyIndex].state = ENEMY_STATE_SHOOTING;
+        play_sound(WINDUP_SOUND);
         //printf("made it past shooting\n");
     }
 
@@ -484,7 +487,10 @@ void shoot_dagger(int enemyIndex){
     case ENEMY_STATE_SHOOTING:
         enemies[enemyIndex].x_vel = -5.0f * (enemies[enemyIndex].target_slope_x/total_movement);
         enemies[enemyIndex].y_vel = -5.0f * (enemies[enemyIndex].target_slope_y/total_movement);
-        if(lastShotDiff >= 0.5f){enemies[enemyIndex].state = ENEMY_STATE_DEAD;}
+        if(lastShotDiff >= 0.5f){
+            enemies[enemyIndex].state = ENEMY_STATE_DEAD;
+            play_sound(WOOSH_SOUND);
+        }
         //printf("shooting...\n");
         break;
     case ENEMY_STATE_DEAD:
@@ -520,6 +526,7 @@ void kill_enemy(int enemyIndex, int projectileIndex){
         increase_score(100, temp);
         break;
     case ENEMY_TYPE_DAGGER:
+        stop_chargup_sound();
         increase_score(250, temp);
         break;
     case ENEMY_TYPE_TSHOT:
@@ -545,12 +552,14 @@ void check_asteroids(int enemyIndex){
         proj.x > enemy.x &&
         proj.y > enemy.y
         ){
+            play_sound(HIT_SOUND);
             destroy_projectile(i);
         }else if(proj.x+proj.srcRect.w > enemy.x && 
         proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
         proj.x < enemy.x+enemy.spriteRect.w &&
         proj.y > enemy.y
         ){
+            play_sound(HIT_SOUND);
             destroy_projectile(i);
         }
     }
@@ -577,12 +586,14 @@ void check_enemies(int enemyIndex){
         proj.x > enemy.x &&
         proj.y > enemy.y
         ){
+            play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
         }else if(proj.x+proj.srcRect.w > enemy.x && 
         proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
         proj.x < enemy.x+enemy.spriteRect.w &&
         proj.y > enemy.y
         ){
+            play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
         }
     }
