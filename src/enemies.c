@@ -532,11 +532,10 @@ void check_enemies(int enemyIndex){
 
 void tick_enemies(){
     for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
-        if(enemies[enemy].created == true){
-            move_enemies(enemy);
-            shoot_enemies(enemy);
-            check_enemies(enemy);
-        }
+        if(!enemies[enemy].created){continue;}
+        move_enemies(enemy);
+        shoot_enemies(enemy);
+        check_enemies(enemy);
     }
 }
 
