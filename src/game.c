@@ -71,6 +71,7 @@ void set_game_running(bool running) {
 
 void go_to_main_menu(){
     reset_player();
+    reset_difficulty();
     start_title_music();
     game.state = GAME_STATE_TITLE;
     game.title.state = TITLE_STATE_MAIN;

@@ -12,6 +12,7 @@
 #include "ui.h"
 #include "defs.h"
 #include "audio.h"
+#include "generator.h"
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
@@ -517,23 +518,24 @@ void shoot_enemies(int enemyIndex){
 }
 
 void kill_enemy(int enemyIndex, int projectileIndex){
+    float difficulty = get_difficulty_scale();
     ScoreText temp = {
         .x = enemies[enemyIndex].x+15.0f,
         .y = enemies[enemyIndex].y+5.0f
     };
     switch(enemies[enemyIndex].type){
     case ENEMY_TYPE_BEADER:
-        increase_score(100, temp);
+        increase_score((int)round(difficulty*50), temp);
         break;
     case ENEMY_TYPE_DAGGER:
         stop_chargup_sound();
-        increase_score(250, temp);
+        increase_score((int)round(difficulty*125), temp);
         break;
     case ENEMY_TYPE_TSHOT:
-        increase_score(350, temp);
+        increase_score((int)round(difficulty*200), temp);
         break;
     default:
-        increase_score(25, temp);
+        increase_score((int)round(difficulty*25), temp);
         break;
     }
     destroy_projectile(projectileIndex);

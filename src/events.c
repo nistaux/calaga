@@ -11,6 +11,7 @@
 #include "defs.h"
 #include "font.h"
 #include "ui.h"
+#include "generator.h"
 
 bool w_pressed = false;
 bool a_pressed = false;
@@ -217,6 +218,7 @@ void handle_play_keypress_over(SDL_Event event){
                 case 0:
                     destroy_game_over_score();
                     reset_score();
+                    reset_difficulty();
                     start_play_music();
                     reset_player();
                     reset_keyboard_events();
