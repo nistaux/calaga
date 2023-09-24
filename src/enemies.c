@@ -124,6 +124,81 @@ void create_beader(MoveType moveType, int startLocation){
     total_enemies++;
 }
 
+void create_tshot(MoveType moveType, int startLocation){
+    int fieldLoc = find_field_space(moveType);
+    take_field_space(fieldLoc, moveType);
+    
+    int top_buffer = 50;
+    int field_border = 15;
+    int x = 0;
+    int y = 0;
+
+    if(fieldLoc < 6){
+        x = (100*fieldLoc)+field_border;
+        y = (top_buffer+field_border);
+    }else if(6 <= fieldLoc && fieldLoc < 12){
+        x = (100*(fieldLoc-6)+field_border);
+        y = (top_buffer+field_border+100);
+    }else if(12 <= fieldLoc && fieldLoc < 18){
+        x = (100*(fieldLoc-12)+field_border);
+        y = (top_buffer+field_border+200);
+    }else {
+        x = (100*(fieldLoc-18)+field_border);
+        y = (top_buffer+field_border+300);
+    }
+    
+    SDL_Rect spriteRect = { .x = 140, .y = 0, .w = 70, .h = 70};
+    Enemy enemy = {
+        .created = true,
+        .hp = 1,
+        .last_shot = 0.0f,
+        .reloading = false,
+        .shoot_reload_interval_seconds = 0.666f,
+        .spriteRect = spriteRect,
+        .state = ENEMY_STATE_RECHARGING,
+        .type = ENEMY_TYPE_TSHOT,
+        .moveType = moveType,
+        .fieldReservation = fieldLoc,
+        .fieldLocation = startLocation,
+        .x_loc = (float)x,
+        .y_loc = (float)y,
+        .x = (float)x,
+        .x_vel = 0.0f,
+        .y = (float)y,
+        .y_vel = 0.0f,
+        .speed = 0.20f
+    };
+    enemy.reloading = true;
+    enemy.last_shot = ((float)SDL_GetTicks64()/1000.0f)-(enemy.shoot_reload_interval_seconds*0.75);
+
+    switch(enemy.fieldLocation){
+    case 1:
+        enemy.x += + 100.0f;
+        if(enemy.moveType == MOVE_TYPE_LEFTRIGHT){
+            enemy.x_vel = -1.0f;
+        }else{
+            enemy.y_vel = 1.0f;
+        }
+        break;
+    case 2:
+        enemy.y += 100.0f;
+        enemy.y_vel = -1.0f;
+        break;
+    case 3:
+        enemy.x += 100.0f;
+        enemy.y += 100.0f;
+        enemy.x_vel = -1.0f;
+        break;
+    default:
+        enemy.x_vel = 1.0f;
+        break;
+    }
+
+    int next_element = redistribute_enemy_array();
+    enemies[next_element] = enemy;
+    total_enemies++;
+}
+
 void create_dagger(MoveType moveType, int startLocation){
     int fieldLoc = find_field_space(moveType);
     take_field_space(fieldLoc, moveType);
@@ -206,6 +281,10 @@ void create_enemy(EnemyType type, MoveType moveType, int startLocation){
         break;
     case ENEMY_TYPE_DAGGER:
         create_dagger(moveType, startLocation);
+        break;
+    case ENEMY_TYPE_TSHOT:
+        create_tshot(moveType, startLocation);
+        break;
     default:
         break;
     }
@@ -304,31 +383,36 @@ void shoot_beader_and_tshot(int enemyIndex){
         .w = 17,
         .h = 20
     };
-    SDL_Rect srcRect;
-    switch(enemies[enemyIndex].type){
-    case ENEMY_TYPE_BEADER:
-        srcRect.x = 17;
-        srcRect.y = 0;
-        srcRect.w = 17;
-        srcRect.h = 20;
-        break;
-    case ENEMY_TYPE_TSHOT:
-        break;
-    default:
-        break;
-    }
-    
+    SDL_Rect srcRect = {
+        .w = 17,
+        .h = 20,
+    };
     Projectile temp = {
         .speed = 1.5f,
         .dstRect = dstRect,
         .srcRect = srcRect,
-        .type = PROJ_BEADER,
         .angle = enemies[enemyIndex].target_dir,
         .x = enemies[enemyIndex].x+35.0f,
         .y = enemies[enemyIndex].y+35.0f,
         .x_vel = 0.0f,
         .y_vel = 0.0f,
     };
+    switch(enemies[enemyIndex].type){
+    case ENEMY_TYPE_BEADER:
+        temp.srcRect.x = 17;
+        temp.srcRect.y = 0;
+        temp.speed = 1.5f;
+        temp.type = PROJ_BEADER;
+        break;
+    case ENEMY_TYPE_TSHOT:
+        temp.srcRect.x = 34;
+        temp.srcRect.y = 0;
+        temp.speed = 1.5f;
+        temp.type = PROJ_TSHOT;
+        break;
+    default:
+        break;
+    }
 
     // temp.speed
     float total_movement = (float)(fabs(enemies[enemyIndex].target_slope_x) + fabs(enemies[enemyIndex].target_slope_y));
@@ -403,6 +487,9 @@ void kill_enemy(int enemyIndex, int projectileIndex){
         break;
     case ENEMY_TYPE_DAGGER:
         increase_score(250, temp);
+        break;
+    case ENEMY_TYPE_TSHOT:
+        increase_score(350, temp);
         break;
     default:
         increase_score(25, temp);

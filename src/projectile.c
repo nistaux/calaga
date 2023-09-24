@@ -89,19 +89,18 @@ void move_projectiles(){
 }
 void draw_projectiles(SDL_Renderer *renderer){
     if(!projectile_textures_loaded){init_projectile_textures(renderer);}
+    int ret;
     for(int i = 0; i < possible_projectiles; i++){
-        if(projectiles[i].created == true){
-            switch(projectiles[i].type){
-            case PROJ_PLAYER:
-                SDL_RenderCopy(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect);
-                break;
-            case PROJ_BEADER:
-                if(SDL_RenderCopyEx(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect, projectiles[i].angle, NULL, SDL_FLIP_VERTICAL) != 0){
-                    printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
-                }
-            default:
-                break;
-            }
+        if(!projectiles[i].created){continue;}
+        switch(projectiles[i].type){
+        case PROJ_PLAYER:
+            ret = SDL_RenderCopy(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect);
+            if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+            break;
+        default:
+            ret = SDL_RenderCopyEx(renderer, projectileMap, &projectiles[i].srcRect, &projectiles[i].dstRect, projectiles[i].angle, NULL, SDL_FLIP_VERTICAL);
+            if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+            break;
         }
     }
 }

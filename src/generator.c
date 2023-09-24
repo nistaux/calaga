@@ -20,10 +20,12 @@ void tick_generator(){
     }
     int randomEnemyNumber = (rand() % 100);
     EnemyType enemyType;
-    if(randomEnemyNumber <= 49){
+    if(randomEnemyNumber <= 33){
         enemyType = ENEMY_TYPE_BEADER;
-    }else{
+    }else if(randomEnemyNumber >= 34 && randomEnemyNumber <= 66){
         enemyType = ENEMY_TYPE_DAGGER;
+    }else {
+        enemyType = ENEMY_TYPE_TSHOT;
     }
     int startLoc;
     switch(moveType){
