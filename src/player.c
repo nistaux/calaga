@@ -318,7 +318,7 @@ void check_player(){
 
         enemy = *(pEnemy + i);
         // if enemy isnt created or the enemy isnt a dagger skip to next enemy
-        if(enemy.created == false || enemy.type != ENEMY_TYPE_DAGGER){continue;}
+        if(!enemy.created || enemy.type == ENEMY_TYPE_BEADER || enemy.type == ENEMY_TYPE_TSHOT){continue;}
 
         float player_buffer = 15.0f;
         float bottom_of_enemy = enemy.y+enemy.spriteRect.h;

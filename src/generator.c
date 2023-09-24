@@ -4,11 +4,35 @@
 
 #include "enemies.h"
 #include "field.h"
+#include "defs.h"
 
 bool test_created = false;
+int last_aster_time = 0;
+int last_attempt_time = 0;
+int aster_creation_cd = 1000;
+int aster_attempt_cd = 1000;
 int last_gen_time = 0;
 int enemy_creation_cd = 1234;
-void tick_generator(){
+
+void gen_asteroid(){
+    if(get_asteroid_amount() >= 3){return;}
+    if(SDL_GetTicks64()-last_aster_time < aster_creation_cd && last_aster_time != 0){return;}
+    if(SDL_GetTicks64()-last_attempt_time < aster_attempt_cd && last_attempt_time != 0){return;}
+
+    // 20% chance to create asteroid
+    if((rand() % 100) > 20){
+        last_attempt_time = SDL_GetTicks64();
+        return;
+    }
+    int startLocation = (rand() % GAME_WIDTH);
+    float speedScale = (float)((rand() % 10)+1);
+    float speed = (speedScale*0.08f)+1.0f;
+
+    last_aster_time = SDL_GetTicks64();
+    create_asteroid(startLocation, speed);
+}
+
+void gen_enemy(){
     if(SDL_GetTicks64()-last_gen_time < enemy_creation_cd && last_gen_time != 0){return;}
     if(get_field_available() == 0){return;}
 
@@ -18,7 +42,7 @@ void tick_generator(){
     }else{
         moveType = MOVE_TYPE_LEFTRIGHT;
     }
-    int randomEnemyNumber = (rand() % 100);
+    int randomEnemyNumber = (rand() % 100)+1;
     EnemyType enemyType;
     if(randomEnemyNumber <= 33){
         enemyType = ENEMY_TYPE_BEADER;
@@ -40,4 +64,9 @@ void tick_generator(){
     }
     create_enemy(enemyType,  moveType, startLoc);
     last_gen_time = SDL_GetTicks64();
+}
+
+void tick_generator(){
+    gen_enemy();
+    gen_asteroid();
 }

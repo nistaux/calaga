@@ -51,6 +51,8 @@ typedef struct {
 
 void init_enemies(SDL_Renderer *renderer);
 Enemy *get_enemies();
+int get_asteroid_amount();
+void create_asteroid(int startLocation, float speed);
 void create_enemy(EnemyType type, MoveType moveType, int startLocation);
 void clear_enemies();
 void tick_enemies();

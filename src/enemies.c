@@ -14,6 +14,7 @@
 
 SDL_Texture *enemiesTexture;
 int total_enemies = 0;
+int total_asteroids = 0;
 Enemy enemies[POSSIBLE_ENEMIES];
 bool enemyTexturesLoaded = false;
 
@@ -47,6 +48,29 @@ int redistribute_enemy_array(){
         enemies[arr_count+i] = proj;
     }
     return arr_count;
+}
+
+int get_asteroid_amount(){
+    return total_asteroids;
+}
+
+void create_asteroid(int startLocation, float speed){
+    SDL_Rect spriteRect = { .x = 0, .y = 70, .w = 70, .h = 70};
+    Enemy enemy = {
+        .created = true,
+        .spriteRect = spriteRect,
+        .state = ENEMY_STATE_RECHARGING,
+        .type = ENEMY_TYPE_ASTEROID,
+        .x = (float)startLocation,
+        .x_vel = 0.0f,
+        .y = -70.0f,
+        .y_vel = 1.0f,
+        .speed = speed
+    };
+
+    int next_element = redistribute_enemy_array();
+    enemies[next_element] = enemy;
+    total_asteroids++;
 }
 
 void create_beader(MoveType moveType, int startLocation){
@@ -296,18 +320,27 @@ void clear_enemies(){
         };
         enemies[i] = enemy;
     }
+    total_enemies = 0;
+    total_asteroids = 0;
     clear_field();
 }
 
 void destroy_enemy(int index){
+    int fieldSpace = enemies[index].fieldReservation;
+    MoveType type = enemies[index].moveType;
+    switch(enemies[index].type){
+    case ENEMY_TYPE_ASTEROID:
+        total_asteroids--;
+        break;
+    default:
+        free_field_space(fieldSpace, type);
+        total_enemies--;
+    }
     Enemy zero = {
         .created = false,
     };
-    int fieldSpace = enemies[index].fieldReservation;
-    MoveType type = enemies[index].moveType;
     enemies[index] = zero;
-    total_enemies--;
-    free_field_space(fieldSpace, type);
+    
 }
 
 void move_type_circle(int enemyIndex){
@@ -358,6 +391,7 @@ void turn_enemy(int enemyIndex){
 void move_enemies(int enemyIndex){
     enemies[enemyIndex].x += enemies[enemyIndex].x_vel*enemies[enemyIndex].speed;
     enemies[enemyIndex].y += enemies[enemyIndex].y_vel*enemies[enemyIndex].speed;
+    if(enemies[enemyIndex].type == ENEMY_TYPE_ASTEROID){return;};
     if(enemies[enemyIndex].state != ENEMY_STATE_RECHARGING){return;}
     switch(enemies[enemyIndex].moveType){
     case MOVE_TYPE_CIRCLE:
@@ -499,6 +533,37 @@ void kill_enemy(int enemyIndex, int projectileIndex){
     destroy_enemy(enemyIndex); 
 }
 
+void check_asteroids(int enemyIndex){
+    Enemy enemy = enemies[enemyIndex];
+    Projectile proj;
+    Projectile *p = get_projectiles();
+    for(int i = 0; i < possible_projectiles; i++){
+        proj = *(p + i);
+
+        if(proj.x < (enemy.x+enemy.spriteRect.w) && 
+        proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
+        proj.x > enemy.x &&
+        proj.y > enemy.y
+        ){
+            destroy_projectile(i);
+        }else if(proj.x+proj.srcRect.w > enemy.x && 
+        proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
+        proj.x < enemy.x+enemy.spriteRect.w &&
+        proj.y > enemy.y
+        ){
+            destroy_projectile(i);
+        }
+    }
+    // Check if enemy is outside bounds and then kill it if so - or just remove it
+    bool ENEMY_OUTSIDE_LEFT_BOUND = (enemy.x + (float)enemy.spriteRect.w) < 0.0f;
+    bool ENEMY_OUTSIDE_BOTTOM_BOUND = enemy.y > GAME_HEIGHT;
+    bool ENEMY_OUTSIDE_RIGHT_BOUND = enemy.x > GAME_WIDTH;
+    if(ENEMY_OUTSIDE_LEFT_BOUND || ENEMY_OUTSIDE_BOTTOM_BOUND || ENEMY_OUTSIDE_RIGHT_BOUND){
+        destroy_enemy(enemyIndex);
+        printf("ENEMY: Destroyed Asteroid for going outside game bounds!\n");
+    }
+}
+
 void check_enemies(int enemyIndex){
     Enemy enemy = enemies[enemyIndex];
     Projectile proj;
@@ -535,7 +600,15 @@ void tick_enemies(){
         if(!enemies[enemy].created){continue;}
         move_enemies(enemy);
         shoot_enemies(enemy);
-        check_enemies(enemy);
+        switch(enemies[enemy].type){
+        case ENEMY_TYPE_ASTEROID:
+            check_asteroids(enemy);
+            break;
+        default:
+            check_enemies(enemy);
+            break;
+        }
+        
     }
 }
 
@@ -543,20 +616,26 @@ void draw_enemies(SDL_Renderer *renderer){
     // printf("ENEMY: Drawing Enemies...\n");
     if(!enemyTexturesLoaded){init_enemies(renderer);}
     for(int enemy = 0; enemy < POSSIBLE_ENEMIES; enemy++){
-        if(enemies[enemy].created == true){
-            int x = (int)round(enemies[enemy].x);
-            int y = (int)round(enemies[enemy].y);
-            SDL_Rect renderRect = {
-                .x = x,
-                .y = y,
-                .w = 70,
-                .h = 70
-            };
-
-            if(SDL_RenderCopyEx(renderer, enemiesTexture, &enemies[enemy].spriteRect, &renderRect, enemies[enemy].target_dir, NULL, SDL_FLIP_NONE) != 0){
-                printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
-            }
-        }
+        if(!enemies[enemy].created){continue;}
+        int x = (int)round(enemies[enemy].x);
+        int y = (int)round(enemies[enemy].y);
+        SDL_Rect renderRect = {
+            .x = x,
+            .y = y,
+            .w = 70,
+            .h = 70
+        };
+        int ret;
+        switch(enemies[enemy].type){
+        case ENEMY_TYPE_ASTEROID:
+            ret = SDL_RenderCopy(renderer, enemiesTexture, &enemies[enemy].spriteRect, &renderRect);
+            if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+            break;
+        default:
+            ret = SDL_RenderCopyEx(renderer, enemiesTexture, &enemies[enemy].spriteRect, &renderRect, enemies[enemy].target_dir, NULL, SDL_FLIP_NONE);
+            if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+            break;
+        } 
     }
     // printf("ENEMY: Finished Drawing Enemies...\n");
 }
