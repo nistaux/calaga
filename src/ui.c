@@ -10,15 +10,20 @@
 #include "font.h"
 #include "player.h"
 #include "defs.h"
+#include "generator.h"
 
 ScoreText scoreTexts[POSSIBLE_SCORE_TEXTS];
 Text totalScoreText;
+Text diffScaleText;
+int ui_timer_last = 0;
 int total_scoreTexts = 0;
 unsigned int score = 0;
 char scoreStr[POSSIBLE_SCORE_LENGTH] = "0";
 const char *pScoreStr = scoreStr;
 char totalScoreStr[POSSIBLE_SCORE_LENGTH] = "0";
 const char *pTotalScoreStr = totalScoreStr;
+char diffScaleStr[6] = "1.0";
+const char *pDiffScaleStr = diffScaleStr;
 
 int redistribute_score_text_array(){
     if(total_scoreTexts == 0){return 0;}
@@ -125,13 +130,22 @@ void draw_player_hp(SDL_Renderer *renderer){
 
 void update_total_score_texture(){
     SDL_Renderer *renderer = SDL_GetRenderer(get_window());
+    
     SDL_DestroyTexture(totalScoreText.texture);
     SDL_DestroyTexture(totalScoreText.selected_texture);
-    create_text(renderer, REGULAR_FONT, 25, pTotalScoreStr, &totalScoreText);
+    create_text(renderer, REGULAR_FONT, 27, pTotalScoreStr, &totalScoreText);
+}
+
+void update_diff_scale_texture(){
+    SDL_Renderer *renderer = SDL_GetRenderer(get_window());
+
+    sprintf(diffScaleStr, "%.1f", get_difficulty_scale());
+    SDL_DestroyTexture(diffScaleText.texture);
+    SDL_DestroyTexture(diffScaleText.selected_texture);
+    create_text(renderer, TITLE_FONT, 27, pDiffScaleStr, &diffScaleText);
 }
 
 void draw_total_score(SDL_Renderer *renderer){
-    update_total_score_texture();
     int ret = 0;
     SDL_Rect src = {
         .x = 0,
@@ -140,8 +154,8 @@ void draw_total_score(SDL_Renderer *renderer){
         .h = totalScoreText.h,
     };
     SDL_Rect dst = {
-        .x = (GAME_WIDTH - (totalScoreText.w+20)),
-        .y = (GAME_HEIGHT - (totalScoreText.h+20)),
+        .x = (GAME_WIDTH - (totalScoreText.w+15)),
+        .y = (GAME_HEIGHT - (totalScoreText.h+15)),
         .w = src.w,
         .h = src.h,
     };
@@ -149,9 +163,33 @@ void draw_total_score(SDL_Renderer *renderer){
     if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
 }
 
+void draw_diff_scale(SDL_Renderer *renderer){
+    int ret = 0;
+    SDL_Rect src = {
+        .x = 0,
+        .y = 0,
+        .w = diffScaleText.w,
+        .h = diffScaleText.h,
+    };
+    SDL_Rect dst = {
+        .x = (GAME_WIDTH/2) - (diffScaleText.w/2),
+        .y = (GAME_HEIGHT - (diffScaleText.h+15)),
+        .w = src.w,
+        .h = src.h,
+    };
+    ret = SDL_RenderCopy(renderer, diffScaleText.texture, &src, &dst);
+    if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+}
+
 void draw_ui(SDL_Renderer *renderer){
+    if(SDL_GetTicks64()-ui_timer_last > 100 || ui_timer_last == 0){
+        ui_timer_last = SDL_GetTicks64();
+        update_diff_scale_texture();
+        update_total_score_texture();
+    }
     draw_player_hp(renderer);
     draw_total_score(renderer);
+    draw_diff_scale(renderer);
     for(int scoreText = 0; scoreText < POSSIBLE_SCORE_TEXTS; scoreText++){
         if(scoreTexts[scoreText].created == true){
             SDL_Rect dstRect = {
