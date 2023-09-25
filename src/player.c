@@ -248,9 +248,7 @@ void move_player(){
     }
 }
 
-void check_player(){
-    if(player.hp == 0){get_game()->play.state = PLAY_STATE_OVER;}
-
+bool check_player_projectiles(){
     Projectile proj;
     Projectile *p = get_projectiles();
 
@@ -306,9 +304,15 @@ void check_player(){
             top_right_proj_in_player_hit_box
         );
 
-        if(player_hit_by_projectile){break;}
+        if(player_hit_by_projectile){
+            printf("hit by projectile!\n");
+            return true;
+        }
     }
+    return false;
+}
 
+bool check_player_enemies(){
     Enemy enemy;
     Enemy *pEnemy = get_enemies();
 
@@ -365,8 +369,19 @@ void check_player(){
             top_right_enemy_in_player_hit_box
         );
 
-        if(player_hit_by_enemy){break;}
+        if(player_hit_by_enemy){
+            printf("hit by enemy!\n");
+            return true;
+        }
     }
+    return false;
+}
+
+void check_player(){
+    if(player.hp == 0){get_game()->play.state = PLAY_STATE_OVER;}
+
+    bool player_hit_by_projectile = check_player_projectiles();
+    bool player_hit_by_enemy = check_player_enemies();
 
     if((player_hit_by_projectile || player_hit_by_enemy) && player.hp > 1){
         player.dead_time = SDL_GetTicks64();
@@ -399,7 +414,9 @@ void check_reloading(float deltaTime){
 }
 void tick_player(float deltaTime){
     move_player();
-    check_player();
-    check_reloading(deltaTime);
-    shoot_player();
+    if(get_game_state() != GAME_STATE_TITLE){
+        check_player();
+        check_reloading(deltaTime);
+        shoot_player();
+    }
 }
