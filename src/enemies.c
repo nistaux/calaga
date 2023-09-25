@@ -573,7 +573,7 @@ void check_asteroids(int enemyIndex){
     bool ENEMY_OUTSIDE_BOTTOM_BOUND = enemy.y > GAME_HEIGHT;
     bool ENEMY_OUTSIDE_RIGHT_BOUND = enemy.x > GAME_WIDTH;
     if(ENEMY_OUTSIDE_LEFT_BOUND || ENEMY_OUTSIDE_BOTTOM_BOUND || ENEMY_OUTSIDE_RIGHT_BOUND){
-        printf("ENEMY: Destroyed Asteroid. y: %.2f\n", enemies[enemyIndex].y);
+        //printf("ENEMY: Destroyed Asteroid. y: %.2f\n", enemies[enemyIndex].y);
         destroy_enemy(enemyIndex);
         
     }
@@ -593,7 +593,7 @@ void check_enemies(int enemyIndex){
         proj.x > enemy.x &&
         proj.y > enemy.y
         ){
-            printf("killed enemy: %d\n", enemies[enemyIndex].type);
+            //printf("killed enemy: %d\n", enemies[enemyIndex].type);
             play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
             
@@ -602,7 +602,7 @@ void check_enemies(int enemyIndex){
         proj.x < enemy.x+enemy.spriteRect.w &&
         proj.y > enemy.y
         ){
-            printf("killed enemy: %d\n", enemies[enemyIndex].type);
+            //printf("killed enemy: %d\n", enemies[enemyIndex].type);
             play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
         }

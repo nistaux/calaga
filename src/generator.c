@@ -113,8 +113,8 @@ void increase_difficulty(){
     float enemy_spawn_difficulty = (enemy_spawn_rate - SPAWN_RATE)*0.1f;
     float asteroid_rate_difficulty = (asteroid_spawn_rate - ASTEROID_RATE)*0.1f;
     difficulty_scale = (enemy_type_difficulty+enemy_spawn_difficulty+asteroid_rate_difficulty)+1.0f;
-    if(SDL_GetTicks64()-last_gen_time < enemy_creation_cd && last_gen_time != 0){return;}
-    printf("\nEnemy Type Diff: %.1f\nEnemy Rate Diff: %.1f\nAsteroid Rate Diff: %.1f\nOVERALL DIFF: %.1f\n", enemy_type_difficulty, enemy_spawn_difficulty, asteroid_rate_difficulty, difficulty_scale);
+    //if(SDL_GetTicks64()-last_gen_time < enemy_creation_cd && last_gen_time != 0){return;}
+    //printf("\nEnemy Type Diff: %.1f\nEnemy Rate Diff: %.1f\nAsteroid Rate Diff: %.1f\nOVERALL DIFF: %.1f\n", enemy_type_difficulty, enemy_spawn_difficulty, asteroid_rate_difficulty, difficulty_scale);
 }
 
 void tick_generator(){
