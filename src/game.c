@@ -22,7 +22,8 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-double render_frame_rate_per_second = 100.0;
+double render_frame_rate_per_second = 200.0;
+double physics_tick_rate_per_second = 250.0;
 
 double system_timer = 0.0;
 double system_post_interval = 5.0;
@@ -114,9 +115,6 @@ void init_game() {
     timer.physicsTime = 0.0;
     timer.renderTime = 0.0;
 
-    // variable for setting game tick rate
-    float physics_tick_rate_per_second = 250.0;
-    
     timer.physicsIter = (1.0/physics_tick_rate_per_second);
     timer.renderIter = (1.0/render_frame_rate_per_second);
 

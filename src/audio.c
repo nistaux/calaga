@@ -18,8 +18,8 @@ Mix_Chunk *wooshSound;
 Mix_Chunk *playerShootSound;
 Mix_Chunk *enemyShootSound;
 MixController mixController;
-int musicVolume = 25;
-int soundVolume = 35;
+int musicVolume = 70;
+int soundVolume = 150;
 
 void init_mixer() {
     if(Mix_OpenAudio(88200*2, MIX_DEFAULT_FORMAT, 8, 1024) == -1){
@@ -95,7 +95,7 @@ void init_mixer() {
     // ENTER CHANNEL
     Mix_Volume(2, soundVolume);
     // PLAYER SHOOT CHANNEL
-    Mix_Volume(3, round(soundVolume*0.25f));
+    Mix_Volume(3, round(soundVolume*0.20f));
     // ENEMY SHOOT CHANNEL
     Mix_Volume(4, round(soundVolume*0.25f));
     // WOOSH CHANNEL
