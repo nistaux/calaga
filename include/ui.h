@@ -22,6 +22,7 @@ typedef struct {
 
 const char* get_p_score_string();
 void reset_score();
+void update_total_score_texture();
 void create_score_text(SDL_Renderer *renderer, ScoreText temp);
 void increase_score(int amount, ScoreText temp);
 void tick_ui();

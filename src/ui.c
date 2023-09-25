@@ -12,10 +12,13 @@
 #include "defs.h"
 
 ScoreText scoreTexts[POSSIBLE_SCORE_TEXTS];
+Text totalScoreText;
 int total_scoreTexts = 0;
 unsigned int score = 0;
 char scoreStr[POSSIBLE_SCORE_LENGTH] = "0";
 const char *pScoreStr = scoreStr;
+char totalScoreStr[POSSIBLE_SCORE_LENGTH] = "0";
+const char *pTotalScoreStr = totalScoreStr;
 
 int redistribute_score_text_array(){
     if(total_scoreTexts == 0){return 0;}
@@ -38,11 +41,13 @@ int redistribute_score_text_array(){
 }
 
 const char* get_p_score_string(){
-    return pScoreStr;
+    return pTotalScoreStr;
 }
 
 void reset_score(){
     score = 0;
+    sprintf(totalScoreStr, "%d", score);
+    update_total_score_texture();
 }
 
 void create_score_text(SDL_Renderer *renderer, ScoreText temp){
@@ -76,7 +81,8 @@ void delete_score_text(int index){
 
 void increase_score(int amount, ScoreText temp){
     score += amount;
-    sprintf(scoreStr, "%d", score);
+    sprintf(scoreStr, "%d", amount);
+    sprintf(totalScoreStr, "%d", score);
     create_score_text(SDL_GetRenderer(get_window()), temp);
 }
 
@@ -117,8 +123,35 @@ void draw_player_hp(SDL_Renderer *renderer){
     }
 }
 
+void update_total_score_texture(){
+    SDL_Renderer *renderer = SDL_GetRenderer(get_window());
+    SDL_DestroyTexture(totalScoreText.texture);
+    SDL_DestroyTexture(totalScoreText.selected_texture);
+    create_text(renderer, REGULAR_FONT, 25, pTotalScoreStr, &totalScoreText);
+}
+
+void draw_total_score(SDL_Renderer *renderer){
+    update_total_score_texture();
+    int ret = 0;
+    SDL_Rect src = {
+        .x = 0,
+        .y = 0,
+        .w = totalScoreText.w,
+        .h = totalScoreText.h,
+    };
+    SDL_Rect dst = {
+        .x = (GAME_WIDTH - (totalScoreText.w+20)),
+        .y = (GAME_HEIGHT - (totalScoreText.h+20)),
+        .w = src.w,
+        .h = src.h,
+    };
+    ret = SDL_RenderCopy(renderer, totalScoreText.texture, &src, &dst);
+    if(ret != 0){printf("SDL: Error Rendering Image - %s\n", SDL_GetError());}
+}
+
 void draw_ui(SDL_Renderer *renderer){
     draw_player_hp(renderer);
+    draw_total_score(renderer);
     for(int scoreText = 0; scoreText < POSSIBLE_SCORE_TEXTS; scoreText++){
         if(scoreTexts[scoreText].created == true){
             SDL_Rect dstRect = {

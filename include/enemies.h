@@ -5,7 +5,7 @@
 #include <SDL.h>
 
 #define ENEMY_SPRITE_DIR "./assets/images/enemies.png"
-#define POSSIBLE_ENEMIES 10
+#define POSSIBLE_ENEMIES 13
 
 typedef enum {
     ENEMY_TYPE_BEADER,
@@ -40,6 +40,7 @@ typedef struct {
     double target_dir;
     float target_slope_x;
     float target_slope_y;
+    int spawn_time;
     int hp;
     float x_vel;
     float y_vel;

@@ -84,6 +84,7 @@ void go_to_main_menu(){
 void init_game() {
     srand(time(NULL));
     init_player(0.0f,0.0f);
+    
     // Setting Game Struct Init Settings
     Title titleTemp = {
         .active = true,
@@ -234,11 +235,11 @@ void tick(){
         update_window();
     }
     if(system_timer >= system_post_interval){
-        printf("\n----------\n");
-        printf("FPS_TARGET: %.1f\n", 1.0f/timer.renderIter);
-        printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
-        printf("TPS_TARGET: %.1f\n", 1.0f/timer.physicsIter);
-        printf("TPS_CURRENT: %.1f\n", physTicks_count/system_post_interval);
+        // printf("\n----------\n");
+        // printf("FPS_TARGET: %.1f\n", 1.0f/timer.renderIter);
+        // printf("FPS_CURRENT: %.1f\n\n", frame_count/system_post_interval);
+        // printf("TPS_TARGET: %.1f\n", 1.0f/timer.physicsIter);
+        // printf("TPS_CURRENT: %.1f\n", physTicks_count/system_post_interval);
         system_timer = system_timer - system_post_interval;
         frame_count = 0;
         physTicks_count = 0;

@@ -33,7 +33,7 @@ Enemy *get_enemies(){
 }
 
 int redistribute_enemy_array(){
-    if(total_enemies == 0){return 0;}
+    if(total_enemies+total_asteroids == 0){return 0;}
     int arr_count = 0;
     for(int i = 0; i < POSSIBLE_ENEMIES; i++){
         if(enemies[i].created == true){
@@ -108,6 +108,7 @@ void create_beader(MoveType moveType, int startLocation){
         .spriteRect = spriteRect,
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_BEADER,
+        .spawn_time = SDL_GetTicks64(),
         .moveType = moveType,
         .fieldReservation = fieldLoc,
         .fieldLocation = startLocation,
@@ -184,6 +185,7 @@ void create_tshot(MoveType moveType, int startLocation){
         .state = ENEMY_STATE_RECHARGING,
         .type = ENEMY_TYPE_TSHOT,
         .moveType = moveType,
+        .spawn_time = SDL_GetTicks64(),
         .fieldReservation = fieldLoc,
         .fieldLocation = startLocation,
         .x_loc = (float)x,
@@ -260,6 +262,7 @@ void create_dagger(MoveType moveType, int startLocation){
         .state = ENEMY_STATE_RECHARGING,
         .moveType = moveType,
         .fieldReservation = fieldLoc,
+        .spawn_time = SDL_GetTicks64(),
         .fieldLocation = startLocation,
         .x_loc = (float)x,
         .y_loc = (float)y,
@@ -570,12 +573,14 @@ void check_asteroids(int enemyIndex){
     bool ENEMY_OUTSIDE_BOTTOM_BOUND = enemy.y > GAME_HEIGHT;
     bool ENEMY_OUTSIDE_RIGHT_BOUND = enemy.x > GAME_WIDTH;
     if(ENEMY_OUTSIDE_LEFT_BOUND || ENEMY_OUTSIDE_BOTTOM_BOUND || ENEMY_OUTSIDE_RIGHT_BOUND){
+        printf("ENEMY: Destroyed Asteroid. y: %.2f\n", enemies[enemyIndex].y);
         destroy_enemy(enemyIndex);
-        printf("ENEMY: Destroyed Asteroid for going outside game bounds!\n");
+        
     }
 }
 
 void check_enemies(int enemyIndex){
+    if(SDL_GetTicks64()-enemies[enemyIndex].spawn_time < 333){return;}
     Enemy enemy = enemies[enemyIndex];
     Projectile proj;
     Projectile *p = get_projectiles();
@@ -588,13 +593,16 @@ void check_enemies(int enemyIndex){
         proj.x > enemy.x &&
         proj.y > enemy.y
         ){
+            printf("killed enemy: %d\n", enemies[enemyIndex].type);
             play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
+            
         }else if(proj.x+proj.srcRect.w > enemy.x && 
         proj.y < (enemy.y+enemy.spriteRect.h-15.0f) &&
         proj.x < enemy.x+enemy.spriteRect.w &&
         proj.y > enemy.y
         ){
+            printf("killed enemy: %d\n", enemies[enemyIndex].type);
             play_sound(DEAD_SOUND);
             kill_enemy(enemyIndex, i);
         }
