@@ -12,6 +12,8 @@
 #include "audio.h"
 #include "enemies.h"
 #include "events.h"
+#include "scores.h"
+#include "ui.h"
 
 Player player;
 SDL_Texture *player_texture;
@@ -400,6 +402,7 @@ void check_player(){
         stop_all_sounds();
         set_toggle_shoot_player(false);
         start_over_music();
+        add_to_scores(get_score());
     }
 }
 
