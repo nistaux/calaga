@@ -49,6 +49,10 @@ const char* get_p_score_string(){
     return pTotalScoreStr;
 }
 
+unsigned int get_score(){
+    return score;
+}
+
 void reset_score(){
     score = 0;
     sprintf(totalScoreStr, "%d", score);

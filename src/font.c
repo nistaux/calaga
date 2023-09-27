@@ -112,23 +112,18 @@ Text startText = {
     .id = 0
 };
 SDL_Rect startRect;
-Text optionsText = {
-    .id = 1
-};
-SDL_Rect optionsRect;
 Text scoreText = {
-    .id = 2
+    .id = 1
 };
 SDL_Rect scoreRect;
 Text quitText = {
-    .id = 3
+    .id = 2
 };
 SDL_Rect quitRect;
 bool title_selections_loaded = false;
 void load_title_main_selections(SDL_Renderer *renderer){
     create_text(renderer, REGULAR_FONT, 15, GAME_VERSION, &versionText);
     create_text(renderer, TITLE_FONT, 95, "Start", &startText);
-    create_text(renderer, TITLE_FONT, 95, "Options", &optionsText);
     create_text(renderer, TITLE_FONT, 95, "Scores", &scoreText);
     create_text(renderer, TITLE_FONT, 95, "Quit", &quitText);
     title_selections_loaded = true;
@@ -155,7 +150,7 @@ void draw_title_main_selections(SDL_Renderer *renderer){
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 
-    int start_x = 255;
+    int start_x = 280;
     int interval = 115;
     
     startRect.x = (GAME_WIDTH-startText.w)/2;
@@ -172,22 +167,8 @@ void draw_title_main_selections(SDL_Renderer *renderer){
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 
-    optionsRect.x = (GAME_WIDTH-optionsText.w)/2;
-    optionsRect.y = start_x+(interval*1);
-    optionsRect.w = optionsText.w;
-    optionsRect.h = optionsText.h;
-
-    if(get_game()->title.selection == optionsText.id){
-        return_code = SDL_RenderCopy(renderer, optionsText.selected_texture, NULL, &optionsRect);
-    }else {
-        return_code = SDL_RenderCopy(renderer, optionsText.texture, NULL, &optionsRect);
-    }
-    if(return_code != 0){
-        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
-    }
-
     scoreRect.x = (GAME_WIDTH-scoreText.w)/2;
-    scoreRect.y = start_x+(interval*2);
+    scoreRect.y = start_x+(interval*1);
     scoreRect.w = scoreText.w;
     scoreRect.h = scoreText.h;
 
@@ -201,7 +182,7 @@ void draw_title_main_selections(SDL_Renderer *renderer){
     }
 
     quitRect.x = (GAME_WIDTH-quitText.w)/2;
-    quitRect.y = start_x+(interval*3);
+    quitRect.y = start_x+(interval*2);
     quitRect.w = quitText.w;
     quitRect.h = quitText.h;
 
@@ -224,19 +205,14 @@ Text resumePlayText = {
     .id = 0
 };
 SDL_Rect resumePlayRect;
-Text optionsPlayText = {
-    .id = 1
-};
-SDL_Rect optionsPlayRect;
 Text mainMenuPlayText = {
-    .id = 2
+    .id = 1
 };
 SDL_Rect mainMenuPlayRect;
 bool play_paused_selections_loaded = false;
 void load_play_paused_main_selections(SDL_Renderer *renderer) {
     create_text(renderer, MENU_NAME_FONT, 175, "Paused", &pausedPlayText);
     create_text(renderer, TITLE_FONT, 95, "Resume", &resumePlayText);
-    create_text(renderer, TITLE_FONT, 95, "Options", &optionsPlayText);
     create_text(renderer, TITLE_FONT, 95, "Main Menu", &mainMenuPlayText);
     play_paused_selections_loaded = true;
 }
@@ -261,7 +237,7 @@ void draw_play_paused_main_selections(SDL_Renderer *renderer) {
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 
-    int start_x = 325;
+    int start_x = 400;
     int interval = 115;
 
     resumePlayRect.x = (GAME_WIDTH-resumePlayText.w)/2;
@@ -278,22 +254,8 @@ void draw_play_paused_main_selections(SDL_Renderer *renderer) {
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 
-    optionsPlayRect.x = (GAME_WIDTH-optionsPlayText.w)/2;
-    optionsPlayRect.y = start_x + interval;
-    optionsPlayRect.w = optionsPlayText.w;
-    optionsPlayRect.h = optionsPlayText.h;
-
-    if(get_game()->play.paused_selection == optionsPlayText.id){
-        return_code = SDL_RenderCopy(renderer, optionsPlayText.selected_texture, NULL, &optionsPlayRect);
-    }else {
-        return_code = SDL_RenderCopy(renderer, optionsPlayText.texture, NULL, &optionsPlayRect);
-    }
-    if(return_code != 0){
-        printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
-    }
-
     mainMenuPlayRect.x = (GAME_WIDTH-mainMenuPlayText.w)/2;
-    mainMenuPlayRect.y = start_x + (interval*2);
+    mainMenuPlayRect.y = start_x + (interval*1);
     mainMenuPlayRect.w = mainMenuPlayText.w;
     mainMenuPlayRect.h = mainMenuPlayText.h;
 

@@ -12,6 +12,7 @@
 #include "font.h"
 #include "ui.h"
 #include "generator.h"
+#include "scores.h"
 
 bool w_pressed = false;
 bool a_pressed = false;
@@ -168,8 +169,6 @@ void handle_play_keypress_paused(SDL_Event event){
                 get_game()->play.state = PLAY_STATE_ALIVE;
                 break;
             case 1:
-                break;
-            case 2:
                 destroy_game_over_score();
                 reset_score();
                 go_to_main_menu();
@@ -245,6 +244,8 @@ void handle_play_keypress(SDL_Event event) {
 
 void handle_title_keypress_main(SDL_Event event) {
     if(event.type != SDL_KEYDOWN){return;}
+    Score *scores;
+
     int key = event.key.keysym.sym;
     switch(key) {
     case SDLK_ESCAPE:
@@ -267,17 +268,20 @@ void handle_title_keypress_main(SDL_Event event) {
             start_play_music();
             break;
         case 1:
+            scores = get_scores();
+            for(int i = 0; i < 10; i++){
+                if(scores[i].exists) printf("Score %d: %d\n", i+1, scores[i].score);
+            }
+            free(scores);
             set_game_state(GAME_STATE_TITLE);
             break;
         case 2:
-            set_game_state(GAME_STATE_TITLE);
-            break;
-        case 3:
             set_game_running(false);
             break;
         }
         break;
     }
+    
 }
 void handle_title_keypress_options(SDL_Event event) {
     
