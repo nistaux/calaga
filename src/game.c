@@ -22,7 +22,7 @@ Timer timer;
 SDL_Event event;
 
 // variable for setting the fps
-double render_frame_rate_per_second = 200.0;
+double render_frame_rate_per_second = 250.0;
 double physics_tick_rate_per_second = 250.0;
 
 double system_timer = 0.0;
@@ -123,7 +123,7 @@ void init_game() {
 
 void title_main_selection_down() {
     int sel = game.title.selection;
-    if (sel < 3){
+    if (sel < 2){
         sel ++;
     }else {
         sel = 0;
@@ -135,13 +135,13 @@ void title_main_selection_up() {
     if (sel > 0){
         sel --;
     }else {
-        sel = 3;
+        sel = 2;
     }
     game.title.selection = sel;
 }
 void play_paused_main_selection_down() {
     int sel = game.play.paused_selection;
-    if (sel < 2){
+    if (sel < 1){
         sel ++;
     }else {
         sel = 0;
@@ -153,7 +153,7 @@ void play_paused_main_selection_up() {
     if (sel > 0){
         sel --;
     }else {
-        sel = 2;
+        sel = 1;
     }
     game.play.paused_selection = sel;
 }
