@@ -24,6 +24,8 @@ typedef struct {
 } Text;
 
 void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char *string, Text *text);
+void free_scores();
+void draw_title_scores_selections(SDL_Renderer *renderer);
 void draw_title_main_selections(SDL_Renderer *renderer);
 void destroy_game_over_score();
 void draw_play_over_main_selections(SDL_Renderer *renderer);

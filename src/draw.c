@@ -71,26 +71,10 @@ void draw_title_image(SDL_Renderer *renderer){
         printf("SDL: Error Rendering Image - %s\n", SDL_GetError());
     }
 }
-void draw_title_options(SDL_Renderer *renderer){
-    int return_code;
-
-    return_code = SDL_RenderClear(renderer);
-    if(return_code != 0){
-        printf("SDL: Error Clearing Renderer - %s\n", SDL_GetError());
-    }
-    
-}
 void draw_title_scores(SDL_Renderer *renderer){
-    int return_code;
+    draw_title_scores_selections(renderer);
+}
 
-    return_code = SDL_RenderClear(renderer);
-    if(return_code != 0){
-        printf("SDL: Error Clearing Renderer - %s\n", SDL_GetError());
-    }
-}
-void draw_title_fade(SDL_Renderer *renderer) {
-    
-}
 void draw_title_screen(SDL_Renderer *renderer){
     if(!title_loaded){
         init_title(renderer);
@@ -102,15 +86,9 @@ void draw_title_screen(SDL_Renderer *renderer){
         draw_title_image(renderer);
         draw_title_main_selections(renderer);
         break;
-    case TITLE_STATE_OPTIONS:
-        draw_title_image(renderer);
-        draw_title_options(renderer);
-        break;
     case TITLE_STATE_SCORES:
         draw_title_image(renderer);
         draw_title_scores(renderer);
-    case TITLE_STATE_FADING:
-        draw_title_fade(renderer);
     default:
         break;
     }

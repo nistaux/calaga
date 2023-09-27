@@ -273,7 +273,7 @@ void handle_title_keypress_main(SDL_Event event) {
                 if(scores[i].exists) printf("Score %d: %d\n", i+1, scores[i].score);
             }
             free(scores);
-            set_game_state(GAME_STATE_TITLE);
+            get_game()->title.state = TITLE_STATE_SCORES;
             break;
         case 2:
             set_game_running(false);
@@ -287,7 +287,20 @@ void handle_title_keypress_options(SDL_Event event) {
     
 }
 void handle_title_keypress_scores(SDL_Event event) {
-    
+    if(event.type != SDL_KEYDOWN){return;}
+    Score *scores;
+
+    int key = event.key.keysym.sym;
+    switch(key) {
+    case SDLK_ESCAPE:
+        play_sound(ENTER_SOUND);
+        get_game()->title.state = TITLE_STATE_MAIN;
+        break;
+    case SDLK_SPACE:
+        play_sound(ENTER_SOUND);
+        get_game()->title.state = TITLE_STATE_MAIN;
+        break;
+    }
 }
 void handle_title_keypress_fading(SDL_Event event) {
     
@@ -296,6 +309,9 @@ void handle_title_keypress(SDL_Event event) {
     switch(get_game()->title.state){
     case TITLE_STATE_MAIN:
         handle_title_keypress_main(event);
+        break;
+    case TITLE_STATE_SCORES:
+        handle_title_keypress_scores(event);
         break;
     }
 }

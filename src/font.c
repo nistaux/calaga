@@ -8,6 +8,7 @@
 #include "defs.h"
 #include "game.h"
 #include "ui.h"
+#include "scores.h"
 
 bool is_ttf_init = false;
 SDL_Color SELECTED_COLOR = { 180,75,255 };
@@ -104,6 +105,54 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
 }
 
 // -------------- TITLE SECTION --------------
+
+bool scores_loaded = false;
+Score *scores;
+Text scoreTexts[10];
+void free_scores(){
+    free(scores);
+    scores_loaded = false;
+}
+void load_scores(SDL_Renderer *renderer){
+    printf("test loaded scores\n");
+    scores = get_scores();
+    char tempScoreStr[20];
+    const char *pTempScoreStr = tempScoreStr;
+    
+    
+    Text *pScoreTexts = scoreTexts;
+    
+    for(int i = 0; i < 10; i++, pScoreTexts++){
+        if(!scores[i].exists) pTempScoreStr = "test";
+        else sprintf(pTempScoreStr, "%d", scores[i].score);
+        printf(pTempScoreStr);
+        printf("\n");
+        create_text(renderer, REGULAR_FONT, 20, pTempScoreStr, pScoreTexts);
+    }
+    scores_loaded = true;
+}
+void draw_title_scores_selections(SDL_Renderer *renderer){
+    if(!scores_loaded) load_scores(renderer);
+    SDL_Rect src;
+    SDL_Rect dst;
+    int ret = 0;
+    for(int i = 0; i < 10; i++){
+        //if(!scores[i].exists) continue;
+        src.h = scoreTexts[i].h;
+        src.w = scoreTexts[i].w;
+        src.x = 0;
+        src.y = 0;
+
+        dst.h = src.h;
+        dst.w = src.w;
+        dst.x = 200;
+        dst.y = 200+(50*(i+1));
+
+        ret = SDL_RenderCopy(renderer, scoreTexts[i].selected_texture, &src, &dst);
+        if(ret != 0) printf("BIG BAD BOI! %d\n", i);
+    }
+}
+
 Text versionText = {
     .id = -1
 };
