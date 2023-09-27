@@ -21,6 +21,7 @@ typedef struct {
 } ScoreText;
 
 const char* get_p_score_string();
+unsigned int get_score();
 void reset_score();
 void update_total_score_texture();
 void create_score_text(SDL_Renderer *renderer, ScoreText temp);
