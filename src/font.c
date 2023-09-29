@@ -93,9 +93,9 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
     Text temp_text = {
         .texture = texture,
         .selected_texture = selected_texture,
-        .w = text_surface->w,
-        .h = text_surface->h,
-        .id = text->id
+        .w = (*text_surface).w,
+        .h = (*text_surface).h,
+        .id = (*text).id
     };
 
     *text = temp_text;
@@ -108,48 +108,71 @@ void create_text(SDL_Renderer *renderer, FontType fontType, int size, const char
 
 bool scores_loaded = false;
 Score *scores;
-Text scoreTexts[10];
+Text titleScoreTexts[10];
+Text titleScoreTitle = {
+    .id = 0,
+};
+SDL_Rect rects[2][10];
 void free_scores(){
     free(scores);
+    for(int i = 0; i < 10; i++){
+        SDL_DestroyTexture(titleScoreTexts[i].selected_texture);
+        SDL_DestroyTexture(titleScoreTexts[i].texture);
+        SDL_DestroyTexture(titleScoreTitle.selected_texture);
+        SDL_DestroyTexture(titleScoreTitle.texture);
+    }
     scores_loaded = false;
 }
 void load_scores(SDL_Renderer *renderer){
-    printf("test loaded scores\n");
     scores = get_scores();
-    char tempScoreStr[20];
-    const char *pTempScoreStr = tempScoreStr;
-    
-    
-    Text *pScoreTexts = scoreTexts;
-    
-    for(int i = 0; i < 10; i++, pScoreTexts++){
-        if(!scores[i].exists) pTempScoreStr = "test";
-        else sprintf(pTempScoreStr, "%d", scores[i].score);
-        printf(pTempScoreStr);
-        printf("\n");
-        create_text(renderer, REGULAR_FONT, 20, pTempScoreStr, pScoreTexts);
+    char tempScoreStr[50];
+    char *pTempScoreStr = tempScoreStr;
+    create_text(renderer, REGULAR_FONT, 85, "Scores", &titleScoreTitle);
+    for(int i = 0; i < 10; i++){
+        if(!scores[i].exists) continue;
+        sprintf(pTempScoreStr, "%d.)        %02d/%02d/%d        %d", 
+                        i+1, scores[i].date.tm_mon+1, scores[i].date.tm_mday, scores[i].date.tm_year+1900, scores[i].score);
+        titleScoreTexts[i].id = i;
+        create_text(renderer, TITLE_FONT, 30, pTempScoreStr, &titleScoreTexts[i]);
+        SDL_Rect s = {
+            .h = titleScoreTexts[i].h,
+            .w = titleScoreTexts[i].w,
+            .x = 0,
+            .y = 0
+        };
+        SDL_Rect r = {
+            .h = titleScoreTexts[i].h,
+            .w = titleScoreTexts[i].w,
+            .x = 160,
+            .y = 235+(50*(i+1))
+        };
+        if(i == 9) r.x-=11;
+        rects[0][i] = s;
+        rects[1][i] = r;
     }
     scores_loaded = true;
 }
 void draw_title_scores_selections(SDL_Renderer *renderer){
     if(!scores_loaded) load_scores(renderer);
-    SDL_Rect src;
-    SDL_Rect dst;
     int ret = 0;
+    SDL_Rect src = {
+        .x = 0,
+        .y = 0,
+        .w = titleScoreTitle.w,
+        .h = titleScoreTitle.h
+    };
+    SDL_Rect dst = {
+        .x = (GAME_WIDTH/2)-(src.w/2),
+        .y = 175,
+        .w = titleScoreTitle.w,
+        .h = titleScoreTitle.h
+    };
+    ret = SDL_RenderCopy(renderer, titleScoreTitle.texture, &src, &dst);
+    if(ret != 0) printf("SDL_Error: Failed to Render Score Textures...\n");
     for(int i = 0; i < 10; i++){
-        //if(!scores[i].exists) continue;
-        src.h = scoreTexts[i].h;
-        src.w = scoreTexts[i].w;
-        src.x = 0;
-        src.y = 0;
-
-        dst.h = src.h;
-        dst.w = src.w;
-        dst.x = 200;
-        dst.y = 200+(50*(i+1));
-
-        ret = SDL_RenderCopy(renderer, scoreTexts[i].selected_texture, &src, &dst);
-        if(ret != 0) printf("BIG BAD BOI! %d\n", i);
+        if(!scores[i].exists) continue;
+        ret = SDL_RenderCopy(renderer, titleScoreTexts[i].texture, &rects[0][i], &rects[1][i]);
+        if(ret != 0) printf("SDL_Error: Failed to Render Score Textures...\n");
     }
 }
 

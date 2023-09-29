@@ -244,7 +244,6 @@ void handle_play_keypress(SDL_Event event) {
 
 void handle_title_keypress_main(SDL_Event event) {
     if(event.type != SDL_KEYDOWN){return;}
-    Score *scores;
 
     int key = event.key.keysym.sym;
     switch(key) {
@@ -268,11 +267,6 @@ void handle_title_keypress_main(SDL_Event event) {
             start_play_music();
             break;
         case 1:
-            scores = get_scores();
-            for(int i = 0; i < 10; i++){
-                if(scores[i].exists) printf("Score %d: %d\n", i+1, scores[i].score);
-            }
-            free(scores);
             get_game()->title.state = TITLE_STATE_SCORES;
             break;
         case 2:
@@ -288,15 +282,16 @@ void handle_title_keypress_options(SDL_Event event) {
 }
 void handle_title_keypress_scores(SDL_Event event) {
     if(event.type != SDL_KEYDOWN){return;}
-    Score *scores;
 
     int key = event.key.keysym.sym;
     switch(key) {
     case SDLK_ESCAPE:
         play_sound(ENTER_SOUND);
+        free_scores();
         get_game()->title.state = TITLE_STATE_MAIN;
         break;
     case SDLK_SPACE:
+        free_scores();
         play_sound(ENTER_SOUND);
         get_game()->title.state = TITLE_STATE_MAIN;
         break;
