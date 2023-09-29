@@ -6,9 +6,4 @@ The intention for this game was really just for me to learn more C and low level
 
 ![Gif of the main menu!](https://i.imgur.com/xrwgiND.gif)
 
-### Gameplay!
-The gameplay actually gets harder as time goes on causing fun tension closing in on your last life.
-
-![Gif of the main menu!](https://i.imgur.com/xrwgiND.gif)
-
 I hope if you try it out, you enjoy it because I know I did making it!
