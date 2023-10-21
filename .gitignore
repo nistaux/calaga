@@ -2,4 +2,3 @@ build
 *.code-workspace
 *.o
 .vscode
-*ProjectFiles
